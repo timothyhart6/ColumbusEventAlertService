@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class Event {
 
-    public String getDate;
-    public String getTime;
-    private String Name;
+    private String name;
+    private String date;
+    private String time;
 }
