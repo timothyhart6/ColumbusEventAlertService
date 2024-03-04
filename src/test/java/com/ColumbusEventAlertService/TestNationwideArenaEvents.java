@@ -1,33 +1,36 @@
 package com.ColumbusEventAlertService;
 
 import com.ColumbusEventAlertService.models.Event;
+import org.jsoup.helper.ValidationException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static org.mockito.BDDMockito.willThrow;
+import static org.mockito.Mockito.mock;
+
 public class TestNationwideArenaEvents {
-
-
-    @Test
-    public void nextUpcomingEventIsReturned() {
-        NationwideArenaEvents nationwideArenaEvents = new NationwideArenaEvents();
-        Event event = nationwideArenaEvents.getUpcomingEvent();
-
-        Assert.assertNotNull(event);
-    }
+    NationwideArenaEvents nationwideArenaEvents = new NationwideArenaEvents();
 
     @Test
-    public void nextEventDetailsExist() {
-        NationwideArenaEvents nationwideArenaEvents = new NationwideArenaEvents();
-        Event event = nationwideArenaEvents.getUpcomingEvent();
+    public void nextEventDetailsExist() throws ValidationException {
+        String googleUrl = "https://www.google.com/search?q=nationwide+arena+events&gl=us";
+        Event event = nationwideArenaEvents.getUpcomingEvent(googleUrl);
 
         String name = event.getName();
-        String date = event.getDate;
-        String time = event.getTime;
+        String date = event.getDate();
+        String time = event.getTime();
 
-        Assert.assertTrue(!name.isEmpty());
-        Assert.assertTrue(!date.isEmpty());
-        Assert.assertTrue(!time.isEmpty());
+        Assert.assertFalse(name.isEmpty());
+        Assert.assertFalse(date.isEmpty());
+        Assert.assertFalse(time.isEmpty());
     }
 
-
+    @Test
+    public void IllegalArgumentExceptionThrownWhenInvalidUrlIsUsed() throws IllegalArgumentException {
+        String googleUrl = "gibberish";
+        NationwideArenaEvents mockNationwideAreanaEvents = mock(NationwideArenaEvents.class);
+        willThrow(new IllegalArgumentException("No Event")).given(mockNationwideAreanaEvents).getUpcomingEvent(googleUrl);
+        IllegalArgumentException exception = Assert.assertThrows(IllegalArgumentException.class, () -> nationwideArenaEvents.getUpcomingEvent(googleUrl));
+        Assert.assertEquals("Invalid URL: gibberish", exception.getMessage());
+    }
 }
