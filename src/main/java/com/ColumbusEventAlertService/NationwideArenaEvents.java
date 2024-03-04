@@ -1,6 +1,7 @@
 package com.ColumbusEventAlertService;
 
 import com.ColumbusEventAlertService.models.Event;
+import lombok.Setter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Node;
@@ -8,7 +9,10 @@ import org.jsoup.nodes.Node;
 import java.io.IOException;
 
 public class NationwideArenaEvents {
-    public Event getUpcomingEvent(String googleUrl) throws IllegalArgumentException {
+    @Setter
+    private String googleUrl = "https://www.google.com/search?q=nationwide+arena+events&gl=us";
+
+    public Event getUpcomingEvent() throws IllegalArgumentException {
         Event event = new Event();
         try {
             Document doc = Jsoup.connect(googleUrl).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36").get();

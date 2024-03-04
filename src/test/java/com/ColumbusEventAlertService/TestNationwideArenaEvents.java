@@ -13,8 +13,7 @@ public class TestNationwideArenaEvents {
 
     @Test
     public void nextEventDetailsExist() throws ValidationException {
-        String googleUrl = "https://www.google.com/search?q=nationwide+arena+events&gl=us";
-        Event event = nationwideArenaEvents.getUpcomingEvent(googleUrl);
+        Event event = nationwideArenaEvents.getUpcomingEvent();
 
         String name = event.getName();
         String date = event.getDate();
@@ -27,10 +26,10 @@ public class TestNationwideArenaEvents {
 
     @Test
     public void IllegalArgumentExceptionThrownWhenInvalidUrlIsUsed() throws IllegalArgumentException {
-        String googleUrl = "gibberish";
+        nationwideArenaEvents.setGoogleUrl("gibberish");
         NationwideArenaEvents mockNationwideAreanaEvents = mock(NationwideArenaEvents.class);
-        willThrow(new IllegalArgumentException("No Event")).given(mockNationwideAreanaEvents).getUpcomingEvent(googleUrl);
-        IllegalArgumentException exception = Assert.assertThrows(IllegalArgumentException.class, () -> nationwideArenaEvents.getUpcomingEvent(googleUrl));
+        willThrow(new IllegalArgumentException()).given(mockNationwideAreanaEvents).getUpcomingEvent();
+        IllegalArgumentException exception = Assert.assertThrows(IllegalArgumentException.class, () -> nationwideArenaEvents.getUpcomingEvent());
         Assert.assertEquals("Invalid URL: gibberish", exception.getMessage());
     }
 }
