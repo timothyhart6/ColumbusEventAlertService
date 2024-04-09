@@ -3,6 +3,10 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+src/.env
+
+### Metadata for calling Twilio###
+src/main/java/com/ColumbusEventAlertService/secrets
 
 ### STS ###
 .apt_generated
