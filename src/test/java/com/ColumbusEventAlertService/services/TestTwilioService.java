@@ -1,4 +1,4 @@
-package com.ColumbusEventAlertService.service;
+package com.ColumbusEventAlertService.services;
 
 import com.twilio.rest.api.v2010.account.Message;
 import org.junit.Assert;

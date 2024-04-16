@@ -1,4 +1,4 @@
-package com.ColumbusEventAlertService;
+package com.ColumbusEventAlertService.ColumbusEvents;
 
 import com.ColumbusEventAlertService.models.Event;
 import lombok.Setter;

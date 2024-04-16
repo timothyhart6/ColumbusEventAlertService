@@ -1,12 +1,4 @@
-package com.ColumbusEventAlertService.service;
-
-import com.ColumbusEventAlertService.models.Event;
-import com.twilio.rest.api.v2010.account.Message;
-import org.junit.Assert;
-import org.junit.Test;
-import org.mockito.Mockito;
-
-import java.util.Date;
+package com.ColumbusEventAlertService.services;
 
 
 public class TestAlertService {
