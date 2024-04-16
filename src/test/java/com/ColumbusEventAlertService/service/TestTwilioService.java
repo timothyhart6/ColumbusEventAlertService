@@ -11,7 +11,7 @@ public class TestTwilioService {
         TwilioService twilioService = new TwilioService();
         String phoneNumber = TESTING_PHONE_NUMBER.getValue();
         String messageText = "Hello from the Unit Test";
-        Message message = twilioService.sendNationwideEvent(phoneNumber, messageText);
+        Message message = twilioService.sendTwilioText(phoneNumber, messageText);
 
         Assert.assertNotNull(message);
         Assert.assertNull(message.getErrorMessage());
