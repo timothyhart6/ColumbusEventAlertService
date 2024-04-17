@@ -1,4 +1,4 @@
-package com.ColumbusEventAlertService.service;
+package com.ColumbusEventAlertService.services;
 
 import com.ColumbusEventAlertService.secrets.TwilioSecrets;
 import com.twilio.Twilio;
