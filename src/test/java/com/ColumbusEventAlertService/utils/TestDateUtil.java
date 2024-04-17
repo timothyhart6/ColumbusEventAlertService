@@ -9,7 +9,7 @@ public class TestDateUtil {
 
     @Test
     public void testDateFormat() {
-        LocalDate date = LocalDate.of(2020, 01, 12);
+        LocalDate date = LocalDate.of(2020, 1, 12);
         String formattedDate = new DateUtil().formatDate(date);
         Assert.assertEquals("01-12-2020", formattedDate);
     }
