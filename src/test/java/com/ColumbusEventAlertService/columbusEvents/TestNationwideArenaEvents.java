@@ -1,6 +1,5 @@
-package com.ColumbusEventAlertService.ColumbusEvents;
+package com.ColumbusEventAlertService.columbusEvents;
 
-import com.ColumbusEventAlertService.ColumbusEvents.NationwideArenaEvents;
 import com.ColumbusEventAlertService.models.Event;
 import org.jsoup.helper.ValidationException;
 import org.junit.Assert;
