@@ -1,8 +1,20 @@
 package com.ColumbusEventAlertService.utils;
 
+import java.time.LocalDate;
 import java.time.Year;
+import java.time.format.DateTimeFormatter;
 
-public class DateFormatter {
+public class DateUtil {
+    public String getTodaysDate() {
+        LocalDate todaysDate = LocalDate.now();
+        return formatDate(todaysDate);
+    }
+
+    public String formatDate(LocalDate date) {
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy");
+        return date.format(dateFormat);
+    }
+
     public String formatGoogleDate(String date) {
         String month;
         String day;
@@ -10,7 +22,7 @@ public class DateFormatter {
 
         String[] dateSections = date.split(" ");
         month = convertMonthNameToNumber(dateSections[1]);
-        day = dateSections[2];
+        day = (dateSections[2].length() == 1) ? "0" + dateSections[2] : dateSections[2];
         year = Year.now().toString();
 
         String formattedDate = month + "-" + day + "-" + year;
@@ -21,23 +33,23 @@ public class DateFormatter {
     private String convertMonthNameToNumber(String monthName) {
         switch(monthName.toLowerCase()) {
             case "jan":
-                return "1";
+                return "01";
             case "feb" :
-                return "2";
+                return "02";
             case "mar":
-                return "3";
+                return "03";
             case "apr":
-                return "4";
+                return "04";
             case "may":
-                return "5";
+                return "05";
             case "jun":
-                return "6";
+                return "06";
             case "jul;":
-                return "7";
+                return "07";
             case "aug":
-                return "8";
+                return "08";
             case "sep":
-                return "9";
+                return "09";
             case "oct":
                 return "10";
             case "nov":

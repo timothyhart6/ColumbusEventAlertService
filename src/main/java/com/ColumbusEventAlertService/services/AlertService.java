@@ -1,23 +1,16 @@
 package com.ColumbusEventAlertService.services;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import com.ColumbusEventAlertService.models.Event;
+import com.ColumbusEventAlertService.utils.DateUtil;
+import static com.ColumbusEventAlertService.secrets.TwilioSecrets.TESTING_PHONE_NUMBER;
 
 public class AlertService {
 
-/*    public void sendTodaysEvents(Event event) {
+    public void sendTodaysEvents(Event event, TwilioService twilioService) {
+        String todaysDate = new DateUtil().getTodaysDate();
 
-        if(event.getDate() == getTodaysDate()) {
-            sendNationwideEvent();
+        if(event.getDate().equals(todaysDate)) {
+            twilioService.sendTwilioText(TESTING_PHONE_NUMBER.getValue(), event.textMessage());
         }
-
-    }*/
-
-
-    private String getTodaysDate() {
-        LocalDate todaysDateUnformatted = LocalDate.now();
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM-dd-yyyy");
-        String todaysDate = todaysDateUnformatted.format(dateFormat);
-        return todaysDate;
     }
 }
