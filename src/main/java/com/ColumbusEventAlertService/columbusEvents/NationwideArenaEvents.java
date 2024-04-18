@@ -6,8 +6,10 @@ import lombok.Setter;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Node;
+import org.springframework.stereotype.Component;
 import java.io.IOException;
 
+@Component
 public class NationwideArenaEvents {
     @Setter
     private String googleUrl = "https://www.google.com/search?q=nationwide+arena+events&gl=us";
