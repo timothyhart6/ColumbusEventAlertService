@@ -16,14 +16,18 @@ public class NationwideArenaEvents {
 
     public NationwideEvent getUpcomingEvent() throws IllegalArgumentException {
         NationwideEvent event = new NationwideEvent();
+        String time;
         try {
             Document doc = Jsoup.connect(googleUrl).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36").get();
             Node eventNode = doc.select("div.EyBRub").get(1).child(2).childNode(0).childNode(0).childNode(0).childNode(0).childNode(0).childNode(0);
 
             String name = eventNode.childNode(0).childNode(0).childNode(0).toString().trim();
             String date = eventNode.childNode(1).childNode(0).childNode(0).toString().trim();
-            String time = eventNode.childNode(1).childNode(1).childNode(0).toString().trim();
-
+            try {
+                time = eventNode.childNode(1).childNode(1).childNode(0).toString().trim();
+            } catch (IndexOutOfBoundsException e) {
+                time = "UNKOWN";
+            }
             event.setName(name);
             event.setDate(new DateUtil().formatGoogleDate(date));
             event.setTime(time);
