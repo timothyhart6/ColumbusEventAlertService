@@ -12,4 +12,11 @@ public class AlertService {
             twilioService.sendTwilioText(System.getenv("TESTING_PHONE_NUMBER"), event.textMessage());
         }
     }
+
+    public String sendEvent() {
+        TwilioService twilioService = new TwilioService();
+        twilioService.sendTwilioText(System.getenv("TESTING_PHONE_NUMBER"), "Hello from Lambda Test");
+    return "Success!";
+    }
+
 }
