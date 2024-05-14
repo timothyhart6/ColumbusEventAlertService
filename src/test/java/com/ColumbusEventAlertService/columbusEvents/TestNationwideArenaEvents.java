@@ -11,7 +11,7 @@ import static org.mockito.Mockito.mock;
 public class TestNationwideArenaEvents {
     NationwideArenaEvents nationwideArenaEvents = new NationwideArenaEvents();
 
-/*    @Test
+    @Test
     public void nextEventDetailsExist() throws ValidationException {
         Event event = nationwideArenaEvents.getUpcomingEvent();
 
@@ -22,11 +22,11 @@ public class TestNationwideArenaEvents {
         Assert.assertFalse(name.isEmpty());
         Assert.assertFalse(date.isEmpty());
         Assert.assertFalse(time.isEmpty());
-    }*/
+    }
 
     @Test
     public void IllegalArgumentExceptionThrownWhenInvalidUrlIsUsed() throws IllegalArgumentException {
-        nationwideArenaEvents.setGoogleUrl("gibberish");
+        nationwideArenaEvents.setNationwideEventsUrl("gibberish");
         NationwideArenaEvents mockNationwideAreanaEvents = mock(NationwideArenaEvents.class);
         willThrow(new IllegalArgumentException()).given(mockNationwideAreanaEvents).getUpcomingEvent();
         IllegalArgumentException exception = Assert.assertThrows(IllegalArgumentException.class, () -> nationwideArenaEvents.getUpcomingEvent());

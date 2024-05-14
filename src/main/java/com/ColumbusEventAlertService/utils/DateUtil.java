@@ -30,7 +30,7 @@ public class DateUtil {
         return formattedDate;
     }
 
-    private String convertMonthNameToNumber(String monthName) {
+    public String convertMonthNameToNumber(String monthName) {
         switch(monthName.toLowerCase()) {
             case "jan":
                 return "01";
@@ -42,9 +42,9 @@ public class DateUtil {
                 return "04";
             case "may":
                 return "05";
-            case "jun":
+            case "june":
                 return "06";
-            case "jul;":
+            case "july;":
                 return "07";
             case "aug":
                 return "08";
