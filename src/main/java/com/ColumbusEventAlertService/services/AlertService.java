@@ -19,4 +19,11 @@ public class AlertService {
             log.info("Event date was null");
         }
     }
+
+    public String sendEvent() {
+        TwilioService twilioService = new TwilioService();
+        twilioService.sendTwilioText(System.getenv("TESTING_PHONE_NUMBER"), "Hello from Lambda Test");
+    return "Success!";
+    }
+
 }

@@ -26,7 +26,7 @@ public class TestNationwideArenaEvents {
 
     @Test
     public void IllegalArgumentExceptionThrownWhenInvalidUrlIsUsed() throws IllegalArgumentException {
-        nationwideArenaEvents.setGoogleUrl("gibberish");
+        nationwideArenaEvents.setNationwideEventsUrl("gibberish");
         NationwideArenaEvents mockNationwideAreanaEvents = mock(NationwideArenaEvents.class);
         willThrow(new IllegalArgumentException()).given(mockNationwideAreanaEvents).getUpcomingEvent();
         IllegalArgumentException exception = Assert.assertThrows(IllegalArgumentException.class, () -> nationwideArenaEvents.getUpcomingEvent());
