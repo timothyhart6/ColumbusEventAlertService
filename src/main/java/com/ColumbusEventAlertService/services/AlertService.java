@@ -1,29 +1,35 @@
 package com.ColumbusEventAlertService.services;
 
-import com.ColumbusEventAlertService.models.Event;
+import com.ColumbusEventAlertService.columbusEvents.NationwideArenaEvents;
+import com.ColumbusEventAlertService.models.NationwideEvent;
 import com.ColumbusEventAlertService.utils.DateUtil;
+import com.twilio.rest.api.v2010.account.Message;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
-@Component
 @Slf4j
 public class AlertService {
+    private DateUtil dateUtil;
+    private NationwideArenaEvents nationwideArenaEvents;
+    private NationwideEvent nationwideEvent;
+    private TwilioService twilioService;
 
-    public void sendTodaysEvents(Event event, TwilioService twilioService) {
-        String todaysDate = new DateUtil().getTodaysDate();
-        try {
-            if (event.getDate().equals(todaysDate)) {
-                twilioService.sendTwilioText(System.getenv("TESTING_PHONE_NUMBER"), event.textMessage());
-            }
-        } catch (NullPointerException e) {
-            log.info("Event date was null");
-        }
+
+    public AlertService(DateUtil dateUtil, NationwideArenaEvents nationwideArenaEvents, NationwideEvent nationwideEvent, TwilioService twilioService) {
+        this.dateUtil = dateUtil;
+        this.nationwideArenaEvents = nationwideArenaEvents;
+        this.nationwideEvent = nationwideEvent;
+        this.twilioService = twilioService;
     }
 
-    public String sendEvent() {
-        TwilioService twilioService = new TwilioService();
-        twilioService.sendTwilioText(System.getenv("TESTING_PHONE_NUMBER"), "Hello from Lambda Test");
-    return "Success!";
-    }
 
+    public String sendTodaysEvents() {
+        String todaysDate = dateUtil.getTodaysDate();
+        nationwideEvent = nationwideArenaEvents.getUpcomingEvent();
+        String eventDate = nationwideEvent.getDate();
+        String textMessage = (eventDate.equals(todaysDate)) ? nationwideEvent.message() : "No Events today!";
+        Message responseMessage = twilioService.sendTwilioText(System.getenv("TESTING_PHONE_NUMBER"), textMessage);
+        log.info("Message sent:" + responseMessage.getBody());
+
+        return responseMessage.getBody();
+    }
 }
