@@ -6,12 +6,12 @@ import com.ColumbusEventAlertService.utils.DateUtil;
 import com.twilio.rest.api.v2010.account.Message;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class TestAlertService {
 
     @Mock
@@ -20,8 +20,8 @@ public class TestAlertService {
     private NationwideArenaEvents nationwideArenaEvents;
     @Mock
     private NationwideEvent nationwideEvent;
-
-    private TwilioService twilioService = new TwilioService();
+    @Mock
+    private TwilioService twilioService;
     @Mock
     private Message message;
 
@@ -37,14 +37,14 @@ public class TestAlertService {
         when(dateUtil.getTodaysDate()).thenReturn(todaysDate);
         when(nationwideArenaEvents.getUpcomingEvent()).thenReturn(nationwideEvent);
         when(nationwideEvent.getDate()).thenReturn(todaysDate);
-        when(nationwideEvent.message()).thenReturn("Event is happening today!");
-        when(message.getBody()).thenReturn("Event is happening today!");
+        when(nationwideEvent.message()).thenReturn("does not matter");
+        when(twilioService.sendTwilioText(anyString(), anyString())).thenReturn(message);
 
-        String result = alertService.sendTodaysEvents();
+        alertService.sendTodaysEvents();
 
-        assertEquals("Sent from your Twilio trial account - Event is happening today!", result);
+        verify(nationwideEvent, times(1)).message();
+        verify(twilioService, times(1)).sendTwilioText(anyString(), anyString());
     }
-
     @Test
     void testSendTodaysEvents_NoEventToday() {
         String todaysDate = "2024-05-21";
@@ -52,9 +52,26 @@ public class TestAlertService {
         when(dateUtil.getTodaysDate()).thenReturn(todaysDate);
         when(nationwideArenaEvents.getUpcomingEvent()).thenReturn(nationwideEvent);
         when(nationwideEvent.getDate()).thenReturn(eventDate);
+        when(twilioService.sendTwilioText(anyString(), anyString())).thenReturn(message);
 
-        String result = alertService.sendTodaysEvents();
+        alertService.sendTodaysEvents();
 
-        assertEquals("Sent from your Twilio trial account - No Events today!", result);
+        verify(nationwideEvent, times(0)).message();
+        verify(twilioService, times(1)).sendTwilioText(anyString(), anyString());
+    }
+
+    @Test
+    void testSendYesterdaysEvents_NoEventToday() {
+        String todaysDate = "2024-05-21";
+        String eventDate = "2024-05-20";
+        when(dateUtil.getTodaysDate()).thenReturn(todaysDate);
+        when(nationwideArenaEvents.getUpcomingEvent()).thenReturn(nationwideEvent);
+        when(nationwideEvent.getDate()).thenReturn(eventDate);
+        when(twilioService.sendTwilioText(anyString(), anyString())).thenReturn(message);
+
+        alertService.sendTodaysEvents();
+
+        verify(nationwideEvent, times(0)).message();
+        verify(twilioService, times(1)).sendTwilioText(anyString(), anyString());
     }
 }
