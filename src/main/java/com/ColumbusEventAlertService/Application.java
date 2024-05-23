@@ -1,6 +1,5 @@
 package com.ColumbusEventAlertService;
 
-import com.ColumbusEventAlertService.columbusEvents.NationwideArenaEvents;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
