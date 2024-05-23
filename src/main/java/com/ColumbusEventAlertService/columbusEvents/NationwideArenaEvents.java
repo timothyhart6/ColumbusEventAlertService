@@ -29,7 +29,7 @@ public class NationwideArenaEvents {
             String eventName = eventInfo.get(0).getElementsByClass("title title-withTagline ").get(0).childNode(1).childNode(0).toString().trim();
 
             String monthNumber = new DateUtil().convertMonthNameToNumber(monthName);
-            String formattedDate = monthNumber + "-" + day + "-" + year;
+            String formattedDate = monthNumber + "-" + day.replaceAll("\\D", ""); + "-" + year.replaceAll("\\D", "");
 
             event.setName(eventName);
             event.setDate(formattedDate);
