@@ -27,9 +27,8 @@ public class AlertService {
         nationwideEvent = nationwideArenaEvents.getUpcomingEvent();
         String eventDate = nationwideEvent.getDate();
         String textMessage = (eventDate.equals(todaysDate)) ? nationwideEvent.message() : "No Events today!";
-        Message responseMessage = twilioService.sendTwilioText(System.getenv("TESTING_PHONE_NUMBER"), textMessage);
-        log.info("Message sent:" + responseMessage.getBody());
+        String response = twilioService.sendTwilioText(System.getenv("TESTING_PHONE_NUMBER"),System.getenv("TWILIO_PHONE_NUMBER"), textMessage);
 
-        return responseMessage.getBody();
+        return response;
     }
 }

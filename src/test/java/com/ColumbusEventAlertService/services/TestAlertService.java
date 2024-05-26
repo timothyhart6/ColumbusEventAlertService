@@ -38,12 +38,12 @@ public class TestAlertService {
         when(nationwideArenaEvents.getUpcomingEvent()).thenReturn(nationwideEvent);
         when(nationwideEvent.getDate()).thenReturn(todaysDate);
         when(nationwideEvent.message()).thenReturn("does not matter");
-        when(twilioService.sendTwilioText(anyString(), anyString())).thenReturn(message);
+        when(twilioService.sendTwilioText(anyString(), anyString(), anyString())).thenReturn("Event today!");
 
         alertService.sendTodaysEvents();
 
-        verify(nationwideEvent, times(1)).message();
-        verify(twilioService, times(1)).sendTwilioText(anyString(), anyString());
+        verify(nationwideEvent).message();
+        verify(twilioService).sendTwilioText(anyString(), anyString(), anyString());
     }
     @Test
     void testSendTodaysEvents_NoEventToday() {
@@ -52,12 +52,12 @@ public class TestAlertService {
         when(dateUtil.getTodaysDate()).thenReturn(todaysDate);
         when(nationwideArenaEvents.getUpcomingEvent()).thenReturn(nationwideEvent);
         when(nationwideEvent.getDate()).thenReturn(eventDate);
-        when(twilioService.sendTwilioText(anyString(), anyString())).thenReturn(message);
+        when(twilioService.sendTwilioText(anyString(), anyString(), anyString())).thenReturn("No Events!");
 
         alertService.sendTodaysEvents();
 
         verify(nationwideEvent, times(0)).message();
-        verify(twilioService, times(1)).sendTwilioText(anyString(), anyString());
+        verify(twilioService).sendTwilioText(anyString(), anyString(), anyString());
     }
 
     @Test
@@ -67,11 +67,11 @@ public class TestAlertService {
         when(dateUtil.getTodaysDate()).thenReturn(todaysDate);
         when(nationwideArenaEvents.getUpcomingEvent()).thenReturn(nationwideEvent);
         when(nationwideEvent.getDate()).thenReturn(eventDate);
-        when(twilioService.sendTwilioText(anyString(), anyString())).thenReturn(message);
+        when(twilioService.sendTwilioText(anyString(), anyString(), anyString())).thenReturn("No Events!");
 
         alertService.sendTodaysEvents();
 
         verify(nationwideEvent, times(0)).message();
-        verify(twilioService, times(1)).sendTwilioText(anyString(), anyString());
+        verify(twilioService).sendTwilioText(anyString(), anyString(), anyString());
     }
 }
