@@ -22,9 +22,6 @@ public class TestAlertService {
     private NationwideEvent nationwideEvent;
     @Mock
     private TwilioService twilioService;
-    @Mock
-    private Message message;
-
     private AlertService alertService;
 
     @BeforeEach

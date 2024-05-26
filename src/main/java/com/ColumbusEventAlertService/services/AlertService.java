@@ -3,7 +3,6 @@ package com.ColumbusEventAlertService.services;
 import com.ColumbusEventAlertService.columbusEvents.NationwideArenaEvents;
 import com.ColumbusEventAlertService.models.NationwideEvent;
 import com.ColumbusEventAlertService.utils.DateUtil;
-import com.twilio.rest.api.v2010.account.Message;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
