@@ -3,7 +3,6 @@ package com.ColumbusEventAlertService.services;
 import com.ColumbusEventAlertService.columbusEvents.NationwideArenaEvents;
 import com.ColumbusEventAlertService.models.NationwideEvent;
 import com.ColumbusEventAlertService.utils.DateUtil;
-import com.twilio.rest.api.v2010.account.Message;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
