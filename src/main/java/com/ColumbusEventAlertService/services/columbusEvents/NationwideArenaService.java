@@ -7,7 +7,7 @@ import org.jsoup.select.Elements;
 import java.io.IOException;
 
 public class NationwideArenaService {
-    private String url;
+    private final String url;
     private final JsoupService jsoupService;
     private final DateUtil dateUtil;
 

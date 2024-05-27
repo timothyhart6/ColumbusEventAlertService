@@ -23,7 +23,7 @@ public class TestNationwideArenaService {
     private Connection connection;
     @InjectMocks
     private NationwideArenaService nationwideArenaService;
-    private String url = "https://www.nationwidearena.com/events";
+    private final String url = "https://www.nationwidearena.com/events";
 
     @BeforeEach
     public void setUp() {
@@ -54,9 +54,7 @@ public class TestNationwideArenaService {
         when(jsoupService.connect(anyString())).thenThrow(IllegalArgumentException.class);
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            nationwideArenaService.getUpcomingEvent();
-        });
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> nationwideArenaService.getUpcomingEvent());
         assertEquals("Invalid URL: " + url, exception.getMessage());
     }
 
@@ -66,9 +64,7 @@ public class TestNationwideArenaService {
         when(jsoupService.getDocument(connection.userAgent(anyString())).select(anyString()).get(anyInt()).getElementsByClass(anyString())).thenThrow(IllegalArgumentException.class);
         NationwideArenaService nationwideArenaService = new NationwideArenaService(url, jsoupService, dateUtil);
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            nationwideArenaService.getUpcomingEvent();
-        });
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> nationwideArenaService.getUpcomingEvent());
 
         assertEquals("Invalid URL: " + url, exception.getMessage());
     }
