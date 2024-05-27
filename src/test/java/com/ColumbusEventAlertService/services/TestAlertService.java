@@ -1,6 +1,6 @@
 package com.ColumbusEventAlertService.services;
 
-import com.ColumbusEventAlertService.columbusEvents.NationwideArenaEvents;
+import com.ColumbusEventAlertService.services.columbusEvents.NationwideArenaService;
 import com.ColumbusEventAlertService.models.NationwideEvent;
 import com.ColumbusEventAlertService.utils.DateUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +16,7 @@ public class TestAlertService {
     @Mock
     private DateUtil dateUtil;
     @Mock
-    private NationwideArenaEvents nationwideArenaEvents;
+    private NationwideArenaService nationwideArenaService;
     @Mock
     private NationwideEvent nationwideEvent;
     @Mock
@@ -25,13 +25,13 @@ public class TestAlertService {
 
     @BeforeEach
     void setUp() {
-        alertService = new AlertService(dateUtil, nationwideArenaEvents, nationwideEvent, twilioService);
+        alertService = new AlertService(dateUtil, nationwideArenaService, nationwideEvent, twilioService);
     }
     @Test
     void testSendTodaysEvents_WithEventToday() {
         String todaysDate = "2024-05-21";
         when(dateUtil.getTodaysDate()).thenReturn(todaysDate);
-        when(nationwideArenaEvents.getUpcomingEvent()).thenReturn(nationwideEvent);
+        when(nationwideArenaService.getUpcomingEvent()).thenReturn(nationwideEvent);
         when(nationwideEvent.getDate()).thenReturn(todaysDate);
         when(nationwideEvent.message()).thenReturn("does not matter");
         when(twilioService.sendTwilioText(anyString(), anyString(), anyString())).thenReturn("Event today!");
@@ -46,7 +46,7 @@ public class TestAlertService {
         String todaysDate = "2024-05-21";
         String eventDate = "2024-05-22";
         when(dateUtil.getTodaysDate()).thenReturn(todaysDate);
-        when(nationwideArenaEvents.getUpcomingEvent()).thenReturn(nationwideEvent);
+        when(nationwideArenaService.getUpcomingEvent()).thenReturn(nationwideEvent);
         when(nationwideEvent.getDate()).thenReturn(eventDate);
         when(twilioService.sendTwilioText(anyString(), anyString(), anyString())).thenReturn("No Events!");
 
@@ -61,7 +61,7 @@ public class TestAlertService {
         String todaysDate = "2024-05-21";
         String eventDate = "2024-05-20";
         when(dateUtil.getTodaysDate()).thenReturn(todaysDate);
-        when(nationwideArenaEvents.getUpcomingEvent()).thenReturn(nationwideEvent);
+        when(nationwideArenaService.getUpcomingEvent()).thenReturn(nationwideEvent);
         when(nationwideEvent.getDate()).thenReturn(eventDate);
         when(twilioService.sendTwilioText(anyString(), anyString(), anyString())).thenReturn("No Events!");
 
