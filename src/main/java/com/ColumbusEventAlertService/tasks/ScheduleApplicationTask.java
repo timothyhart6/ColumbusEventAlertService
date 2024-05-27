@@ -1,6 +1,7 @@
 package com.ColumbusEventAlertService.tasks;
 
-import com.ColumbusEventAlertService.columbusEvents.NationwideArenaEvents;
+import com.ColumbusEventAlertService.services.columbusEvents.JsoupServiceImpl;
+import com.ColumbusEventAlertService.services.columbusEvents.NationwideArenaService;
 import com.ColumbusEventAlertService.models.NationwideEvent;
 import com.ColumbusEventAlertService.services.AlertService;
 import com.ColumbusEventAlertService.services.TwilioMessageSender;
@@ -10,11 +11,12 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ScheduleApplicationTask {
+    String nationwideUrl = "https://www.nationwidearena.com/events";
     TwilioService twilioService = new TwilioService(new TwilioMessageSender());
-    NationwideArenaEvents nationwideArenaEvents = new NationwideArenaEvents();
+    NationwideArenaService nationwideArenaService = new NationwideArenaService(nationwideUrl, new JsoupServiceImpl(), new DateUtil());
     NationwideEvent nationwideEvent = new NationwideEvent();
     DateUtil dateUtil = new DateUtil();
-    AlertService alertService = new AlertService(dateUtil, nationwideArenaEvents, nationwideEvent, twilioService);
+    AlertService alertService = new AlertService(dateUtil, nationwideArenaService, nationwideEvent, twilioService);
 
     public String sendTextAlerts() {
         log.info("Text Message is sending...");
