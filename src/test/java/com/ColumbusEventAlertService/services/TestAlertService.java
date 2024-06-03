@@ -6,8 +6,10 @@ import com.ColumbusEventAlertService.utils.DateUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -18,56 +20,54 @@ public class TestAlertService {
     @Mock
     private NationwideArenaService nationwideArenaService;
     @Mock
-    private NationwideEvent nationwideEvent;
-    @Mock
     private TwilioService twilioService;
+    @InjectMocks
     private AlertService alertService;
 
     @BeforeEach
     void setUp() {
-        alertService = new AlertService(dateUtil, nationwideArenaService, nationwideEvent, twilioService);
+        NationwideEvent event = new NationwideEvent();
+        event.setDate("2024-07-04");
+        when(nationwideArenaService.getUpcomingEvent()).thenReturn(event);
+        when(twilioService.sendTwilioText(anyString(), anyString(), anyString())).thenReturn("Message sent");
     }
     @Test
     void testSendTodaysEvents_WithEventToday() {
-        String todaysDate = "2024-05-21";
-        when(dateUtil.getTodaysDate()).thenReturn(todaysDate);
-        when(nationwideArenaService.getUpcomingEvent()).thenReturn(nationwideEvent);
-        when(nationwideEvent.getDate()).thenReturn(todaysDate);
-        when(nationwideEvent.message()).thenReturn("does not matter");
-        when(twilioService.sendTwilioText(anyString(), anyString(), anyString())).thenReturn("Event today!");
+        when(dateUtil.getTodaysDate()).thenReturn("2024-07-04");
 
-        alertService.sendTodaysEvents();
+        String response = alertService.sendTodaysEvents();
 
-        verify(nationwideEvent).message();
-        verify(twilioService).sendTwilioText(anyString(), anyString(), anyString());
+        verify(twilioService).sendTwilioText(anyString(), anyString(), eq("Events today!"));
+        assertEquals("Message sent", response);
+
     }
     @Test
     void testSendTodaysEvents_NoEventToday() {
-        String todaysDate = "2024-05-21";
-        String eventDate = "2024-05-22";
-        when(dateUtil.getTodaysDate()).thenReturn(todaysDate);
-        when(nationwideArenaService.getUpcomingEvent()).thenReturn(nationwideEvent);
-        when(nationwideEvent.getDate()).thenReturn(eventDate);
-        when(twilioService.sendTwilioText(anyString(), anyString(), anyString())).thenReturn("No Events!");
+        when(dateUtil.getTodaysDate()).thenReturn("2024-05-05");
 
-        alertService.sendTodaysEvents();
+        String response = alertService.sendTodaysEvents();
 
-        verify(nationwideEvent, times(0)).message();
-        verify(twilioService).sendTwilioText(anyString(), anyString(), anyString());
+        verify(twilioService).sendTwilioText(anyString(), anyString(), eq("No Events today!"));
+        assertEquals("Message sent", response);
     }
 
     @Test
     void testSendYesterdaysEvents_NoEventToday() {
-        String todaysDate = "2024-05-21";
-        String eventDate = "2024-05-20";
-        when(dateUtil.getTodaysDate()).thenReturn(todaysDate);
-        when(nationwideArenaService.getUpcomingEvent()).thenReturn(nationwideEvent);
-        when(nationwideEvent.getDate()).thenReturn(eventDate);
-        when(twilioService.sendTwilioText(anyString(), anyString(), anyString())).thenReturn("No Events!");
+        when(dateUtil.getTodaysDate()).thenReturn("2024-07-05");
 
-        alertService.sendTodaysEvents();
+        String response = alertService.sendTodaysEvents();
 
-        verify(nationwideEvent, times(0)).message();
-        verify(twilioService).sendTwilioText(anyString(), anyString(), anyString());
+        verify(twilioService).sendTwilioText(anyString(), anyString(), eq("No Events today!"));
+        assertEquals("Message sent", response);
+    }
+
+    @Test
+    void testSendNextYearEvents_NoEventToday() {
+        when(dateUtil.getTodaysDate()).thenReturn("2025-07-04");
+
+        String response = alertService.sendTodaysEvents();
+
+        verify(twilioService).sendTwilioText(anyString(), anyString(), eq("No Events today!"));
+        assertEquals("Message sent", response);
     }
 }
