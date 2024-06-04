@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ScheduleApplicationTask {
     String nationwideUrl = "https://www.nationwidearena.com/events";
     TwilioService twilioService = new TwilioService(new TwilioMessageSender());
-    NationwideEventServiceImpl eventServiceImpl = new NationwideEventServiceImpl(nationwideUrl, new JsoupServiceImpl(), new DateUtil());
+    NationwideEventServiceImpl eventServiceImpl = new NationwideEventServiceImpl(nationwideUrl, new JsoupServiceImpl(), new DateUtil(), "Nationwide Arena");
     DateUtil dateUtil = new DateUtil();
     AlertService alertService = new AlertService(dateUtil, eventServiceImpl, twilioService);
 

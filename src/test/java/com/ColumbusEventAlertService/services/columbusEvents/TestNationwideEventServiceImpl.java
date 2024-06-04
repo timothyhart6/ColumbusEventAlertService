@@ -27,7 +27,7 @@ public class TestNationwideEventServiceImpl {
 
     @BeforeEach
     public void setUp() {
-         eventServiceImpl = new NationwideEventServiceImpl(url, jsoupService, dateUtil);
+         eventServiceImpl = new NationwideEventServiceImpl(url, jsoupService, dateUtil, "Nationwide Arena");
     }
 
     @Test
@@ -43,7 +43,7 @@ public class TestNationwideEventServiceImpl {
 
         Event event = eventServiceImpl.getUpcomingEvent();
 
-        assertEquals("HockeyBall", event.getName());
+        assertEquals("HockeyBall", event.getEventName());
         assertEquals("01-1-2024", event.getDate());
         assertEquals("7:00 PM", event.getTime());
     }
@@ -60,7 +60,7 @@ public class TestNationwideEventServiceImpl {
     public void testGetUpcomingEvent_ioException() throws Exception {
         when(jsoupService.connect(anyString())).thenReturn(connection);
         when(jsoupService.getDocument(connection.userAgent(anyString())).select(anyString()).get(anyInt()).getElementsByClass(anyString())).thenThrow(IllegalArgumentException.class);
-        NationwideEventServiceImpl eventServiceImpl = new NationwideEventServiceImpl(url, jsoupService, dateUtil);
+        NationwideEventServiceImpl eventServiceImpl = new NationwideEventServiceImpl(url, jsoupService, dateUtil, "Nationwide Arena");
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> eventServiceImpl.getUpcomingEvent());
 

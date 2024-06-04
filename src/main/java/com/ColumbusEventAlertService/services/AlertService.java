@@ -30,7 +30,7 @@ public class AlertService {
     }
 
     private String getTodaysMessage(ArrayList<Event> events) {
-        String message = (!events.isEmpty()) ? "Events today!" : "No Events today!";
+        String message = (events.isEmpty()) ? "No Events today!" : formatTodaysTextMessage(events);
 
         return message;
     }
@@ -56,5 +56,15 @@ public class AlertService {
         events.add(eventServiceImpl.getUpcomingEvent());
 
         return events;
+    }
+
+    public String formatTodaysTextMessage(ArrayList<Event> events) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("TODAY'S EVENTS:\n");
+                for(Event event: events) {
+                    stringBuilder.append(" " + event.getLocationName()+ ":\n" +
+                           "  " + event.getEventName() + " at " + event.getTime() + "\n");
+                }
+        return stringBuilder.toString();
     }
 }

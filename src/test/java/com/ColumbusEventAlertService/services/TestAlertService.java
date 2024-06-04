@@ -28,6 +28,9 @@ public class TestAlertService {
     void setUp() {
         Event event = new Event();
         event.setDate("2024-07-04");
+        event.setLocationName("Home");
+        event.setEventName("TV");
+        event.setTime("7:00PM");
         when(eventServiceImpl.getUpcomingEvent()).thenReturn(event);
         when(twilioService.sendTwilioText(anyString(), anyString(), anyString())).thenReturn("Message sent");
     }
@@ -36,8 +39,9 @@ public class TestAlertService {
         when(dateUtil.getTodaysDate()).thenReturn("2024-07-04");
 
         String response = alertService.sendTodaysEvents();
+        String expected = "TODAY'S EVENTS:\n Home:\n  TV at 7:00PM\n";
 
-        verify(twilioService).sendTwilioText(anyString(), anyString(), eq("Events today!"));
+        verify(twilioService).sendTwilioText(anyString(), anyString(), eq(expected));
         assertEquals("Message sent", response);
 
     }

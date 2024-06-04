@@ -10,16 +10,19 @@ public class EventServiceImpl implements EventService{
     private final String url;
     private final JsoupService jsoupService;
     private final DateUtil dateUtil;
+    private final String locationName;
 
-    public EventServiceImpl(String url, JsoupService jsoupService, DateUtil dateUtil) {
+    public EventServiceImpl(String url, JsoupService jsoupService, DateUtil dateUtil, String locationName) {
         this.url = url;
         this.jsoupService = jsoupService;
         this.dateUtil = dateUtil;
+        this.locationName = locationName;
     }
 
     @Override
     public Event getUpcomingEvent() throws IllegalArgumentException {
         Event event = new Event();
+        event.setLocationName(locationName);
         try {
             Document doc = jsoupService.getDocument(jsoupService.connect(url)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36"));

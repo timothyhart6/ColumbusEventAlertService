@@ -7,8 +7,8 @@ import org.jsoup.select.Elements;
 
 public class NationwideEventServiceImpl extends EventServiceImpl {
 
-    public NationwideEventServiceImpl(String url, JsoupService jsoupService, DateUtil dateUtil) {
-        super(url, jsoupService, dateUtil);
+    public NationwideEventServiceImpl(String url, JsoupService jsoupService, DateUtil dateUtil, String locationName) {
+        super(url, jsoupService, dateUtil, locationName);
     }
 
     @Override
@@ -24,7 +24,7 @@ public class NationwideEventServiceImpl extends EventServiceImpl {
        String monthNumber = dateUtil.convertMonthNameToNumber(monthName);
         String formattedDate = monthNumber + "-" + day + "-" + year;
 
-        event.setName(eventName);
+        event.setEventName(eventName);
         event.setDate(formattedDate);
         event.setTime(time);
     }

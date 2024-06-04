@@ -6,7 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Event {
-    private String name = "";
+    private String locationName = "";
+    private String eventName = "";
     private String date = "";
     private String time = "";
 
