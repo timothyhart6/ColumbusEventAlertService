@@ -1,7 +1,7 @@
 package com.ColumbusEventAlertService.services;
 
 import com.ColumbusEventAlertService.models.Event;
-import com.ColumbusEventAlertService.services.columbusEvents.NationwideArenaService;
+import com.ColumbusEventAlertService.services.columbusEvents.EventServiceImpl;
 import com.ColumbusEventAlertService.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -10,13 +10,13 @@ import java.util.ArrayList;
 @Slf4j
 public class AlertService {
     private DateUtil dateUtil;
-    private NationwideArenaService nationwideArenaService;
+    private EventServiceImpl eventServiceImpl;
     private TwilioService twilioService;
 
 
-    public AlertService(DateUtil dateUtil, NationwideArenaService nationwideArenaService, TwilioService twilioService) {
+    public AlertService(DateUtil dateUtil, EventServiceImpl eventServiceImpl, TwilioService twilioService) {
         this.dateUtil = dateUtil;
-        this.nationwideArenaService = nationwideArenaService;
+        this.eventServiceImpl = eventServiceImpl;
         this.twilioService = twilioService;
     }
 
@@ -53,7 +53,7 @@ public class AlertService {
 
         ArrayList<Event> events = new ArrayList<>();
 
-        events.add(nationwideArenaService.getUpcomingEvent());
+        events.add(eventServiceImpl.getUpcomingEvent());
 
         return events;
     }

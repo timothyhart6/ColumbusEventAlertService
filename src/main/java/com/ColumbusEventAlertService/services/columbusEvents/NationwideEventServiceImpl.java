@@ -1,37 +1,18 @@
 package com.ColumbusEventAlertService.services.columbusEvents;
 
-import com.ColumbusEventAlertService.models.NationwideEvent;
+import com.ColumbusEventAlertService.models.Event;
 import com.ColumbusEventAlertService.utils.DateUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import java.io.IOException;
 
-public class NationwideArenaService {
-    private final String url;
-    private final JsoupService jsoupService;
-    private final DateUtil dateUtil;
+public class NationwideEventServiceImpl extends EventServiceImpl {
 
-    public NationwideArenaService(String url, JsoupService jsoupService, DateUtil dateUtil) {
-        this.url = url;
-        this.jsoupService = jsoupService;
-        this.dateUtil = dateUtil;
+    public NationwideEventServiceImpl(String url, JsoupService jsoupService, DateUtil dateUtil) {
+        super(url, jsoupService, dateUtil);
     }
 
-    public NationwideEvent getUpcomingEvent() throws IllegalArgumentException {
-        NationwideEvent event = new NationwideEvent();
-        try {
-            Document doc = jsoupService.getDocument(jsoupService.connect(url)
-                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36"));
-
-            parseEventDetails(doc, event);
-
-        } catch (IllegalArgumentException | IOException e) {
-            throw new IllegalArgumentException("Invalid URL: " + url);
-        }
-        return event;
-    }
-
-    private void parseEventDetails(Document doc, NationwideEvent event) {
+    @Override
+   public void parseEventDetails(Document doc, Event event, DateUtil dateUtil) {
         Elements eventInfo = doc.select("#list").get(0).getElementsByClass("info clearfix");
         String monthName = eventInfo.get(0).getElementsByClass("m-date__month").get(0).childNode(0).toString().trim();
         String day = eventInfo.get(0).getElementsByClass("m-date__day").get(0).childNode(0).toString().replaceAll("\\D", "");
@@ -40,7 +21,7 @@ public class NationwideArenaService {
         String time = eventInfo.get(3).getElementsByClass("start").get(0).childNode(0).toString().trim();
         String eventName = eventInfo.get(0).getElementsByClass("title title-withTagline ").get(0).childNode(1).childNode(0).toString().trim();
 
-        String monthNumber = dateUtil.convertMonthNameToNumber(monthName);
+       String monthNumber = dateUtil.convertMonthNameToNumber(monthName);
         String formattedDate = monthNumber + "-" + day + "-" + year;
 
         event.setName(eventName);

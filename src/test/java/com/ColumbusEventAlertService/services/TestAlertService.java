@@ -1,7 +1,7 @@
 package com.ColumbusEventAlertService.services;
 
-import com.ColumbusEventAlertService.services.columbusEvents.NationwideArenaService;
-import com.ColumbusEventAlertService.models.NationwideEvent;
+import com.ColumbusEventAlertService.models.Event;
+import com.ColumbusEventAlertService.services.columbusEvents.EventServiceImpl;
 import com.ColumbusEventAlertService.utils.DateUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +18,7 @@ public class TestAlertService {
     @Mock
     private DateUtil dateUtil;
     @Mock
-    private NationwideArenaService nationwideArenaService;
+    private EventServiceImpl eventServiceImpl;
     @Mock
     private TwilioService twilioService;
     @InjectMocks
@@ -26,9 +26,9 @@ public class TestAlertService {
 
     @BeforeEach
     void setUp() {
-        NationwideEvent event = new NationwideEvent();
+        Event event = new Event();
         event.setDate("2024-07-04");
-        when(nationwideArenaService.getUpcomingEvent()).thenReturn(event);
+        when(eventServiceImpl.getUpcomingEvent()).thenReturn(event);
         when(twilioService.sendTwilioText(anyString(), anyString(), anyString())).thenReturn("Message sent");
     }
     @Test
