@@ -3,7 +3,11 @@ package com.ColumbusEventAlertService.services.columbusEvents;
 import com.ColumbusEventAlertService.models.Event;
 import com.ColumbusEventAlertService.utils.DateUtil;
 import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
+import org.jsoup.nodes.Element;
+
+import java.time.Year;
+import java.util.Date;
+
 
 public class KembaLiveEventServiceImpl extends EventServiceImpl{
     public KembaLiveEventServiceImpl(String url, JsoupService jsoupService, DateUtil dateUtil, String locationName) {
@@ -12,19 +16,27 @@ public class KembaLiveEventServiceImpl extends EventServiceImpl{
 
     @Override
     public void parseEventDetails(Document doc, Event event, DateUtil dateUtil) {
-/*        Elements eventInfo = doc.select("#list").get(0).getElementsByClass("info clearfix");
-        String monthName = eventInfo.get(0).getElementsByClass("m-date__month").get(0).childNode(0).toString().trim();
-        String day = eventInfo.get(0).getElementsByClass("m-date__day").get(0).childNode(0).toString().replaceAll("\\D", "");
-        String year = eventInfo.get(0).getElementsByClass("m-date__year").get(0).childNode(0).toString().replaceAll("\\D", "");
-//        String weekday = eventInfo.get(0).getElementsByClass("m-date__weekday").get(0).childNode(0).toString().replace("|", "").trim();
-        String time = eventInfo.get(3).getElementsByClass("start").get(0).childNode(0).toString().trim();
-        String eventName = eventInfo.get(0).getElementsByClass("title title-withTagline ").get(0).childNode(1).childNode(0).toString().trim();
+        Element eventInfo = doc.getElementsByClass("events-list").get(0).getElementsByClass("inner").get(0).getElementsByClass("info").get(0);
 
+        String eventName = eventInfo.childNode(1).childNode(0).toString();
+        String date = eventInfo.getElementsByClass("date").get(0).childNode(3).childNode(1).childNode(0).toString();
+        String time = eventInfo.getElementsByClass("doors-time").get(1).childNode(0).toString();
+        String[] monthAndDay = date.split(" ");
+        String day = formatDay(monthAndDay[1]);
+        String monthName = monthAndDay[0];
         String monthNumber = dateUtil.convertMonthNameToNumber(monthName);
+        String year = Year.now().toString();
         String formattedDate = monthNumber + "-" + day + "-" + year;
 
         event.setEventName(eventName);
         event.setDate(formattedDate);
-        event.setTime(time);*/
+        event.setTime(time);
+    }
+
+    private String formatDay(String day) {
+        if(day.length() == 1) {
+            day = "0" + day;
+        }
+        return day;
     }
 }
