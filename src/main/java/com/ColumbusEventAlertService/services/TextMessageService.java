@@ -1,28 +1,24 @@
 package com.ColumbusEventAlertService.services;
 
 import com.ColumbusEventAlertService.models.Event;
-import com.ColumbusEventAlertService.services.columbusEvents.EventServiceImpl;
-import com.ColumbusEventAlertService.utils.DateUtil;
+import com.ColumbusEventAlertService.utils.EventsUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 
 @Slf4j
-public class AlertService {
-    private DateUtil dateUtil;
-    private EventServiceImpl eventServiceImpl;
+public class TextMessageService {
     private TwilioService twilioService;
+    private EventsUtil eventsUtil;
 
-
-    public AlertService(DateUtil dateUtil, EventServiceImpl eventServiceImpl, TwilioService twilioService) {
-        this.dateUtil = dateUtil;
-        this.eventServiceImpl = eventServiceImpl;
+    public TextMessageService(TwilioService twilioService, EventsUtil eventsUtil) {
         this.twilioService = twilioService;
+        this.eventsUtil = eventsUtil;
     }
 
-
     public String sendTodaysEvents() {
-        ArrayList<Event> events = getTodaysEvents();
+        ArrayList<Event> events = eventsUtil.getTodaysEvents();
+
         String textMessage = getTodaysMessage(events);
         String response = twilioService.sendTwilioText(System.getenv("TESTING_PHONE_NUMBER"),System.getenv("TWILIO_PHONE_NUMBER"), textMessage);
 
@@ -33,29 +29,6 @@ public class AlertService {
         String message = (events.isEmpty()) ? "No Events today!" : formatTodaysTextMessage(events);
 
         return message;
-    }
-
-    private ArrayList<Event> getTodaysEvents() {
-        ArrayList<Event> allEvents = getAllEvents();
-        ArrayList<Event> todaysEvents = new ArrayList<>();
-        String todaysDate = dateUtil.getTodaysDate();
-        if(!allEvents.isEmpty()) {
-            for (Event event: allEvents) {
-                if (todaysDate.equals(event.getDate())) {
-                    todaysEvents.add(event);
-                }
-            }
-        }
-        return todaysEvents;
-    }
-
-    private ArrayList<Event> getAllEvents() {
-
-        ArrayList<Event> events = new ArrayList<>();
-
-        events.add(eventServiceImpl.getUpcomingEvent());
-
-        return events;
     }
 
     public String formatTodaysTextMessage(ArrayList<Event> events) {
