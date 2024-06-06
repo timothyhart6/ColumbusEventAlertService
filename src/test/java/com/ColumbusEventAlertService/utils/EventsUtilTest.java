@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
-public class TestEventsUtil {
+public class EventsUtilTest {
 
     @Mock
     private JsoupServiceImpl jsoupService;

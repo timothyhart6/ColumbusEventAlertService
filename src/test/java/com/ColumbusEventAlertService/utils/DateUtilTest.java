@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.time.LocalDate;
 import java.time.Year;
 
-public class TestDateUtil {
+public class DateUtilTest {
 
     @Test
     public void testDateFormat() {

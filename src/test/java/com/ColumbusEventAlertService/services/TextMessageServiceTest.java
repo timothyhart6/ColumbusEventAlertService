@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class TestTextMessageService {
+public class TextMessageServiceTest {
     @Mock
     private TwilioService twilioService;
     @Mock
