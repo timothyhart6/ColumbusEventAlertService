@@ -1,6 +1,6 @@
 package com.ColumbusEventAlertService.services.columbusEvents;
 
-import com.ColumbusEventAlertService.models.NationwideEvent;
+import com.ColumbusEventAlertService.models.Event;
 import com.ColumbusEventAlertService.utils.DateUtil;
 import org.jsoup.Connection;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,20 +14,20 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class TestNationwideArenaService {
+public class NationwideEventServiceImplTest {
     @Mock
     private DateUtil dateUtil;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private JsoupService jsoupService;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private Connection connection;
-    @InjectMocks
-    private NationwideArenaService nationwideArenaService;
     private final String url = "https://www.nationwidearena.com/events";
+    @InjectMocks
+    private EventServiceImpl eventServiceImpl;
 
     @BeforeEach
     public void setUp() {
-        nationwideArenaService = new NationwideArenaService(url, jsoupService, dateUtil);
+         eventServiceImpl = new NationwideEventServiceImpl(url, jsoupService, dateUtil, "Nationwide Arena");
     }
 
     @Test
@@ -41,20 +41,18 @@ public class TestNationwideArenaService {
         when(jsoupService.getDocument(connection.userAgent(anyString())).select(anyString()).get(anyInt()).getElementsByClass(anyString()).get(3).getElementsByClass("start").get(0).childNode(0).toString().trim()).thenReturn("7:00 PM");
         when(jsoupService.getDocument(connection.userAgent(anyString())).select(anyString()).get(anyInt()).getElementsByClass(anyString()).get(0).getElementsByClass("title title-withTagline ").get(0).childNode(1).childNode(0).toString().trim()).thenReturn("HockeyBall");
 
-        NationwideEvent event = nationwideArenaService.getUpcomingEvent();
+        Event event = eventServiceImpl.getUpcomingEvent();
 
-        assertEquals("HockeyBall", event.getName());
+        assertEquals("HockeyBall", event.getEventName());
         assertEquals("01-1-2024", event.getDate());
         assertEquals("7:00 PM", event.getTime());
     }
 
     @Test
     public void testGetUpcomingEvent_invalidUrl() throws Exception{
-        // Arrange
         when(jsoupService.connect(anyString())).thenThrow(IllegalArgumentException.class);
 
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> nationwideArenaService.getUpcomingEvent());
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> eventServiceImpl.getUpcomingEvent());
         assertEquals("Invalid URL: " + url, exception.getMessage());
     }
 
@@ -62,9 +60,9 @@ public class TestNationwideArenaService {
     public void testGetUpcomingEvent_ioException() throws Exception {
         when(jsoupService.connect(anyString())).thenReturn(connection);
         when(jsoupService.getDocument(connection.userAgent(anyString())).select(anyString()).get(anyInt()).getElementsByClass(anyString())).thenThrow(IllegalArgumentException.class);
-        NationwideArenaService nationwideArenaService = new NationwideArenaService(url, jsoupService, dateUtil);
+        NationwideEventServiceImpl eventServiceImpl = new NationwideEventServiceImpl(url, jsoupService, dateUtil, "Nationwide Arena");
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> nationwideArenaService.getUpcomingEvent());
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> eventServiceImpl.getUpcomingEvent());
 
         assertEquals("Invalid URL: " + url, exception.getMessage());
     }

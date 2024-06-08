@@ -5,7 +5,9 @@ import org.junit.Test;
 import java.time.LocalDate;
 import java.time.Year;
 
-public class TestDateUtil {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class DateUtilTest {
 
     @Test
     public void testDateFormat() {
@@ -30,5 +32,19 @@ public class TestDateUtil {
         String actual = dateFormatter.formatGoogleDate("Tue, Okt 4");
 
         Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void singleDigitDayIsFormatted() {
+        DateUtil dateUtil = new DateUtil();
+        String actual = dateUtil.formatDay("6");
+        assertEquals("06", actual);
+    }
+
+    @Test
+    public void twoDigitDayIsFormatted() {
+        DateUtil dateUtil = new DateUtil();
+        String actual = dateUtil.formatDay("08");
+        assertEquals("08", actual);
     }
 }
