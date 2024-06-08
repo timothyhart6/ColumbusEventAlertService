@@ -22,7 +22,7 @@ public class KembaLiveEventServiceImpl extends EventServiceImpl{
         String date = eventInfo.getElementsByClass("date").get(0).childNode(3).childNode(1).childNode(0).toString();
         String time = eventInfo.getElementsByClass("doors-time").get(1).childNode(0).toString();
         String[] monthAndDay = date.split(" ");
-        String day = formatDay(monthAndDay[1]);
+        String day = dateUtil.formatDay(monthAndDay[1]);
         String monthName = monthAndDay[0];
         String monthNumber = dateUtil.convertMonthNameToNumber(monthName);
         String year = Year.now().toString();
@@ -31,12 +31,5 @@ public class KembaLiveEventServiceImpl extends EventServiceImpl{
         event.setEventName(eventName);
         event.setDate(formattedDate);
         event.setTime(time);
-    }
-
-    private String formatDay(String day) {
-        if(day.length() == 1) {
-            day = "0" + day;
-        }
-        return day;
     }
 }

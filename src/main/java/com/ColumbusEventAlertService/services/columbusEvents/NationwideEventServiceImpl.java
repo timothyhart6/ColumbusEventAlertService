@@ -20,8 +20,8 @@ public class NationwideEventServiceImpl extends EventServiceImpl {
 //        String weekday = eventInfo.get(0).getElementsByClass("m-date__weekday").get(0).childNode(0).toString().replace("|", "").trim();
         String time = eventInfo.get(3).getElementsByClass("start").get(0).childNode(0).toString().trim();
         String eventName = eventInfo.get(0).getElementsByClass("title title-withTagline ").get(0).childNode(1).childNode(0).toString().trim();
-
-       String monthNumber = dateUtil.convertMonthNameToNumber(monthName);
+        day = dateUtil.formatDay(day);
+        String monthNumber = dateUtil.convertMonthNameToNumber(monthName);
         String formattedDate = monthNumber + "-" + day + "-" + year;
 
         event.setEventName(eventName);

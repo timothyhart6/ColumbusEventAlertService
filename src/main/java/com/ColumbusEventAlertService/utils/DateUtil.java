@@ -59,4 +59,8 @@ public class DateUtil {
         }
         return "Could not map month: " + monthName;
     }
+
+    public String formatDay(String day) {
+        return (day.length() == 1) ? "0" + day : day;
+    }
 }
