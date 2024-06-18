@@ -37,4 +37,29 @@ public class KembaLiveEventServiceImpl extends EventServiceImpl{
             log.info("Issue mapping Kemba Event");
         }
     }
+
+    @Override
+    protected String getEventName(Document doc) {
+        return null;
+    }
+
+    @Override
+    protected String getTime(Document doc) {
+        return null;
+    }
+
+    @Override
+    protected String getDateYear(Document doc) {
+        return null;
+    }
+
+    @Override
+    protected String getDateMonth(Document doc, DateUtil dateUtil) {
+        return null;
+    }
+
+    @Override
+    protected String getDateDay(Document doc, DateUtil dateUtil) {
+        return null;
+    }
 }
