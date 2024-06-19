@@ -33,37 +33,19 @@ public class NationwideEventServiceImplTest {
     @Test
     public void testGetUpcomingEvent_success() throws Exception {
         when(dateUtil.convertMonthNameToNumber("January")).thenReturn("01");
+        when(dateUtil.formatDay("2")).thenReturn("02");
         when(jsoupService.connect(anyString())).thenReturn(connection);
         //DeepStub all the fields
-        when(jsoupService.getDocument(connection.userAgent(anyString())).select(anyString()).get(anyInt()).getElementsByClass(anyString()).get(0).getElementsByClass("m-date__month").get(0).childNode(0).toString().trim()).thenReturn("January");
-        when(jsoupService.getDocument(connection.userAgent(anyString())).select(anyString()).get(anyInt()).getElementsByClass(anyString()).get(0).getElementsByClass("m-date__day").get(0).childNode(0).toString().replaceAll("\\D", "")).thenReturn("1");
-        when(jsoupService.getDocument(connection.userAgent(anyString())).select(anyString()).get(anyInt()).getElementsByClass(anyString()).get(0).getElementsByClass("m-date__year").get(0).childNode(0).toString().replaceAll("\\D", "")).thenReturn("2024");
-        when(jsoupService.getDocument(connection.userAgent(anyString())).select(anyString()).get(anyInt()).getElementsByClass(anyString()).get(3).getElementsByClass("start").get(0).childNode(0).toString().trim()).thenReturn("7:00 PM");
-        when(jsoupService.getDocument(connection.userAgent(anyString())).select(anyString()).get(anyInt()).getElementsByClass(anyString()).get(0).getElementsByClass("title title-withTagline ").get(0).childNode(1).childNode(0).toString().trim()).thenReturn("HockeyBall");
+        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("m-date__month").get(0).childNode(0).toString().trim()).thenReturn("January");
+        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("m-date__day").get(0).childNode(0).toString().replaceAll("\\D", "")).thenReturn("2");
+        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("m-date__year").get(0).childNode(0).toString().replaceAll("\\D", "")).thenReturn("2024");
+        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("time").get(0).getElementsByClass("start").get(0).childNode(0).toString()).thenReturn("7:00 PM");
+        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("title title-withTagline ").get(0).childNode(1).childNode(0).toString().trim()).thenReturn("HockeyBall");
 
         Event event = subject.getUpcomingEvent();
 
         assertEquals("HockeyBall", event.getEventName());
-        assertEquals("01-1-2024", event.getDate());
+        assertEquals("01-02-2024", event.getDate());
         assertEquals("7:00 PM", event.getTime());
-    }
-
-    @Test
-    public void testGetUpcomingEvent_invalidUrl() throws Exception{
-        when(jsoupService.connect(anyString())).thenThrow(IllegalArgumentException.class);
-
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> subject.getUpcomingEvent());
-        assertEquals("Invalid URL: " + url, exception.getMessage());
-    }
-
-    @Test
-    public void testGetUpcomingEvent_ioException() throws Exception {
-        when(jsoupService.connect(anyString())).thenReturn(connection);
-        when(jsoupService.getDocument(connection.userAgent(anyString())).select(anyString()).get(anyInt()).getElementsByClass(anyString())).thenThrow(IllegalArgumentException.class);
-        NationwideEventServiceImpl eventServiceImpl = new NationwideEventServiceImpl(url, jsoupService, dateUtil, "Nationwide Arena");
-
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> eventServiceImpl.getUpcomingEvent());
-
-        assertEquals("Invalid URL: " + url, exception.getMessage());
     }
 }

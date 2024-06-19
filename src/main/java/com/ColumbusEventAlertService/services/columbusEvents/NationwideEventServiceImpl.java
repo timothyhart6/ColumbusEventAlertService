@@ -14,7 +14,7 @@ public class NationwideEventServiceImpl extends EventServiceImpl {
 
     @Override
     protected String getEventName(Document doc) {
-       return doc.getElementsByClass("title title-withTagline ").get(0).childNode(1).childNode(0).toString();
+       return doc.getElementsByClass("title title-withTagline ").get(0).childNode(1).childNode(0).toString().trim();
     }
 
     @Override

@@ -21,7 +21,6 @@ public abstract class EventServiceImpl implements EventService{
         this.locationName = locationName;
     }
 
-    @Override
     public Event getUpcomingEvent() throws IllegalArgumentException {
         Event event = new Event();
         event.setLocationName(locationName);
