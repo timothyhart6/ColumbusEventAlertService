@@ -36,7 +36,7 @@ public class EventsUtilTest {
     public void testGetAllEvents() {
         ArrayList<Event> events = EventsUtilSpy.getAllEvents();
 
-        assertEquals(2, events.size());
+        assertEquals(3, events.size());
         assertThat(events.get(0), instanceOf(Event.class));
         assertThat(events.get(1), instanceOf(Event.class));
     }
