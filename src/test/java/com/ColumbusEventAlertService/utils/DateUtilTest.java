@@ -9,6 +9,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DateUtilTest {
 
+    DateUtil subject = new DateUtil();
+
     @Test
     public void testDateFormat() {
         LocalDate date = LocalDate.of(2020, 1, 12);
@@ -17,34 +19,30 @@ public class DateUtilTest {
     }
 
     @Test
-    public void googleDateFormatsCorrecty() {
-        DateUtil dateUtil = new DateUtil();
+    public void googleDateFormatsCorrectly() {
         String expected = "03-05-" + Year.now();
-        String actual = dateUtil.formatGoogleDate("Tue, Mar 5");
+        String actual = subject.formatGoogleDate("Tue, Mar 5");
 
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void googleDateFormatterHasInvalidDate() {
-        DateUtil dateFormatter = new DateUtil();
         String expected = "Could not map month: Okt-04-2024";
-        String actual = dateFormatter.formatGoogleDate("Tue, Okt 4");
+        String actual = subject.formatGoogleDate("Tue, Okt 4");
 
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void singleDigitDayIsFormatted() {
-        DateUtil dateUtil = new DateUtil();
-        String actual = dateUtil.formatDay("6");
+        String actual = subject.formatDay("6");
         assertEquals("06", actual);
     }
 
     @Test
     public void twoDigitDayIsFormatted() {
-        DateUtil dateUtil = new DateUtil();
-        String actual = dateUtil.formatDay("08");
+        String actual = subject.formatDay("08");
         assertEquals("08", actual);
     }
 }
