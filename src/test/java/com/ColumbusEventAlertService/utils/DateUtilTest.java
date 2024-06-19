@@ -14,7 +14,7 @@ public class DateUtilTest {
     @Test
     public void testDateFormat() {
         LocalDate date = LocalDate.of(2020, 1, 12);
-        String formattedDate = new DateUtil().formatDate(date);
+        String formattedDate = subject.formatDate(date);
         Assert.assertEquals("01-12-2020", formattedDate);
     }
 
