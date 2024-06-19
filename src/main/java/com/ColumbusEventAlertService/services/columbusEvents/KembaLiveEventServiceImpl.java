@@ -26,7 +26,7 @@ public class KembaLiveEventServiceImpl extends EventServiceImpl{
     protected String getDateMonth(Document doc, DateUtil dateUtil) {
        String date = doc.getElementsByClass("date").get(0).childNode(3).childNode(1).childNode(0).toString();
        String[] monthAndDay = date.split(" ");
-       String monthName = monthAndDay[1];
+       String monthName = monthAndDay[0];
        return dateUtil.convertMonthNameToNumber(monthName);
     }
 
@@ -34,11 +34,11 @@ public class KembaLiveEventServiceImpl extends EventServiceImpl{
     protected String getDateDay(Document doc, DateUtil dateUtil) {
         String date = doc.getElementsByClass("date").get(0).childNode(3).childNode(1).childNode(0).toString();
         String[] monthAndDay = date.split(" ");
-        return dateUtil.formatDay(monthAndDay[0]);
+        return dateUtil.formatDay(monthAndDay[1]);
     }
 
     @Override
     protected String getTime(Document doc) {
-        return doc.getElementsByClass("doors-time").get(0).childNode(0).toString();
+        return doc.getElementsByClass("doors-time").get(1).childNode(0).toString();
     }
 }

@@ -40,7 +40,7 @@ public class KembaLiveEventServiceImplTest {
         when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("date").get(0).childNode(3).childNode(1).childNode(0).toString()).thenReturn("January 02");
         when(dateUtil.convertMonthNameToNumber(anyString())).thenReturn("01");
         when(dateUtil.formatDay(anyString())).thenReturn("02");
-        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("doors-time").get(0).childNode(0).toString()).thenReturn("7:00 PM");
+        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("doors-time").get(1).childNode(0).toString()).thenReturn("7:00 PM");
 
         Event event = subject.getUpcomingEvent();
 
