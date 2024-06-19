@@ -7,8 +7,8 @@ import org.jsoup.nodes.Document;
 import java.time.Year;
 
 @Slf4j
-public class KembaLiveEventServiceImpl extends EventServiceImpl{
-    public KembaLiveEventServiceImpl(String url, JsoupService jsoupService, DateUtil dateUtil, String locationName) {
+public class ArBarEventServiceImpl extends EventServiceImpl{
+    public ArBarEventServiceImpl(String url, JsoupService jsoupService, DateUtil dateUtil, String locationName) {
         super(url, jsoupService, dateUtil, locationName);
     }
 
