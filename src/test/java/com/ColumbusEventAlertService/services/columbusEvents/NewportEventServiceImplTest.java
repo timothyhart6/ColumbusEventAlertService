@@ -16,27 +16,26 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class ArBarEventServiceImplTest {
+public class NewportEventServiceImplTest {
     @Mock
     private DateUtil dateUtil;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private JsoupService jsoupService;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private Connection connection;
-
     @InjectMocks
-    private ArBarEventServiceImpl subject;
+    private NewportEventServiceImpl subject;
 
     @BeforeEach
     public void setUp() {
-        subject = new ArBarEventServiceImpl("Test", jsoupService, dateUtil, "A&R Bar");
+        subject = new NewportEventServiceImpl("Test", jsoupService, dateUtil, "Newport Music Hall");
     }
 
     @Test
     public void testGetUpcomingEvent_success() throws Exception {
         when(jsoupService.connect(anyString())).thenReturn(connection);
         //DeepStub all the fields
-        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("info").get(0).select("h2").get(0).childNode(0).toString()).thenReturn("A&R Bar Event");
+        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("info").get(0).select("h2").get(0).childNode(0).toString()).thenReturn("Newport Event");
         when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("date").get(0).childNode(3).childNode(1).childNode(0).toString()).thenReturn("January 02");
         when(dateUtil.convertMonthNameToNumber(anyString())).thenReturn("01");
         when(dateUtil.formatDay(anyString())).thenReturn("02");
@@ -44,7 +43,7 @@ public class ArBarEventServiceImplTest {
 
         Event event = subject.getUpcomingEvent();
 
-        assertEquals("A&R Bar Event", event.getEventName());
+        assertEquals("Newport Event", event.getEventName());
         assertEquals("01-02-2024", event.getDate());
         assertEquals("7:00 PM", event.getTime());
     }
