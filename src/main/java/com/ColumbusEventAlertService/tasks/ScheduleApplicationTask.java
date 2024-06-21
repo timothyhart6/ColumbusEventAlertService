@@ -1,28 +1,22 @@
 package com.ColumbusEventAlertService.tasks;
 
-import com.ColumbusEventAlertService.columbusEvents.NationwideArenaEvents;
-import com.ColumbusEventAlertService.services.AlertService;
+import com.ColumbusEventAlertService.services.TextMessageService;
+import com.ColumbusEventAlertService.services.TwilioMessageSender;
 import com.ColumbusEventAlertService.services.TwilioService;
+import com.ColumbusEventAlertService.utils.EventsUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
-@Component
 @Slf4j
 public class ScheduleApplicationTask {
-    @Autowired
-    AlertService alertService;
+    TwilioService twilioService = new TwilioService(new TwilioMessageSender());
+    EventsUtil eventsUtil = new EventsUtil();
+    TextMessageService textMessageService = new TextMessageService(twilioService, eventsUtil);
 
-    @Autowired
-    NationwideArenaEvents nationwideArenaEvents;
+    public String sendTextAlerts() {
+        log.info("Text Message is sending...");
+        String response = textMessageService.sendTodaysEvents();
+        log.info("Text Message has been sent");
 
-    @Autowired
-    TwilioService twilioService;
-
-    @Scheduled(cron = "0 0 9 * * *")
-    public void sendTextAlerts() {
-        alertService.sendTodaysEvents(nationwideArenaEvents.getUpcomingEvent(), twilioService);
-        log.info("Text has been sent, if there was an event today");
+        return response;
     }
 }
