@@ -33,15 +33,21 @@ public abstract class EventServiceImpl implements EventService{
         } catch (IllegalArgumentException | IOException e) {
             throw new IllegalArgumentException("Invalid URL: " + url);
         }
+        log.info(
+                event.getLocationName() + "\n" +
+                event.getEventName() + "\n" +
+                event.getDate() + "\n" +
+                event.getTime() + "\n"
+        );
         return event;
     }
 
     public void parseEventDetails(Document doc, Event event, DateUtil dateUtil) {
-        String eventName = "";
-        String year = "";
-        String dateMonth = "";
-        String dateDay = "";
-        String time = "";
+        String eventName;
+        String year;
+        String dateMonth;
+        String dateDay;
+        String time;
 
         try {
             eventName = getEventName(doc);
