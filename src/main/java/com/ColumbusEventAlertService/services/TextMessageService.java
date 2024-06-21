@@ -8,8 +8,8 @@ import java.util.ArrayList;
 
 @Slf4j
 public class TextMessageService {
-    private TwilioService twilioService;
-    private EventsUtil eventsUtil;
+    private final TwilioService twilioService;
+    private final EventsUtil eventsUtil;
 
     public TextMessageService(TwilioService twilioService, EventsUtil eventsUtil) {
         this.twilioService = twilioService;
@@ -33,10 +33,10 @@ public class TextMessageService {
 
     public String formatTodaysTextMessage(ArrayList<Event> events) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("TODAY'S EVENTS:\n");
+        stringBuilder.append("TODAY'S EVENTS:\n \n");
                 for(Event event: events) {
                     stringBuilder.append(" " + event.getLocationName()+ ":\n" +
-                           "  " + event.getEventName() + " at " + event.getTime() + "\n");
+                           "  " + event.getEventName() + " at " + event.getTime() + "\n \n");
                 }
         return stringBuilder.toString();
     }
