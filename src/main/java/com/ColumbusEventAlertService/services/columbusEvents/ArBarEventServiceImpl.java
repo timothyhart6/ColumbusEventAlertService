@@ -39,6 +39,6 @@ public class ArBarEventServiceImpl extends EventServiceImpl{
 
     @Override
     protected String getTime(Document doc) {
-        return doc.getElementsByClass("doors-time").get(1).childNode(0).toString();
+        return doc.getElementsByClass("day-of-show-bar").get(0).getElementsByClass("doors-time").get(0).childNode(0).toString();
     }
 }

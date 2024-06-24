@@ -31,33 +31,21 @@ public class DateUtil {
     }
 
     public String convertMonthNameToNumber(String monthName) {
-        switch(monthName.toLowerCase()) {
-            case "jan":
-                return "01";
-            case "feb" :
-                return "02";
-            case "mar":
-                return "03";
-            case "apr":
-                return "04";
-            case "may":
-                return "05";
-            case "june":
-                return "06";
-            case "july;":
-                return "07";
-            case "aug":
-                return "08";
-            case "sep":
-                return "09";
-            case "oct":
-                return "10";
-            case "nov":
-                return "11";
-            case "dec":
-                return "12";
-        }
-        return "Could not map month: " + monthName;
+        return switch (monthName.toLowerCase()) {
+            case "jan" -> "01";
+            case "feb" -> "02";
+            case "mar" -> "03";
+            case "apr" -> "04";
+            case "may" -> "05";
+            case "june" -> "06";
+            case "july" -> "07";
+            case "aug" -> "08";
+            case "sep" -> "09";
+            case "oct" -> "10";
+            case "nov" -> "11";
+            case "dec" -> "12";
+            default -> "Could not map month: " + monthName;
+        };
     }
 
     public String formatDay(String day) {
