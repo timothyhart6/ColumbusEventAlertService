@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.util.ArrayList;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -22,7 +21,7 @@ public class EventsUtilTest {
     public void testGetAllEvents() {
         ArrayList<Event> events = EventsUtilSpy.getAllEvents();
 
-        assertEquals(4, events.size());
+        assertEquals(5, events.size());
         assertThat(events.get(0), instanceOf(Event.class));
         assertThat(events.get(1), instanceOf(Event.class));
     }

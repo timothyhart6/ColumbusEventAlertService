@@ -16,7 +16,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class ArBarEventServiceImplTest {
+public class LowerFieldEventServiceImplTest {
     @Mock
     private DateUtil dateUtil;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
@@ -25,27 +25,26 @@ public class ArBarEventServiceImplTest {
     private Connection connection;
 
     @InjectMocks
-    private ArBarEventServiceImpl subject;
+    private LowerFieldEventServiceImpl subject;
 
     @BeforeEach
     public void setUp() {
-        subject = new ArBarEventServiceImpl("Test", jsoupService, dateUtil, "A&R Bar");
+        subject = new LowerFieldEventServiceImpl("Test", jsoupService, dateUtil, "Lower.com Field");
     }
 
     @Test
     public void testGetUpcomingEvent_success() throws Exception {
         when(jsoupService.connect(anyString())).thenReturn(connection);
         //DeepStub all the fields
-        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("info").get(0).select("h2").get(0).childNode(0).toString()).thenReturn("A&R Bar Event");
-        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("date").get(0).childNode(3).childNode(1).childNode(0).toString()).thenReturn("January 02");
-        when(dateUtil.convertMonthNameToNumber(anyString())).thenReturn("01");
-        when(dateUtil.formatDay(anyString())).thenReturn("02");
-        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("day-of-show-bar").get(0).getElementsByClass("doors-time").get(0).childNode(0).toString()).thenReturn("7:00 PM");
+        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("awb-custom-text-color awb-custom-text-hover-color").get(0).childNode(0).toString().trim()).thenReturn("Lower.com Field Event");
+        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("tribe-event-date-start").get(0).childNode(0).toString().trim()).thenReturn("Jul 22");
+        when(dateUtil.convertMonthNameToNumber(anyString())).thenReturn("07");
+        when(dateUtil.formatDay(anyString())).thenReturn("22");
 
         Event event = subject.getUpcomingEvent();
 
-        assertEquals("A&R Bar Event", event.getEventName());
-        assertEquals("01-02-2024", event.getDate());
-        assertEquals("7:00 PM", event.getTime());
+        assertEquals("Lower.com Field Event", event.getEventName());
+        assertEquals("07-22-2024", event.getDate());
+        assertEquals("Time is not available", event.getTime());
     }
 }
