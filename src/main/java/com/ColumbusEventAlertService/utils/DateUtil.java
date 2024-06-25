@@ -32,18 +32,18 @@ public class DateUtil {
 
     public String convertMonthNameToNumber(String monthName) {
         return switch (monthName.toLowerCase()) {
-            case "jan" -> "01";
-            case "feb" -> "02";
-            case "mar" -> "03";
-            case "apr" -> "04";
+            case "jan", "january" -> "01";
+            case "feb", "february" -> "02";
+            case "mar", "march" -> "03";
+            case "apr", "april" -> "04";
             case "may" -> "05";
-            case "june" -> "06";
-            case "july" -> "07";
-            case "aug" -> "08";
-            case "sep" -> "09";
-            case "oct" -> "10";
-            case "nov" -> "11";
-            case "dec" -> "12";
+            case "jun", "june" -> "06";
+            case "jul", "july" -> "07";
+            case "aug", "august" -> "08";
+            case "sep", "september" -> "09";
+            case "oct", "october" -> "10";
+            case "nov", "november" -> "11";
+            case "dec", "december" -> "12";
             default -> "Could not map month: " + monthName;
         };
     }
