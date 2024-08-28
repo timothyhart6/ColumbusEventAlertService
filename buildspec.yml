@@ -1,0 +1,18 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      java: corretto17
+  pre_build:
+    commands:
+      - echo In the pre_build phase...
+  build:
+    commands:
+      - echo Build started on `date`
+      - mvn package
+  post_build:
+    commands:
+    - echo Post Build started
+artifacts:
+  files:
+    - target/demo-0.0.1-SNAPSHOT.jar
