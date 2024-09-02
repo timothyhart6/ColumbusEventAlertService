@@ -7,7 +7,7 @@ phases:
   pre_build:
     commands:
       - echo Resolving dependencies...
-      - mvn install -DskipTests
+      - sudo apt install maven -y
 
   build:
     commands:
