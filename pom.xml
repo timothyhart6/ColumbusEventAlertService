@@ -55,11 +55,6 @@
 			<version>10.1.2</version>
 			<scope>compile</scope>
 		</dependency>
-	  	<dependency>
-	    		<groupId>com.amazonaws</groupId>
-	    		<artifactId>aws-java-sdk</artifactId>
-	    		<version>1.11.1000</version>
-	  	</dependency>
 	</dependencies>
 
 	
@@ -86,30 +81,6 @@
 					</execution>
 				</executions>
 			</plugin>
-		    <plugin>
-		      <groupId>org.apache.maven.plugins</groupId>
-		      <artifactId>maven-shade-plugin</artifactId>
-		      <version>3.2.4</version>
-		      <executions>
-			<execution>
-			  <phase>package</phase>
-			  <goals>
-			    <goal>shade</goal>
-			  </goals>
-			  <configuration>
-			    <createDependencyReducedPom>true</createDependencyReducedPom>
-			    <filters>
-			      <filter>
-				<artifact>*:*</artifact>
-				<excludes>
-				  <exclude>**/*.class</exclude>
-				</excludes>
-			      </filter>
-			    </filters>
-			  </configuration>
-			</execution>
-		      </executions>
-		    </plugin>
 		</plugins>
 	</build>
 </project>
