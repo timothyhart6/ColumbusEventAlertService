@@ -1,21 +1,32 @@
 version: 0.2
-phases:
+
 phases:
   install:
-    commands:
-      - echo In the install phase...
     runtime-versions:
       java: corretto17
+    commands:
+      - echo Installing Maven...
+      - mvn --version
+
   pre_build:
     commands:
-      - echo In the pre_build phase...
+      - echo Resolving dependencies...
+      - mvn install -DskipTests
+
   build:
     commands:
-      - echo Build started on `date`
-      # - mvn package
+      - echo Building the project...
+      - mvn clean package
+
   post_build:
     commands:
-    - echo Post Build started
+      - echo Running post-build actions...
+
 artifacts:
   files:
-    - target/demo-0.0.1-SNAPSHOT.jar
+    - target/*.jar
+  discard-paths: yes
+
+cache:
+  paths:
+    - ~/.m2/**/*
