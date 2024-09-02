@@ -6,7 +6,7 @@ phases:
       java: openjdk8
     commands:
       - echo Installing Maven...
-      - mvn --version
+      # - mvn --version
 
   pre_build:
     commands:
