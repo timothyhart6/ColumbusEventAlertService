@@ -2,7 +2,7 @@ version: 0.2
 phases:
 phases:
   install:
-      commands:
+    commands:
       - echo In the install phase...
     # runtime-versions:
     #   java: corretto17
