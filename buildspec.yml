@@ -20,9 +20,11 @@ phases:
 
   post_build:
     commands:
-      - echo Packaging and preparing for deployment...
       - aws lambda update-function-code --function-name ColumbusEventsFunction --zip-file fileb://target/demo-0.0.1-SNAPSHOT.jar
-
+ - echo Uploading package to S3...
+      - aws s3 cp demo-0.0.1-SNAPSHOT.jar s3://columbuseventss3/demo-0.0.1-SNAPSHOT.jar
+      - echo Updating Lambda function...
+      - aws lambda update-function-code --function-name <your-lambda-function-name> --s3-bucket columbuseventss3 --s3-key demo-0.0.1-SNAPSHOT.jar
 artifacts:
   files:
     - target/*.jar
