@@ -4,10 +4,15 @@ phases:
   install:
     runtime-versions:
       java: corretto17
+    commands:
+      - echo Installing Maven...
+      - mvn --version
+
   pre_build:
     commands:
       - echo Resolving dependencies...
-      - mvn --version
+      - mvn install -DskipTests
+
   build:
     commands:
       - echo Building the project...
@@ -25,3 +30,4 @@ artifacts:
 cache:
   paths:
     - ~/.m2/**/*
+
