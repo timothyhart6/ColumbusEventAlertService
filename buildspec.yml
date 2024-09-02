@@ -3,10 +3,9 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: corretto17
+      java: openjdk8
     commands:
       - echo Installing Maven...
-      - yum install -y maven || apt-get install -y maven
       - mvn --version
 
   pre_build:
