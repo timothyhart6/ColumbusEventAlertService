@@ -3,12 +3,11 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: corretto11
+      java: corretto17
   pre_build:
     commands:
       - echo Resolving dependencies...
-      - sudo apt install maven -y
-
+      - mvn --version
   build:
     commands:
       - echo Building the project...
