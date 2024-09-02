@@ -21,7 +21,7 @@ phases:
   post_build:
     commands:
       - echo Packaging and preparing for deployment...
-      - aws lambda update-function-code --function-name ColumbusEventsFunction --zip-file fileb://target/demo-0.0.1-SNAPSHOT-shaded.jar
+      - aws lambda update-function-code --function-name ColumbusEventsFunction --zip-file fileb://target/demo-0.0.1-SNAPSHOT.jar
 
 artifacts:
   files:
