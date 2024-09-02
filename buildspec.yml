@@ -4,15 +4,15 @@ phases:
   install:
       commands:
       - echo In the install phase...
-    runtime-versions:
-      java: corretto17
+    # runtime-versions:
+    #   java: corretto17
   pre_build:
     commands:
       - echo In the pre_build phase...
   build:
     commands:
       - echo Build started on `date`
-      - mvn package
+      # - mvn package
   post_build:
     commands:
     - echo Post Build started
