@@ -1,8 +1,9 @@
 version: 0.2
 phases:
+phases:
   install:
     runtime-versions:
-      java: Corretto21
+      java: corretto11
   pre_build:
     commands:
       - echo In the pre_build phase...
