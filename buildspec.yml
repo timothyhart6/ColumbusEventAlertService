@@ -3,10 +3,10 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: openjdk8
+      java: corretto17
     commands:
-      - echo Installing Maven...
-      # - mvn --version
+      - echo "Using pre-installed Maven..."
+      - mvn --version
 
   pre_build:
     commands:
