@@ -11,7 +11,6 @@ import java.util.ArrayList;
 @Slf4j
 @Service
 public class TextMessageService {
-    //TODO Should I be using the interface instead of the implemented class?
     @Autowired
     private TwilioService twilioService;
     @Autowired
