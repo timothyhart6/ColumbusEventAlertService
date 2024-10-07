@@ -29,7 +29,7 @@ public abstract class EventService {
         try {
             Document jsoupDocument = jsoupService.getDocument(jsoupService.connect(venueUrl)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36"));
-            setEventAttributes(jsoupDocument, event, dateUtil);
+            setEventAttributes(jsoupDocument, event);
         } catch (IllegalArgumentException | IOException e) {
             throw new IllegalArgumentException("Invalid URL: " + venueUrl);
         }
@@ -46,7 +46,7 @@ public abstract class EventService {
         );
     }
 
-    public void setEventAttributes(Document doc, Event event, DateUtil dateUtil) {
+    public void setEventAttributes(Document doc, Event event) {
         String eventName;
         String year;
         String dateMonth;

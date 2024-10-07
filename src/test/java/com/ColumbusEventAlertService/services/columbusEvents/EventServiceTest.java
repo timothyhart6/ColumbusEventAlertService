@@ -35,7 +35,7 @@ public class EventServiceTest {
     }
 
     @Test
-    public void testGetUpcomingEvent_invalidUrl() throws Exception{
+    public void testGetUpcomingEvent_invalidUrl() {
         when(jsoupService.connect(anyString())).thenThrow(IllegalArgumentException.class);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> subject.getNextEvent("Venue Name", "Venue Url"));
