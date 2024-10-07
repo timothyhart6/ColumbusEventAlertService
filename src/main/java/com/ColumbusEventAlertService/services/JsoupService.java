@@ -1,18 +1,18 @@
-package com.ColumbusEventAlertService.services.columbusEvents;
+package com.ColumbusEventAlertService.services;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-public class JsoupServiceImpl implements JsoupService {
-    @Override
+@Component
+public class JsoupService {
     public Connection connect(String url) {
         return Jsoup.connect(url);
     }
 
-    @Override
     public Document getDocument(Connection connection) throws IOException {
         return connection.get();
     }

@@ -1,5 +1,6 @@
-package com.ColumbusEventAlertService.services.columbusEvents;
+package com.ColumbusEventAlertService.services.events;
 
+import com.ColumbusEventAlertService.services.JsoupService;
 import com.ColumbusEventAlertService.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
@@ -7,9 +8,10 @@ import org.jsoup.nodes.Document;
 import java.time.Year;
 
 @Slf4j
-public class KembaLiveEventServiceImpl extends EventServiceImpl{
-    public KembaLiveEventServiceImpl(String url, JsoupService jsoupService, DateUtil dateUtil, String locationName) {
-        super(url, jsoupService, dateUtil, locationName);
+public class KembaLiveEventService extends EventService {
+
+    public KembaLiveEventService(JsoupService jsoupService, DateUtil dateUtil) {
+        super(jsoupService, dateUtil);
     }
 
     @Override
@@ -23,18 +25,18 @@ public class KembaLiveEventServiceImpl extends EventServiceImpl{
     }
 
     @Override
-    protected String getDateMonth(Document doc, DateUtil dateUtil) {
+    protected String getDateMonth(Document doc) {
        String date = doc.getElementsByClass("date").get(0).childNode(3).childNode(1).childNode(0).toString();
        String[] monthAndDay = date.split(" ");
        String monthName = monthAndDay[0];
-       return dateUtil.convertMonthNameToNumber(monthName);
+       return getDateUtil().convertMonthNameToNumber(monthName);
     }
 
     @Override
-    protected String getDateDay(Document doc, DateUtil dateUtil) {
+    protected String getDateDay(Document doc) {
         String date = doc.getElementsByClass("date").get(0).childNode(3).childNode(1).childNode(0).toString();
         String[] monthAndDay = date.split(" ");
-        return dateUtil.formatDay(monthAndDay[1]);
+        return getDateUtil().formatDay(monthAndDay[1]);
     }
 
     @Override

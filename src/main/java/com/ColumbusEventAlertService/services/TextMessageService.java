@@ -1,37 +1,31 @@
 package com.ColumbusEventAlertService.services;
 
 import com.ColumbusEventAlertService.models.Event;
+import com.ColumbusEventAlertService.services.smsProviders.TwilioService;
 import com.ColumbusEventAlertService.utils.EventsUtil;
 import lombok.extern.slf4j.Slf4j;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 
 @Slf4j
+@Service
 public class TextMessageService {
-    private final TwilioService twilioService;
-    private final EventsUtil eventsUtil;
+    //TODO Should I be using the interface instead of the implemented class?
+    @Autowired
+    private TwilioService twilioService;
+    @Autowired
+    private EventsUtil eventsUtil;
 
-    public TextMessageService(TwilioService twilioService, EventsUtil eventsUtil) {
-        this.twilioService = twilioService;
-        this.eventsUtil = eventsUtil;
-    }
-
-    public String sendTodaysEvents() {
+    //Method that sends the Text Message
+    public void sendTodaysEvents() {
+        log.info("Text Message is sending...");
         ArrayList<Event> events = eventsUtil.getTodaysEvents();
-
-        String textMessage = getTodaysMessage(events);
-        String response = twilioService.sendTwilioText(System.getenv("TESTING_PHONE_NUMBER"),System.getenv("TWILIO_PHONE_NUMBER"), textMessage);
-
-        return response;
+        String textMessage = events.isEmpty() ? "No Events today!" : formatTodaysTextMessage(events);
+        twilioService.sendTextMessage(textMessage);
     }
 
-    private String getTodaysMessage(ArrayList<Event> events) {
-        String message = (events.isEmpty()) ? "No Events today!" : formatTodaysTextMessage(events);
-
-        return message;
-    }
-
-    public String formatTodaysTextMessage(ArrayList<Event> events) {
+    private String formatTodaysTextMessage(ArrayList<Event> events) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("TODAY'S EVENTS:\n \n");
                 for(Event event: events) {

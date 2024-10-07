@@ -5,10 +5,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.instanceOf;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.doReturn;
 
@@ -18,27 +19,16 @@ public class EventsUtilTest {
     private EventsUtil EventsUtilSpy;
 
     @Test
-    public void testGetAllEvents() {
-        ArrayList<Event> events = EventsUtilSpy.getAllEvents();
-
-        assertEquals(5, events.size());
-        assertThat(events.get(0), instanceOf(Event.class));
-        assertThat(events.get(1), instanceOf(Event.class));
-    }
-
-    @Test
     public void testGetTodaysEvents() {
-        DateUtil dateUtil = new DateUtil();
-        String todayDate = dateUtil.getTodaysDate();
-
-        Event nationwideEvent = new Event();
-        nationwideEvent.setDate(todayDate);
-        Event kembaLiveEvent = new Event();
-
+        ZoneId zone = ZoneId.of("America/New_York");
+        String todaysDate = Instant.now().atZone(zone).format(DateTimeFormatter.ofPattern("MM-dd-yyyy"));
+        Event nationwideEvent = new Event("Nationwide Arena");
+        Event kembaLiveEvent = new Event("Kemba Live");
+        nationwideEvent.setDate(todaysDate);
+        kembaLiveEvent.setDate("01-01-1930");
         ArrayList<Event> allEvents = new ArrayList<>();
         allEvents.add(nationwideEvent);
         allEvents.add(kembaLiveEvent);
-
         doReturn(allEvents).when(EventsUtilSpy).getAllEvents();
 
         ArrayList<Event> todaysEvents = EventsUtilSpy.getTodaysEvents();

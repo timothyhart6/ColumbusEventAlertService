@@ -1,6 +1,8 @@
 package com.ColumbusEventAlertService.services.columbusEvents;
 
 import com.ColumbusEventAlertService.models.Event;
+import com.ColumbusEventAlertService.services.JsoupService;
+import com.ColumbusEventAlertService.services.events.LowerFieldEventService;
 import com.ColumbusEventAlertService.utils.DateUtil;
 import org.jsoup.Connection;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +18,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class LowerFieldEventServiceImplTest {
+public class LowerFieldEventServiceTest {
     @Mock
     private DateUtil dateUtil;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
@@ -25,11 +27,11 @@ public class LowerFieldEventServiceImplTest {
     private Connection connection;
 
     @InjectMocks
-    private LowerFieldEventServiceImpl subject;
+    private LowerFieldEventService subject;
 
     @BeforeEach
     public void setUp() {
-        subject = new LowerFieldEventServiceImpl("Test", jsoupService, dateUtil, "Lower.com Field");
+        subject = new LowerFieldEventService(jsoupService, dateUtil);
     }
 
     @Test
@@ -41,7 +43,7 @@ public class LowerFieldEventServiceImplTest {
         when(dateUtil.convertMonthNameToNumber(anyString())).thenReturn("07");
         when(dateUtil.formatDay(anyString())).thenReturn("22");
 
-        Event event = subject.getUpcomingEvent();
+        Event event = subject.getNextEvent("Venue Name", "Venue Url");
 
         assertEquals("Lower.com Field Event", event.getEventName());
         assertEquals("07-22-2024", event.getDate());

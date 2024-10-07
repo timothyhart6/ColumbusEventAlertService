@@ -1,48 +1,52 @@
-package com.ColumbusEventAlertService.services.columbusEvents;
+package com.ColumbusEventAlertService.services.events;
 
 import com.ColumbusEventAlertService.models.Event;
+import com.ColumbusEventAlertService.services.JsoupService;
 import com.ColumbusEventAlertService.utils.DateUtil;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Slf4j
-public abstract class EventServiceImpl implements EventService{
-    private final String url;
-    private final JsoupService jsoupService;
-    private final DateUtil dateUtil;
-    private final String locationName;
+@Service
+public abstract class EventService {
+    @Autowired
+    private JsoupService jsoupService;
+    @Getter
+    @Autowired
+    private DateUtil dateUtil;
 
-    public EventServiceImpl(String url, JsoupService jsoupService, DateUtil dateUtil, String locationName) {
-        this.url = url;
+    public EventService(JsoupService jsoupService, DateUtil dateUtil) {
         this.jsoupService = jsoupService;
         this.dateUtil = dateUtil;
-        this.locationName = locationName;
     }
 
-    public Event getUpcomingEvent() throws IllegalArgumentException {
-        Event event = new Event();
-        event.setLocationName(locationName);
+    public Event getNextEvent(String venueName, String venueUrl) throws IllegalArgumentException {
+        Event event = new Event(venueName);
         try {
-            Document doc = jsoupService.getDocument(jsoupService.connect(url)
+            Document jsoupDocument = jsoupService.getDocument(jsoupService.connect(venueUrl)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36"));
-
-            parseEventDetails(doc, event, dateUtil);
-
+            setEventAttributes(jsoupDocument, event, dateUtil);
         } catch (IllegalArgumentException | IOException e) {
-            throw new IllegalArgumentException("Invalid URL: " + url);
+            throw new IllegalArgumentException("Invalid URL: " + venueUrl);
         }
+        logEventAttributes(event);
+        return event;
+    }
+
+    private static void logEventAttributes(Event event) {
         log.info(
                 event.getLocationName() + "\n" +
                 event.getEventName() + "\n" +
                 event.getDate() + "\n" +
                 event.getTime() + "\n"
         );
-        return event;
     }
 
-    public void parseEventDetails(Document doc, Event event, DateUtil dateUtil) {
+    public void setEventAttributes(Document doc, Event event, DateUtil dateUtil) {
         String eventName;
         String year;
         String dateMonth;
@@ -62,13 +66,13 @@ public abstract class EventServiceImpl implements EventService{
             log.info("Event year node has changed location: " + e.getMessage());
         }
         try {
-            dateMonth = getDateMonth(doc, dateUtil);
+            dateMonth = getDateMonth(doc);
         } catch (IndexOutOfBoundsException e) {
             dateMonth = "Could not find event month";
             log.info("Event month node has changed location: " + e.getMessage());
         }
         try {
-            dateDay = getDateDay(doc, dateUtil);
+            dateDay = getDateDay(doc);
         } catch (IndexOutOfBoundsException e) {
             dateDay = "Could not find event day";
             log.info("Event day node has changed location: " + e.getMessage());
@@ -79,8 +83,8 @@ public abstract class EventServiceImpl implements EventService{
             time = "Could not find event time";
             log.info("Event time node has changed location: " + e.getMessage());
         }
-
         String formattedDate = dateMonth + "-" + dateDay + "-" + year;
+
         event.setEventName(eventName);
         event.setDate(formattedDate);
         event.setTime(time);
@@ -92,7 +96,7 @@ public abstract class EventServiceImpl implements EventService{
 
     protected abstract String getDateYear(Document doc);
 
-    protected abstract String getDateMonth(Document doc, DateUtil dateUtil);
+    protected abstract String getDateMonth(Document doc);
 
-    protected abstract String getDateDay(Document doc, DateUtil dateUtil);
+    protected abstract String getDateDay(Document doc);
 }
