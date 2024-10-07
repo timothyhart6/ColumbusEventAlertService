@@ -1,6 +1,7 @@
 package com.ColumbusEventAlertService.services;
 
 import com.ColumbusEventAlertService.models.Event;
+import com.ColumbusEventAlertService.services.smsProviders.TwilioService;
 import com.ColumbusEventAlertService.utils.EventsUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,12 +34,9 @@ public class TextMessageServiceTest {
     public void testSendTodaysEvents() {
 
         textMessageService.sendTodaysEvents();
-
-        ArgumentCaptor<String> fromCaptor = ArgumentCaptor.forClass(String.class);
-        ArgumentCaptor<String> toCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> messageCaptor = ArgumentCaptor.forClass(String.class);
 
-        verify(twilioService).sendTwilioText(fromCaptor.capture(), toCaptor.capture(), messageCaptor.capture());
+        verify(twilioService).sendTextMessage(messageCaptor.capture());
     }
 
     @Test
@@ -47,6 +45,6 @@ public class TextMessageServiceTest {
         when(eventsUtil.getTodaysEvents()).thenReturn(events);
 
         textMessageService.sendTodaysEvents();
-        verify(twilioService).sendTwilioText(anyString(), anyString(), eq(expectedMessage));
+        verify(twilioService).sendTextMessage(eq(expectedMessage));
     }
 }

@@ -1,6 +1,8 @@
 package com.ColumbusEventAlertService.services.columbusEvents;
 
 import com.ColumbusEventAlertService.models.Event;
+import com.ColumbusEventAlertService.services.JsoupService;
+import com.ColumbusEventAlertService.services.events.NationwideEventService;
 import com.ColumbusEventAlertService.utils.DateUtil;
 import org.jsoup.Connection;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,20 +16,19 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class NationwideEventServiceImplTest {
+public class NationwideEventServiceTest {
     @Mock
     private DateUtil dateUtil;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private JsoupService jsoupService;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private Connection connection;
-    private final String url = "https://www.nationwidearena.com/events";
     @InjectMocks
-    private NationwideEventServiceImpl subject;
+    private NationwideEventService subject;
 
     @BeforeEach
     public void setUp() {
-         subject = new NationwideEventServiceImpl(url, jsoupService, dateUtil, "Nationwide Arena");
+         subject = new NationwideEventService(jsoupService, dateUtil);
     }
 
     @Test
@@ -42,7 +43,7 @@ public class NationwideEventServiceImplTest {
         when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("time").get(0).getElementsByClass("start").get(0).childNode(0).toString()).thenReturn("7:00 PM");
         when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("title title-withTagline ").get(0).childNode(1).childNode(0).toString().trim()).thenReturn("HockeyBall");
 
-        Event event = subject.getUpcomingEvent();
+        Event event = subject.getNextEvent("Venue Name", "Venue Url");
 
         assertEquals("HockeyBall", event.getEventName());
         assertEquals("01-02-2024", event.getDate());

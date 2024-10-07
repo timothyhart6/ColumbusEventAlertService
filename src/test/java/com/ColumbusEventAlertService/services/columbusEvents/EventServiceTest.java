@@ -1,5 +1,7 @@
 package com.ColumbusEventAlertService.services.columbusEvents;
 
+import com.ColumbusEventAlertService.services.JsoupService;
+import com.ColumbusEventAlertService.services.events.NationwideEventService;
 import com.ColumbusEventAlertService.utils.DateUtil;
 import org.jsoup.Connection;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,27 +18,27 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class EventServiceImplTest {
+public class EventServiceTest {
     @InjectMocks
-    private NationwideEventServiceImpl subject;
+    private NationwideEventService subject;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private JsoupService jsoupService;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private Connection connection;
     @Mock
     private DateUtil dateUtil;
-    private final String url = "TestingUrl";
+    private final String url = "Venue Url";
 
     @BeforeEach
     public void setUp() {
-        subject = new NationwideEventServiceImpl(url, jsoupService, dateUtil, "Parent class");
+        subject = new NationwideEventService(jsoupService, dateUtil);
     }
 
     @Test
-    public void testGetUpcomingEvent_invalidUrl() throws Exception{
+    public void testGetUpcomingEvent_invalidUrl() {
         when(jsoupService.connect(anyString())).thenThrow(IllegalArgumentException.class);
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> subject.getUpcomingEvent());
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> subject.getNextEvent("Venue Name", "Venue Url"));
         assertEquals("Invalid URL: " + url, exception.getMessage());
     }
 
@@ -44,9 +46,9 @@ public class EventServiceImplTest {
     public void testGetUpcomingEvent_ioException() throws Exception {
         when(jsoupService.connect(anyString())).thenReturn(connection);
         when(jsoupService.getDocument(connection.userAgent(anyString()))).thenThrow(IllegalArgumentException.class);
-        NationwideEventServiceImpl eventServiceImpl = new NationwideEventServiceImpl(url, jsoupService, dateUtil, "Nationwide Arena");
+        NationwideEventService eventServiceImpl = new NationwideEventService(jsoupService, dateUtil);
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> eventServiceImpl.getUpcomingEvent());
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> eventServiceImpl.getNextEvent("Venue Name", "Venue Url"));
 
         assertEquals("Invalid URL: " + url, exception.getMessage());
     }

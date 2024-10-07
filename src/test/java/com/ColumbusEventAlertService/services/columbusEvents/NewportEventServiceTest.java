@@ -1,6 +1,8 @@
 package com.ColumbusEventAlertService.services.columbusEvents;
 
 import com.ColumbusEventAlertService.models.Event;
+import com.ColumbusEventAlertService.services.JsoupService;
+import com.ColumbusEventAlertService.services.events.NewportEventService;
 import com.ColumbusEventAlertService.utils.DateUtil;
 import org.jsoup.Connection;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +18,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class NewportEventServiceImplTest {
+public class NewportEventServiceTest {
     @Mock
     private DateUtil dateUtil;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
@@ -24,11 +26,11 @@ public class NewportEventServiceImplTest {
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private Connection connection;
     @InjectMocks
-    private NewportEventServiceImpl subject;
+    private NewportEventService subject;
 
     @BeforeEach
     public void setUp() {
-        subject = new NewportEventServiceImpl("Test", jsoupService, dateUtil, "Newport Music Hall");
+        subject = new NewportEventService(jsoupService, dateUtil);
     }
 
     @Test
@@ -40,7 +42,8 @@ public class NewportEventServiceImplTest {
         when(dateUtil.convertMonthNameToNumber(anyString())).thenReturn("01");
         when(dateUtil.formatDay(anyString())).thenReturn("02");
         when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("featured-event").get(0).getElementsByClass("doors-time").get(0).childNode(0).toString()).thenReturn("7:00 PM");
-        Event event = subject.getUpcomingEvent();
+
+        Event event = subject.getNextEvent("Venue Name", "Venue Url");
 
         assertEquals("Newport Event", event.getEventName());
         assertEquals("01-02-2024", event.getDate());

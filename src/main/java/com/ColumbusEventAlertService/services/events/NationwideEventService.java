@@ -1,15 +1,18 @@
-package com.ColumbusEventAlertService.services.columbusEvents;
+package com.ColumbusEventAlertService.services.events;
 
+import com.ColumbusEventAlertService.services.JsoupService;
 import com.ColumbusEventAlertService.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Node;
+import org.springframework.stereotype.Service;
 
 @Slf4j
-public class NationwideEventServiceImpl extends EventServiceImpl {
+@Service
+public class NationwideEventService extends EventService {
 
-    public NationwideEventServiceImpl(String url, JsoupService jsoupService, DateUtil dateUtil, String locationName) {
-        super(url, jsoupService, dateUtil, locationName);
+    public NationwideEventService(JsoupService jsoupService, DateUtil dateUtil) {
+        super(jsoupService, dateUtil);
     }
 
     @Override
@@ -27,17 +30,17 @@ public class NationwideEventServiceImpl extends EventServiceImpl {
         return yearNode.toString().replaceAll("\\D", "");
     }
     @Override
-    protected String getDateMonth(Document doc, DateUtil dateUtil) {
+    protected String getDateMonth(Document doc) {
         Node monthNode = doc.getElementsByClass("m-date__month").get(0).childNode(0);
         String dateMonth = monthNode.toString().trim();
-        dateMonth = dateUtil.convertMonthNameToNumber(dateMonth);
+        dateMonth = getDateUtil().convertMonthNameToNumber(dateMonth);
         return dateMonth;
     }
     @Override
-    protected String getDateDay(Document doc, DateUtil dateUtil) {
+    protected String getDateDay(Document doc) {
         Node dayNode = doc.getElementsByClass("m-date__day").get(0).childNode(0);
         String dateDay = dayNode.toString().replaceAll("\\D", "");
-        dateDay = dateUtil.formatDay(dateDay);
+        dateDay = getDateUtil().formatDay(dateDay);
         return dateDay;
     }
 }
