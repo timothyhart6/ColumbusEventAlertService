@@ -38,7 +38,8 @@ public class EventsUtil {
     ArBar arBar = new ArBar(arBarName, arBarUrl);
 
     public ArrayList<Event> getAllEvents() {
-        ArrayList<Event> events = new ArrayList<>(infrequentEvents());
+        ArrayList<Event> events = new ArrayList<>();
+        events.addAll(infrequentEvents());
         events.add(nationwideArena.nextEvent());
         events.add(lowerField.nextEvent());
         events.add(kembaLive.nextEvent());
