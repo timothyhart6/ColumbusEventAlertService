@@ -38,7 +38,7 @@ public class EventsUtil {
     ArBar arBar = new ArBar(arBarName, arBarUrl);
 
     public ArrayList<Event> getAllEvents() {
-        ArrayList<Event> events = new ArrayList<>();
+        ArrayList<Event> events = new ArrayList<>(infrequentEvents());
         events.add(nationwideArena.nextEvent());
         events.add(lowerField.nextEvent());
         events.add(kembaLive.nextEvent());
@@ -53,6 +53,13 @@ public class EventsUtil {
         String todaysDate = Instant.now().atZone(zone).format(DateTimeFormatter.ofPattern("MM-dd-yyyy"));
 
         events.removeIf(event -> (!event.getDate().equals(todaysDate)));
+
+        return events;
+    }
+
+    private ArrayList<Event> infrequentEvents() {
+        ArrayList<Event> events = new ArrayList<>();
+        events.add(Event.builder().locationName("Ohio Stadium").eventName("OSU VS. Nebraska").date("10-08-2024").time("Unkown").build());
 
         return events;
     }
