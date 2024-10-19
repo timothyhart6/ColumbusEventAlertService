@@ -5,11 +5,10 @@ import com.ColumbusEventAlertService.services.JsoupService;
 import com.ColumbusEventAlertService.services.events.LowerFieldEventService;
 import com.ColumbusEventAlertService.utils.DateUtil;
 import org.jsoup.Connection;
-import org.junit.jupiter.api.BeforeEach;
+import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Answers;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -21,29 +20,29 @@ import static org.mockito.Mockito.when;
 public class LowerFieldEventServiceTest {
     @Mock
     private DateUtil dateUtil;
-    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    @Mock
     private JsoupService jsoupService;
-    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    @Mock
     private Connection connection;
-
-    @InjectMocks
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    Document document;
     private LowerFieldEventService subject;
-
-    @BeforeEach
-    public void setUp() {
-        subject = new LowerFieldEventService(jsoupService, dateUtil);
-    }
 
     @Test
     public void testGetUpcomingEvent_success() throws Exception {
+        subject = new LowerFieldEventService("Venue", "url", jsoupService, dateUtil);
+
+        when(connection.userAgent(anyString())).thenReturn(connection);
         when(jsoupService.connect(anyString())).thenReturn(connection);
+        when(jsoupService.getDocument(connection)).thenReturn(document);
+
         //DeepStub all the fields
         when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("awb-custom-text-color awb-custom-text-hover-color").get(0).childNode(0).toString().trim()).thenReturn("Lower.com Field Event");
         when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("tribe-event-date-start").get(0).childNode(0).toString().trim()).thenReturn("Jul 22");
         when(dateUtil.convertMonthNameToNumber(anyString())).thenReturn("07");
         when(dateUtil.formatDay(anyString())).thenReturn("22");
 
-        Event event = subject.getNextEvent("Venue Name", "Venue Url");
+        Event event = subject.getNextEvent();
 
         assertEquals("Lower.com Field Event", event.getEventName());
         assertEquals("07-22-2024", event.getDate());

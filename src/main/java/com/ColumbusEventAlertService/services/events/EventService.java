@@ -3,7 +3,6 @@ package com.ColumbusEventAlertService.services.events;
 import com.ColumbusEventAlertService.models.Event;
 import com.ColumbusEventAlertService.services.JsoupService;
 import com.ColumbusEventAlertService.utils.DateUtil;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,18 +12,18 @@ import java.io.IOException;
 @Slf4j
 @Service
 public abstract class EventService {
-    @Autowired
-    private JsoupService jsoupService;
-    @Getter
-    @Autowired
-    private DateUtil dateUtil;
+    protected JsoupService jsoupService;
+    protected DateUtil dateUtil;
+    protected String venueName;
+    protected String venueUrl;
 
+    @Autowired
     public EventService(JsoupService jsoupService, DateUtil dateUtil) {
         this.jsoupService = jsoupService;
         this.dateUtil = dateUtil;
     }
 
-    public Event getNextEvent(String venueName, String venueUrl) throws IllegalArgumentException {
+    public Event getNextEvent() throws IllegalArgumentException {
         Event event = new Event(venueName);
         try {
             Document jsoupDocument = jsoupService.getDocument(jsoupService.connect(venueUrl)
