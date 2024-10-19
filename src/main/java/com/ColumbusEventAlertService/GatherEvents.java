@@ -50,7 +50,7 @@ public class GatherEvents {
     private ArrayList<Event> staticEvents() {
         ArrayList<Event> events = new ArrayList<>();
         String todaysYear = Year.now().toString();
-        if (todaysYear == "2024") {
+        if (todaysYear.equals("2024")) {
             //OSU Football Games
             events.add(Event.builder().locationName("Ohio Stadium").eventName("OSU VS. Nebraska").date("10-26-2024").time("12:00pm").build());
             events.add(Event.builder().locationName("Away Game").eventName("OSU @ Penn State}").date("11-02-2024").time("Unknown").build());
@@ -64,7 +64,7 @@ public class GatherEvents {
             events.add(Event.builder().locationName("Short North").eventName("Hops on High").date("12-07-2024").time("12pm-8pm").build());
             events.add(Event.builder().locationName("German Village").eventName("Village Lights").date("12-08-2024").time("9pm").build());
         }
-        if(todaysYear == "2025") {
+        if(todaysYear.equals("2025")) {
             events.add(Event.builder().locationName("Columbus").eventName("Cap City Marathon").date("04-26-2025").time("8am-1pm").build());
 
             events.add(Event.builder().locationName("Downtown Riverfront").eventName("Arts Festival").date("06-06-2025").time("All Day").build());
