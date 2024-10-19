@@ -1,8 +1,8 @@
 package com.ColumbusEventAlertService.services;
 
+import com.ColumbusEventAlertService.GatherEvents;
 import com.ColumbusEventAlertService.models.Event;
 import com.ColumbusEventAlertService.services.smsProviders.TwilioService;
-import com.ColumbusEventAlertService.utils.EventsUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,12 +14,12 @@ public class TextMessageService {
     @Autowired
     private TwilioService twilioService;
     @Autowired
-    private EventsUtil eventsUtil;
+    private GatherEvents gatherEvents;
 
     //Method that sends the Text Message
     public void sendTodaysEvents() {
         log.info("Text Message is sending...");
-        ArrayList<Event> events = eventsUtil.getTodaysEvents();
+        ArrayList<Event> events = gatherEvents.getTodaysEvents();
         String textMessage = events.isEmpty() ? "No Events today!" : formatTodaysTextMessage(events);
         twilioService.sendTextMessage(textMessage);
     }

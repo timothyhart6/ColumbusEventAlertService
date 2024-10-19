@@ -1,8 +1,8 @@
 package com.ColumbusEventAlertService.services;
 
+import com.ColumbusEventAlertService.GatherEvents;
 import com.ColumbusEventAlertService.models.Event;
 import com.ColumbusEventAlertService.services.smsProviders.TwilioService;
-import com.ColumbusEventAlertService.utils.EventsUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +21,7 @@ public class TextMessageServiceTest {
     @Mock
     private TwilioService twilioService;
     @Mock
-    private EventsUtil eventsUtil;
+    private GatherEvents gatherEvents;
 
     ArrayList<Event> events;
 
@@ -42,7 +42,7 @@ public class TextMessageServiceTest {
     @Test
     void testSendTodaysEvents_NoEventToday() {
         String expectedMessage = "No Events today!";
-        when(eventsUtil.getTodaysEvents()).thenReturn(events);
+        when(gatherEvents.getTodaysEvents()).thenReturn(events);
 
         textMessageService.sendTodaysEvents();
         verify(twilioService).sendTextMessage(eq(expectedMessage));

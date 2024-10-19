@@ -5,14 +5,22 @@ import com.ColumbusEventAlertService.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Node;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 public class NationwideEventService extends EventService {
 
-    public NationwideEventService(JsoupService jsoupService, DateUtil dateUtil) {
+    public NationwideEventService(@Value("${venue-name.nationwide}") String venueName,
+                                  @Value("${url.nationwide}") String venueUrl,
+                                  JsoupService jsoupService,
+                                  DateUtil dateUtil)
+    {
         super(jsoupService, dateUtil);
+        super.venueName = venueName;
+        super.venueUrl = venueUrl;
+
     }
 
     @Override
@@ -33,14 +41,14 @@ public class NationwideEventService extends EventService {
     protected String getDateMonth(Document doc) {
         Node monthNode = doc.getElementsByClass("m-date__month").get(0).childNode(0);
         String dateMonth = monthNode.toString().trim();
-        dateMonth = getDateUtil().convertMonthNameToNumber(dateMonth);
+        dateMonth = super.dateUtil.convertMonthNameToNumber(dateMonth);
         return dateMonth;
     }
     @Override
     protected String getDateDay(Document doc) {
         Node dayNode = doc.getElementsByClass("m-date__day").get(0).childNode(0);
         String dateDay = dayNode.toString().replaceAll("\\D", "");
-        dateDay = getDateUtil().formatDay(dateDay);
+        dateDay = super.dateUtil.formatDay(dateDay);
         return dateDay;
     }
 }

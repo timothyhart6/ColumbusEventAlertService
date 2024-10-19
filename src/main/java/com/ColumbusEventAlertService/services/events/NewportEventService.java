@@ -4,13 +4,22 @@ import com.ColumbusEventAlertService.services.JsoupService;
 import com.ColumbusEventAlertService.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
-
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import java.time.Year;
 
 @Slf4j
+@Service
 public class NewportEventService extends EventService {
-    public NewportEventService(JsoupService jsoupService, DateUtil dateUtil) {
+
+    public NewportEventService(@Value("${venue-name.newport}") String venueName,
+                               @Value("${url.newport}") String venueUrl,
+                               JsoupService jsoupService,
+                               DateUtil dateUtil)
+    {
         super(jsoupService, dateUtil);
+        super.venueName = venueName;
+        super.venueUrl = venueUrl;
     }
 
     @Override
@@ -28,14 +37,14 @@ public class NewportEventService extends EventService {
         String date = doc.getElementsByClass("date").get(0).childNode(3).childNode(1).childNode(0).toString();
         String[] monthAndDay = date.split(" ");
         String monthName = monthAndDay[0];
-        return getDateUtil().convertMonthNameToNumber(monthName);
+        return super.dateUtil.convertMonthNameToNumber(monthName);
     }
 
     @Override
     protected String getDateDay(Document doc) {
         String date = doc.getElementsByClass("date").get(0).childNode(3).childNode(1).childNode(0).toString();
         String[] monthAndDay = date.split(" ");
-        return getDateUtil().formatDay(monthAndDay[1]);
+        return super.dateUtil.formatDay(monthAndDay[1]);
     }
 
     @Override
