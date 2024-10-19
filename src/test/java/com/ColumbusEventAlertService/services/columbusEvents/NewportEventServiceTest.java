@@ -26,11 +26,10 @@ public class NewportEventServiceTest {
     private Connection connection;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     Document document;
-    private NewportEventService subject;
 
     @Test
     public void testGetUpcomingEvent_success() throws Exception {
-        subject = new NewportEventService("Venue", "url", jsoupService, dateUtil);
+        NewportEventService subject = new NewportEventService("Venue", "url", jsoupService, dateUtil);
 
         when(connection.userAgent(anyString())).thenReturn(connection);
         when(jsoupService.connect(anyString())).thenReturn(connection);

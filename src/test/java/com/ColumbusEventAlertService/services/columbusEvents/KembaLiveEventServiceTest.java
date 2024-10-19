@@ -26,11 +26,10 @@ public class KembaLiveEventServiceTest {
     private Connection connection;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     Document document;
-    private KembaLiveEventService subject;
 
     @Test
     public void testGetUpcomingEvent_success() throws Exception {
-        subject = new KembaLiveEventService("Venue", "url", jsoupService, dateUtil);
+        KembaLiveEventService subject = new KembaLiveEventService("Venue", "url", jsoupService, dateUtil);
 
         when(connection.userAgent(anyString())).thenReturn(connection);
         when(jsoupService.connect(anyString())).thenReturn(connection);

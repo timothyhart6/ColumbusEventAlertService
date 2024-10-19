@@ -24,11 +24,10 @@ public class NationwideEventServiceTest {
     private Connection connection;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     Document document;
-    private NationwideEventService subject;
 
     @Test
     public void testGetUpcomingEvent_success() throws Exception {
-        subject = new NationwideEventService("Venue", "Url", jsoupService, dateUtil);
+        NationwideEventService subject = new NationwideEventService("Venue", "Url", jsoupService, dateUtil);
 
         when(connection.userAgent(anyString())).thenReturn(connection);
         when(jsoupService.connect(anyString())).thenReturn(connection);

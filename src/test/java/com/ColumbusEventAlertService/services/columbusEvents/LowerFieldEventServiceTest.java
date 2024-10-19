@@ -26,11 +26,10 @@ public class LowerFieldEventServiceTest {
     private Connection connection;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     Document document;
-    private LowerFieldEventService subject;
 
     @Test
     public void testGetUpcomingEvent_success() throws Exception {
-        subject = new LowerFieldEventService("Venue", "url", jsoupService, dateUtil);
+        LowerFieldEventService subject = new LowerFieldEventService("Venue", "url", jsoupService, dateUtil);
 
         when(connection.userAgent(anyString())).thenReturn(connection);
         when(jsoupService.connect(anyString())).thenReturn(connection);

@@ -26,11 +26,10 @@ public class ArBarEventServiceTest {
     private Connection connection;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     Document document;
-    private ArBarEventService subject;
 
     @Test
     public void testGetUpcomingEvent_success() throws Exception {
-        subject = new ArBarEventService("venue", "url", jsoupService, dateUtil);
+       ArBarEventService subject = new ArBarEventService("venue", "url", jsoupService, dateUtil);
 
         when(connection.userAgent(anyString())).thenReturn(connection);
         when(jsoupService.connect(anyString())).thenReturn(connection);
