@@ -14,7 +14,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 @Component
-@ComponentScan
 public class GatherEvents {
     @Autowired
     NationwideEventService nationwideEventService;

@@ -3,9 +3,11 @@ package com.ColumbusEventAlertService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @Slf4j
+@ComponentScan(basePackages = "com.ColumbusEventAlertService")
 public class Application {
 
 	public static void main(String[] args) {
