@@ -55,6 +55,13 @@
 			<version>10.1.2</version>
 			<scope>compile</scope>
 		</dependency>
+		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+
 	</dependencies>
 
 	
@@ -80,7 +87,6 @@
 						</configuration>
 					</execution>
 				</executions>
-				
 			</plugin>
 		</plugins>
 	</build>

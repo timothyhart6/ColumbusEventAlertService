@@ -13,7 +13,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 @Component
-@Lazy
 public class GatherEvents {
     @Autowired
     NationwideEventService nationwideEventService;
