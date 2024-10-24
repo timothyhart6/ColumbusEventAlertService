@@ -2,6 +2,7 @@ package com.ColumbusEventAlertService.services;
 
 import com.ColumbusEventAlertService.models.Event;
 import com.ColumbusEventAlertService.services.smsProviders.TwilioService;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
@@ -13,8 +14,13 @@ import java.util.ArrayList;
 public class TextMessageService {
     @Autowired
     private TwilioService twilioService;
-//    @Autowired
-    private GatherEvents gatherEvents = new GatherEvents();
+    @Autowired
+    private GatherEvents gatherEvents;
+
+    @PostConstruct
+    public void init() {
+        sendTodaysEvents();
+    }
 
     //Method that sends the Text Message
     public void sendTodaysEvents() {
