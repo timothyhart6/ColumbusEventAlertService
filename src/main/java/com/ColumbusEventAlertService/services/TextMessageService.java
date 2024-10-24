@@ -5,6 +5,7 @@ import com.ColumbusEventAlertService.services.smsProviders.TwilioService;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -17,11 +18,7 @@ public class TextMessageService {
     @Autowired
     private GatherEvents gatherEvents;
 
-    @PostConstruct
-    public void init() {
-        sendTodaysEvents();
-    }
-
+    @Bean
     //Method that sends the Text Message
     public void sendTodaysEvents() {
         log.info("Text Message is sending...");
