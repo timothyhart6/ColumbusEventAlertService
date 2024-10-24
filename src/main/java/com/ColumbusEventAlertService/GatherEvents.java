@@ -26,7 +26,6 @@ public class GatherEvents {
     @Autowired
     ArBarEventService arBarEventService;
 
-    @Bean
     public ArrayList<Event> getTodaysEvents() {
         ArrayList<Event> events = getAllEvents();
         ZoneId zone = ZoneId.of("America/New_York");
