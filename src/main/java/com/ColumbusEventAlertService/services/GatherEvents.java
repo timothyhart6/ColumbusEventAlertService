@@ -3,6 +3,7 @@ package com.ColumbusEventAlertService.services;
 import com.ColumbusEventAlertService.models.Event;
 import com.ColumbusEventAlertService.services.events.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -12,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 @Component
+@Lazy
 public class GatherEvents {
     @Autowired
     NationwideEventService nationwideEventService;

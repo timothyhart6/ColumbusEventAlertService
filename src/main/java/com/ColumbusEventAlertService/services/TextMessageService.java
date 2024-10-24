@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 @Slf4j
 @Service
-@DependsOn("gatherEvents")
 public class TextMessageService {
     @Autowired
     private TwilioService twilioService;
