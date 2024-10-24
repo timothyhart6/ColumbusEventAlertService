@@ -1,10 +1,8 @@
-package com.ColumbusEventAlertService;
+package com.ColumbusEventAlertService.services;
 
 import com.ColumbusEventAlertService.models.Event;
 import com.ColumbusEventAlertService.services.events.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
