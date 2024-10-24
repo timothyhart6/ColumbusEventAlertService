@@ -13,8 +13,8 @@ import java.util.ArrayList;
 public class TextMessageService {
     @Autowired
     private TwilioService twilioService;
-    @Autowired
-    private GatherEvents gatherEvents;
+//    @Autowired
+    private GatherEvents gatherEvents = new GatherEvents();
 
     //Method that sends the Text Message
     public void sendTodaysEvents() {
