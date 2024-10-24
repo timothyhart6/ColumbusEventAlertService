@@ -1,7 +1,7 @@
 package com.ColumbusEventAlertService.utils;
 
 import com.ColumbusEventAlertService.models.Event;
-import com.ColumbusEventAlertService.GatherEvents;
+import com.ColumbusEventAlertService.services.GatherEvents;
 import com.ColumbusEventAlertService.services.events.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,7 +12,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 

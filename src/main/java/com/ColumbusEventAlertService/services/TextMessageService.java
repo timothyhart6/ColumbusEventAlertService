@@ -1,6 +1,5 @@
 package com.ColumbusEventAlertService.services;
 
-import com.ColumbusEventAlertService.GatherEvents;
 import com.ColumbusEventAlertService.models.Event;
 import com.ColumbusEventAlertService.services.smsProviders.TwilioService;
 import lombok.extern.slf4j.Slf4j;
