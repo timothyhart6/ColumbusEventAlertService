@@ -60,8 +60,11 @@
 			<artifactId>jakarta.annotation-api</artifactId>
 			<version>3.0.0</version>
 		</dependency>
-
-
+		<dependency>
+			<groupId>com.amazonaws.serverless</groupId>
+			<artifactId>aws-serverless-java-container-springboot2</artifactId>
+			<version>1.9.4</version>
+		</dependency>
 	</dependencies>
 
 	
@@ -70,7 +73,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.2.4</version>
+				<version>3.3.0</version>
 				<executions>
 					<execution>
 						<id>shade-jar-with-dependencies</id>
@@ -78,12 +81,19 @@
 						<goals>
 							<goal>shade</goal>
 						</goals>
+<!--						<configuration>-->
+<!--							<transformers>-->
+<!--								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
+<!--									<mainClass>com.ColumbusEventAlertService.services.TextMessageService</mainClass>-->
+<!--								</transformer>-->
+<!--							</transformers>-->
+<!--						</configuration>-->
 						<configuration>
-							<transformers>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.ColumbusEventAlertService.services.TextMessageService</mainClass>
-								</transformer>
-							</transformers>
+							<artifactSet>
+								<excludes>
+									<exclude>org.apache.tomcat.embed:*</exclude>
+								</excludes>
+							</artifactSet>
 						</configuration>
 					</execution>
 				</executions>
