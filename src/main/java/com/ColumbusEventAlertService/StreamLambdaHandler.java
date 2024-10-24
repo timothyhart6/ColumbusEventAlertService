@@ -28,11 +28,8 @@ public class StreamLambdaHandler implements RequestStreamHandler {
     }
 
     @Override
-    public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context) {
-        try {
-            handler.initialize();
-        } catch (ContainerInitializationException e) {
-            throw new RuntimeException(e);
-        }
+    public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context)
+            throws IOException {
+        handler.proxyStream(inputStream, outputStream, context);
     }
 }
