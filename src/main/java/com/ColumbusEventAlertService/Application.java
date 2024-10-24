@@ -7,7 +7,6 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @Slf4j
-@ComponentScan(basePackages = "com.ColumbusEventAlertService")
 public class Application {
 
 	public static void main(String[] args) {
