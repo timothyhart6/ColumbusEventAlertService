@@ -10,14 +10,12 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import jakarta.servlet.ServletContext;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 
 @Slf4j
 public class StreamLambdaHandler implements RequestStreamHandler {
@@ -35,7 +33,7 @@ public class StreamLambdaHandler implements RequestStreamHandler {
     }
 
     @Override
-    public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context) throws IOException {
+    public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context) {
         try {
             // Proxy the AWS request through the Spring Boot handler
             handler.proxyStream(inputStream, outputStream, context);
@@ -57,5 +55,4 @@ public class StreamLambdaHandler implements RequestStreamHandler {
             throw new RuntimeException("Lambda function execution failed", e);
         }
     }
-
 }

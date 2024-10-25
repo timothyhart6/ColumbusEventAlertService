@@ -1,5 +1,6 @@
 package com.ColumbusEventAlertService.services;
 
+import com.ColumbusEventAlertService.GatherEvents;
 import com.ColumbusEventAlertService.models.Event;
 import com.ColumbusEventAlertService.services.smsProviders.TwilioService;
 import org.junit.jupiter.api.BeforeEach;

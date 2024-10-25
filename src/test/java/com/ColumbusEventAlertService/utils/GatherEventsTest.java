@@ -1,7 +1,7 @@
 package com.ColumbusEventAlertService.utils;
 
 import com.ColumbusEventAlertService.models.Event;
-import com.ColumbusEventAlertService.services.GatherEvents;
+import com.ColumbusEventAlertService.GatherEvents;
 import com.ColumbusEventAlertService.services.events.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
