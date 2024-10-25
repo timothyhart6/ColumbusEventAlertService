@@ -18,7 +18,6 @@ public class TextMessageService {
     @Autowired
     private GatherEvents gatherEvents;
 
-    @Bean
     //Method that sends the Text Message
     public void sendTodaysEvents() {
         log.info("Text Message is sending...");
