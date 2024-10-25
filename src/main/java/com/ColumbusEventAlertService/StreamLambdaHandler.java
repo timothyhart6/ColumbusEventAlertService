@@ -12,8 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import jakarta.servlet.ServletContext;
 
-import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -40,16 +40,13 @@ public class StreamLambdaHandler implements RequestStreamHandler {
             // Proxy the AWS request through the Spring Boot handler
             handler.proxyStream(inputStream, outputStream, context);
 
-            // Get the ServletContext from the handler
-            ServletContext servletContext = handler.getServletContext();
-
-            // Get the WebApplicationContext from the ServletContext
-            WebApplicationContext springContext = WebApplicationContextUtils.getWebApplicationContext((jakarta.servlet.ServletContext) servletContext);
+            // Fetch the Spring application context
+            ApplicationContext springContext = (ApplicationContext) handler.getServletContext();
 
             // Fetch the TextMessageService bean from the Spring context
             TextMessageService textMessageService = springContext.getBean(TextMessageService.class);
 
-            // Call the sendTodaysEvents method to send the events
+            // Call the sendTodaysEvents method
             textMessageService.sendTodaysEvents();
 
         } catch (Exception e) {
@@ -57,4 +54,5 @@ public class StreamLambdaHandler implements RequestStreamHandler {
             throw new RuntimeException("Lambda function execution failed", e);
         }
     }
+
 }
