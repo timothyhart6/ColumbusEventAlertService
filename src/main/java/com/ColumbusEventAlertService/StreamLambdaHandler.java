@@ -10,9 +10,6 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-import jakarta.servlet.ServletContext;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,5 +51,4 @@ public class StreamLambdaHandler implements RequestStreamHandler {
             throw new RuntimeException("Lambda function execution failed", e);
         }
     }
-
 }
