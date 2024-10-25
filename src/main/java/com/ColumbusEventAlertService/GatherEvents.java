@@ -63,16 +63,37 @@ public class GatherEvents {
             events.add(Event.builder().locationName("German Village").eventName("Village Lights").date("12-08-2024").time("9pm").build());
         }
         if(todaysYear.equals("2025")) {
+            events.add(Event.builder().locationName("Convention Center").eventName("The Arnold Classic").date("02-28-2025").time("All Day").build());
+            events.add(Event.builder().locationName("Convention Center").eventName("The Arnold Classic").date("03-01-2025").time("All Day").build());
+            events.add(Event.builder().locationName("Convention Center").eventName("The Arnold Classic").date("03-02-2025").time("All Day").build());
+
             events.add(Event.builder().locationName("Columbus").eventName("Cap City Marathon").date("04-26-2025").time("8am-1pm").build());
+
+            events.add(Event.builder().locationName("Ohio Stadium").eventName("OSU Commencement").date("05-04-2025").time("12pm").build());
 
             events.add(Event.builder().locationName("Downtown Riverfront").eventName("Arts Festival").date("06-06-2025").time("All Day").build());
             events.add(Event.builder().locationName("Downtown Riverfront").eventName("Arts Festival").date("06-07-2025").time("All Day").build());
             events.add(Event.builder().locationName("Downtown Riverfront").eventName("Arts Festival").date("06-08-2025").time("All Day").build());
 
+            events.add(Event.builder().locationName("Convention Center").eventName("Origins Game Fair").date("06-18-2025").time("All Day").build());
+            events.add(Event.builder().locationName("Convention Center").eventName("Origins Game Fair").date("06-19-2025").time("All Day").build());
+            events.add(Event.builder().locationName("Convention Center").eventName("Origins Game Fair").date("06-20-2025").time("All Day").build());
+            events.add(Event.builder().locationName("Convention Center").eventName("Origins Game Fair").date("06-21-2025").time("All Day").build());
+            events.add(Event.builder().locationName("Convention Center").eventName("Origins Game Fair").date("06-22-2025").time("All Day").build());
+
+            events.add(Event.builder().locationName("Ohio Stadium").eventName("Buckeye Country Superfest").date("06-21-2025").time("All Day").build());
+
             events.add(Event.builder().locationName("Goodale Park").eventName("Comfest").date("06-27-2025").time("All Day").build());
             events.add(Event.builder().locationName("Goodale Park").eventName("Comfest").date("06-28-2025").time("All Day").build());
             events.add(Event.builder().locationName("Goodale Park").eventName("Comfest").date("06-29-2025").time("All Day").build());
+
             events.add(Event.builder().locationName("Downtown").eventName("Red, White & Boom").date("07-03-2025").time("All Day").build());
+
+            events.add(Event.builder().locationName("Short North").eventName("Doo Dah Parade").date("07-04-2025").time("1pm?").build());
+
+            events.add(Event.builder().locationName("Scioto Mile").eventName("Jazz & Rib Fest").date("07-18-2025").time("All Day").build());
+            events.add(Event.builder().locationName("Scioto Mile").eventName("Jazz & Rib Fest").date("07-19-2025").time("All Day").build());
+            events.add(Event.builder().locationName("Scioto Mile").eventName("Jazz & Rib Fest").date("07-20-2025").time("All Day").build());
 
             //TO BE ADDED WHEN DATES ARE AVAILABLE:
             //Tacofest
@@ -83,6 +104,7 @@ public class GatherEvents {
             // The Arnold (check it's included in the convention center searches)
             //Pride
             //Strawberry Jam
+            // OSU Move In Day
         }
         return events;
     }
