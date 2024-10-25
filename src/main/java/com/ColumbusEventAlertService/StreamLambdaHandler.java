@@ -8,8 +8,11 @@ import com.amazonaws.serverless.proxy.spring.SpringBootLambdaContainerHandler;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
+import jakarta.servlet.ServletContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,8 +40,11 @@ public class StreamLambdaHandler implements RequestStreamHandler {
             // Proxy the AWS request through the Spring Boot handler
             handler.proxyStream(inputStream, outputStream, context);
 
-            // Fetch the Spring application context
-            ApplicationContext springContext = (ApplicationContext) handler.getServletContext();
+            // Get the ServletContext from the handler
+            ServletContext servletContext = handler.getServletContext();
+
+            // Fetch the Spring WebApplicationContext from the ServletContext
+            WebApplicationContext springContext = WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext);
 
             // Fetch the TextMessageService bean from the Spring context
             TextMessageService textMessageService = springContext.getBean(TextMessageService.class);
@@ -51,4 +57,5 @@ public class StreamLambdaHandler implements RequestStreamHandler {
             throw new RuntimeException("Lambda function execution failed", e);
         }
     }
+
 }
