@@ -23,6 +23,8 @@ public class GatherEvents {
     NewportEventService newportEventService;
     @Autowired
     ArBarEventService arBarEventService;
+    @Autowired
+    AceOfCupsEventService aceOfCupsEventService;
 
     public ArrayList<Event> getTodaysEvents() {
         ArrayList<Event> events = getAllEvents();
@@ -42,6 +44,7 @@ public class GatherEvents {
         events.add(kembaLiveEventService.getNextEvent());
         events.add(newportEventService.getNextEvent());
         events.add(arBarEventService.getNextEvent());
+        events.add(aceOfCupsEventService.getNextEvent());
         return events;
     }
 
