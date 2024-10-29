@@ -12,7 +12,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,6 +29,8 @@ public class GatherEventsTest {
     NewportEventService newportEventService;
     @Mock
     ArBarEventService arBarEventService;
+    @Mock
+    AceOfCupsEventService aceOfCupsEventService;
 
     @Test
     public void testGetTodaysEvents() {
@@ -45,9 +47,10 @@ public class GatherEventsTest {
         when(lowerFieldEventService.getNextEvent()).thenReturn(eventInThePast);
         when(arBarEventService.getNextEvent()).thenReturn(eventInThePast);
         when(newportEventService.getNextEvent()).thenReturn(eventInThePast);
+        when(aceOfCupsEventService.getNextEvent()).thenReturn(eventToday);
 
         ArrayList<Event> todaysEvents = gatherEvents.getTodaysEvents();
 
-        assertTrue(todaysEvents.size() > 1);
+        assertEquals(3, todaysEvents.size());
     }
 }

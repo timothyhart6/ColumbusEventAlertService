@@ -2,7 +2,7 @@ package com.ColumbusEventAlertService.services.columbusEvents;
 
 import com.ColumbusEventAlertService.models.Event;
 import com.ColumbusEventAlertService.services.JsoupService;
-import com.ColumbusEventAlertService.services.events.KembaLiveEventService;
+import com.ColumbusEventAlertService.services.events.AceOfCupsEventService;
 import com.ColumbusEventAlertService.utils.DateUtil;
 import org.jsoup.Connection;
 import org.jsoup.nodes.Document;
@@ -18,7 +18,8 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class KembaLiveEventServiceTest {
+public class AceOfCupsEventServiceTest {
+
     @Mock
     private DateUtil dateUtil;
     @Mock
@@ -30,23 +31,23 @@ public class KembaLiveEventServiceTest {
 
     @Test
     public void testGetUpcomingEvent_success() throws Exception {
-        KembaLiveEventService subject = new KembaLiveEventService("Venue", "url", jsoupService, dateUtil);
+        AceOfCupsEventService subject = new AceOfCupsEventService("venue", "url", jsoupService, dateUtil);
 
         when(connection.userAgent(anyString())).thenReturn(connection);
         when(jsoupService.connect(anyString())).thenReturn(connection);
         when(jsoupService.getDocument(connection)).thenReturn(document);
 
         //DeepStub all the fields
-        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("info").get(0).select("h2").get(0).childNode(0).toString()).thenReturn("Kemba Event");
-        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("date").get(0).childNode(3).childNode(1).childNode(0).toString()).thenReturn("January 02");
-        when(dateUtil.convertMonthNameToNumber(anyString())).thenReturn("01");
-        when(dateUtil.formatDay(anyString())).thenReturn("02");
-        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("doors-time").get(1).childNode(0).toString()).thenReturn("7:00 PM");
+        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("fs-12 headliners").get(0).childNode(0).toString().trim()).thenReturn("Ace of Cups Event");
+        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("fs-18 bold mt-1r event-date").get(0).childNode(0).toString().trim()).thenReturn("Tue September 09");
+        when(dateUtil.convertMonthNameToNumber(anyString())).thenReturn("09");
+        when(dateUtil.formatDay(anyString())).thenReturn("09");
+        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("see-showtime ").get(0).childNode(0).toString().trim()).thenReturn("8:00 PM");
 
         Event event = subject.getNextEvent();
 
-        assertEquals("Kemba Event", event.getEventName());
-        assertTrue(event.getDate().startsWith("01-02"));
-        assertEquals("7:00 PM", event.getTime());
+        assertEquals("Ace of Cups Event", event.getEventName());
+        assertTrue(event.getDate().startsWith("09-09"));
+        assertEquals("8:00 PM", event.getTime());
     }
 }
