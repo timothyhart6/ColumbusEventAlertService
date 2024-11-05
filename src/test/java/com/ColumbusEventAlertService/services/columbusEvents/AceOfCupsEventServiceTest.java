@@ -38,8 +38,8 @@ public class AceOfCupsEventServiceTest {
         when(jsoupService.getDocument(connection)).thenReturn(document);
 
         //DeepStub all the fields
-        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("fs-12 headliners").get(0).childNode(0).toString().trim()).thenReturn("Ace of Cups Event");
-        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("fs-18 bold mt-1r event-date").get(0).childNode(0).toString().trim()).thenReturn("Tue September 09");
+        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("event-title").get(0).firstChild().firstChild().toString().trim()).thenReturn("Ace of Cups Event");
+        when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("event-date").get(0).childNode(0).toString().trim()).thenReturn("Tue September 09");
         when(dateUtil.convertMonthNameToNumber(anyString())).thenReturn("09");
         when(dateUtil.formatDay(anyString())).thenReturn("09");
         when(jsoupService.getDocument(connection.userAgent(anyString())).getElementsByClass("see-showtime ").get(0).childNode(0).toString().trim()).thenReturn("8:00 PM");
