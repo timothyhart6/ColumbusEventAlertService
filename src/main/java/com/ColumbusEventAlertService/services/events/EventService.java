@@ -41,7 +41,9 @@ public abstract class EventService {
                 event.getLocationName() + "\n" +
                 event.getEventName() + "\n" +
                 event.getDate() + "\n" +
-                event.getTime() + "\n"
+                event.getTime() + "\n" +
+                event.isBadTraffic() + "\n" +
+                event.isDesiredEvent()
         );
     }
 

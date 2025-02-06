@@ -64,8 +64,10 @@ public class GatherEvents {
                 String eventName = nullCheck(item.get("_airbyte_data").m().get("eventName"));
                 String date = nullCheck(item.get("_airbyte_data").m().get("date"));
                 String time = nullCheck(item.get("_airbyte_data").m().get("time"));
+                boolean createsTraffic = item.get("_airbyte_data").m().get("createsTraffic").bool();
+                boolean desiredEvent = item.get("_airbyte_data").m().get("desiredEvent").bool();
 
-                Event event = new Event(locationName, eventName, date, time);
+                Event event = new Event(locationName, eventName, date, time, createsTraffic, desiredEvent);
                 events.add(event);
             }
         }
