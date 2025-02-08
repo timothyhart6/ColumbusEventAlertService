@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -25,12 +26,43 @@ public class TextMessageService {
     }
 
     private String formatTodaysTextMessage(ArrayList<Event> events) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("TODAY'S EVENTS:\n \n");
-                for(Event event: events) {
-                    stringBuilder.append(" " + event.getLocationName()+ ":\n" +
-                           "  " + event.getEventName() + " at " + event.getTime() + "\n \n");
-                }
-        return stringBuilder.toString();
+        ArrayList<Event> badTrafficEvents = new ArrayList<>();
+        ArrayList<Event> desiredEvents = new ArrayList<>();
+
+        for(Event event: events) {
+            if(event.isBadTraffic()) badTrafficEvents.add(event);
+            if(event.isDesiredEvent()) desiredEvents.add(event);
+        }
+
+        String badTrafficMessage = getBadTrafficMessage(badTrafficEvents, "%s at %s area around %s");
+
+        String funEventsMessage = getFunEventsMessage(desiredEvents, "%s at %s. %s");
+
+        String completeMessage = """
+        Avoid driving here!!
+        %s
+
+        These could be fun!
+        %s
+        """.formatted(badTrafficMessage, funEventsMessage);
+
+        log.info("Formatted Text Message being sent: " + completeMessage);
+        return completeMessage;
+    }
+
+    private static String getFunEventsMessage(ArrayList<Event> desiredEvents, String format) {
+        String funEventsMessage = desiredEvents.stream()
+                .map(event -> String.format(format,
+                        event.getEventName(), event.getLocationName(), event.getTime()))
+                .collect(Collectors.joining("\n"));
+        return funEventsMessage;
+    }
+
+    private static String getBadTrafficMessage(ArrayList<Event> badTrafficEvents, String format) {
+        String badTrafficMessage = badTrafficEvents.stream()
+                .map(event -> String.format(format,
+                        event.getEventName(), event.getLocationName(), event.getTime()))
+                .collect(Collectors.joining("\n"));
+        return badTrafficMessage;
     }
 }
