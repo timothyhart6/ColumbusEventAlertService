@@ -51,4 +51,11 @@ public class NewportEventService extends EventService {
     protected String getTime(Document doc) {
         return doc.getElementsByClass("featured-event").get(0).getElementsByClass("doors-time").get(0).childNode(0).toString();
     }
+
+    @Override
+    protected boolean isBadTraffic() { return false; }
+
+    @Override
+    protected boolean isDesiredEvent() { return true; }
+
 }

@@ -52,4 +52,11 @@ public class AceOfCupsEventService extends EventService{
         String[] monthAndDay = date.split(" ");
         return super.dateUtil.formatDay(monthAndDay[2]);
     }
+
+    @Override
+    protected boolean isBadTraffic() { return false; }
+
+    @Override
+    protected boolean isDesiredEvent() { return true; }
+
 }

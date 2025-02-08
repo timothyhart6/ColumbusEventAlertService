@@ -52,4 +52,11 @@ public class KembaLiveEventService extends EventService {
     protected String getTime(Document doc) {
         return doc.getElementsByClass("doors-time").get(1).childNode(0).toString();
     }
+
+    @Override
+    protected boolean isBadTraffic() { return false; }
+
+    @Override
+    protected boolean isDesiredEvent() { return true; }
+
 }

@@ -89,6 +89,8 @@ public abstract class EventService {
         event.setEventName(eventName);
         event.setDate(formattedDate);
         event.setTime(time);
+        event.setBadTraffic(isBadTraffic());
+        event.setDesiredEvent(isDesiredEvent());
     }
 
     protected abstract String getEventName(Document doc);
@@ -100,4 +102,8 @@ public abstract class EventService {
     protected abstract String getDateMonth(Document doc);
 
     protected abstract String getDateDay(Document doc);
+
+    protected abstract boolean isBadTraffic();
+
+    protected abstract boolean isDesiredEvent();
 }

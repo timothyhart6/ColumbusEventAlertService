@@ -51,4 +51,11 @@ public class ArBarEventService extends EventService {
     protected String getTime(Document doc) {
         return doc.getElementsByClass("day-of-show-bar").get(0).getElementsByClass("doors-time").get(0).childNode(0).toString();
     }
+
+    @Override
+    protected boolean isBadTraffic() { return false; }
+
+    @Override
+    protected boolean isDesiredEvent() { return true; }
+
 }
