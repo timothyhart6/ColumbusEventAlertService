@@ -1,4 +1,4 @@
-package com.ColumbusEventAlertService.services.columbusEvents;
+package com.ColumbusEventAlertService.services.Events;
 
 import com.ColumbusEventAlertService.services.JsoupService;
 import com.ColumbusEventAlertService.services.events.NationwideEventService;

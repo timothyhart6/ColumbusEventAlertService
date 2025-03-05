@@ -1,4 +1,4 @@
-package com.ColumbusEventAlertService.services.columbusEvents;
+package com.ColumbusEventAlertService.services.Events;
 
 import com.ColumbusEventAlertService.models.Event;
 import com.ColumbusEventAlertService.services.JsoupService;
@@ -11,7 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 

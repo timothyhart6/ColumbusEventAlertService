@@ -20,6 +20,8 @@ public class NewportEventService extends EventService {
         super(jsoupService, dateUtil);
         super.venueName = venueName;
         super.venueUrl = venueUrl;
+        super.isBadTraffic = false;
+        super.isDesiredEvent = true;
     }
 
     @Override
@@ -51,11 +53,4 @@ public class NewportEventService extends EventService {
     protected String getTime(Document doc) {
         return doc.getElementsByClass("featured-event").get(0).getElementsByClass("doors-time").get(0).childNode(0).toString();
     }
-
-    @Override
-    protected boolean isBadTraffic() { return false; }
-
-    @Override
-    protected boolean isDesiredEvent() { return true; }
-
 }

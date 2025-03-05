@@ -20,7 +20,8 @@ public class NationwideEventService extends EventService {
         super(jsoupService, dateUtil);
         super.venueName = venueName;
         super.venueUrl = venueUrl;
-
+        super.isBadTraffic = true;
+        super.isDesiredEvent = false;
     }
 
     @Override
@@ -51,11 +52,4 @@ public class NationwideEventService extends EventService {
         dateDay = super.dateUtil.formatDay(dateDay);
         return dateDay;
     }
-
-    @Override
-    protected boolean isBadTraffic() { return true; }
-
-    @Override
-    protected boolean isDesiredEvent() { return false; }
-
 }

@@ -16,6 +16,9 @@ public abstract class EventService {
     protected DateUtil dateUtil;
     protected String venueName;
     protected String venueUrl;
+    protected boolean isBadTraffic;
+    protected boolean isDesiredEvent;
+
 
     @Autowired
     public EventService(JsoupService jsoupService, DateUtil dateUtil) {
@@ -32,20 +35,20 @@ public abstract class EventService {
         } catch (IllegalArgumentException | IOException e) {
             throw new IllegalArgumentException("Invalid URL: " + venueUrl);
         }
-        logEventAttributes(event);
+//        logEventAttributes(event);
         return event;
     }
 
-    private static void logEventAttributes(Event event) {
-        log.info(
-                event.getLocationName() + "\n" +
-                event.getEventName() + "\n" +
-                event.getDate() + "\n" +
-                event.getTime() + "\n" +
-                event.isBadTraffic() + "\n" +
-                event.isDesiredEvent()
-        );
-    }
+//    private static void logEventAttributes(Event event) {
+//        log.info(
+//                event.getLocationName() + "\n" +
+//                event.getEventName() + "\n" +
+//                event.getDate() + "\n" +
+//                event.getTime() + "\n" +
+//                event.isBadTraffic() + "\n" +
+//                event.isDesiredEvent()
+//        );
+//    }
 
     public void setEventAttributes(Document doc, Event event) {
         String eventName;
@@ -89,8 +92,6 @@ public abstract class EventService {
         event.setEventName(eventName);
         event.setDate(formattedDate);
         event.setTime(time);
-        event.setBadTraffic(isBadTraffic());
-        event.setDesiredEvent(isDesiredEvent());
     }
 
     protected abstract String getEventName(Document doc);
@@ -102,8 +103,8 @@ public abstract class EventService {
     protected abstract String getDateMonth(Document doc);
 
     protected abstract String getDateDay(Document doc);
-
-    protected abstract boolean isBadTraffic();
-
-    protected abstract boolean isDesiredEvent();
+//
+//    protected abstract boolean isBadTraffic();
+//
+//    protected abstract boolean isDesiredEvent();
 }

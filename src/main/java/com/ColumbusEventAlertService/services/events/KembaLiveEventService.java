@@ -21,6 +21,8 @@ public class KembaLiveEventService extends EventService {
         super(jsoupService, dateUtil);
         super.venueName = venueName;
         super.venueUrl = venueUrl;
+        super.isBadTraffic = false;
+        super.isDesiredEvent = true;
     }
 
     @Override
@@ -52,11 +54,4 @@ public class KembaLiveEventService extends EventService {
     protected String getTime(Document doc) {
         return doc.getElementsByClass("doors-time").get(1).childNode(0).toString();
     }
-
-    @Override
-    protected boolean isBadTraffic() { return false; }
-
-    @Override
-    protected boolean isDesiredEvent() { return true; }
-
 }

@@ -21,6 +21,8 @@ public class LowerFieldEventService extends EventService {
         super(jsoupService, dateUtil);
         super.venueName = venueName;
         super.venueUrl = venueUrl;
+        super.isBadTraffic = true;
+        super.isDesiredEvent = false;
     }
     @Override
     protected String getEventName(Document doc) {
@@ -48,11 +50,4 @@ public class LowerFieldEventService extends EventService {
         String[] monthAndDay = date.split(" ");
         return super.dateUtil.formatDay(monthAndDay[1]);
     }
-
-    @Override
-    protected boolean isBadTraffic() { return true; }
-
-    @Override
-    protected boolean isDesiredEvent() { return false; }
-
 }
