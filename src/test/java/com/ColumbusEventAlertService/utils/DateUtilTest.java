@@ -19,10 +19,4 @@ public class DateUtilTest {
         String actual = subject.formatDay("08");
         assertEquals("08", actual);
     }
-
-    @Test
-    public void testThis() {
-        assertTrue(true);
-    }
-
 }

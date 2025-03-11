@@ -12,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.Test;
@@ -27,11 +26,6 @@ public class LowerFieldEventServiceTest {
     private Connection connection;
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     Document document;
-
-    @Test
-    public void testThis() {
-        assertTrue(true);
-    }
 
     @Test
     public void testGetUpcomingEvent_success() throws Exception {
