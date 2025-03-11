@@ -21,6 +21,8 @@ public class LowerFieldEventService extends EventService {
         super(jsoupService, dateUtil);
         super.venueName = venueName;
         super.venueUrl = venueUrl;
+        super.isBadTraffic = true;
+        super.isDesiredEvent = false;
     }
     @Override
     protected String getEventName(Document doc) {

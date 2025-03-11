@@ -21,6 +21,8 @@ public class ArBarEventService extends EventService {
         super(jsoupService, dateUtil);
         super.venueName = venueName;
         super.venueUrl = venueUrl;
+        super.isBadTraffic = false;
+        super.isDesiredEvent = true;
     }
     @Override
     protected String getEventName(Document doc) {

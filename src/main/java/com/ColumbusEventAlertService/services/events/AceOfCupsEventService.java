@@ -21,6 +21,8 @@ public class AceOfCupsEventService extends EventService{
         super(jsoupService, dateUtil);
         super.venueName = venueName;
         super.venueUrl = venueUrl;
+        super.isBadTraffic = false;
+        super.isDesiredEvent = true;
     }
 
     @Override
