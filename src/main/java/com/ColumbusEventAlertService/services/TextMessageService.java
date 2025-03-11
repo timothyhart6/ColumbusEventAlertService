@@ -30,6 +30,10 @@ public class TextMessageService {
         ArrayList<Event> badTrafficEvents = new ArrayList<>();
         ArrayList<Event> desiredEvents = new ArrayList<>();
 
+        if (events.isEmpty()) {
+            return "No events today!";
+        }
+
         for(Event event: events) {
             if(event.isBadTraffic()) badTrafficEvents.add(event);
             if(event.isDesiredEvent()) desiredEvents.add(event);
@@ -52,6 +56,9 @@ public class TextMessageService {
     }
 
     private static String getFunEventsMessage(ArrayList<Event> desiredEvents, String format) {
+        if(desiredEvents.isEmpty()) {
+            return "No reason to leave home today!";
+        }
         String funEventsMessage = desiredEvents.stream()
                 .map(event -> String.format(format,
                         event.getEventName(), event.getLocationName(), event.getTime()))
@@ -60,9 +67,12 @@ public class TextMessageService {
     }
 
     private static String getBadTrafficMessage(ArrayList<Event> badTrafficEvents, String format) {
+        if(badTrafficEvents.isEmpty()) {
+            return "Smooth sailing today!";
+        }
         String badTrafficMessage = badTrafficEvents.stream()
                 .map(event -> String.format(format,
-                        event.getEventName(), event.getLocationName(), event.getTime()))
+                        event.getLocationName(), event.getTime()))
                 .collect(Collectors.joining("\n"));
         return badTrafficMessage;
     }
