@@ -3,7 +3,8 @@ package com.ColumbusEventAlertService;
 import com.ColumbusEventAlertService.models.Event;
 import com.ColumbusEventAlertService.services.events.*;
 import com.ColumbusEventAlertService.utils.DynamoDBReader;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
@@ -17,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-@RequiredArgsConstructor
 public class GatherEvents {
     @Autowired
     NationwideEventService nationwideEventService;
@@ -31,10 +31,9 @@ public class GatherEvents {
     ArBarEventService arBarEventService;
     @Autowired
     AceOfCupsEventService aceOfCupsEventService;
-   private DynamoDBReader dynamoDBReader;
 
-    public ArrayList<Event> getTodaysEvents() {
-        ArrayList<Event> events = getAllEvents();
+    public ArrayList<Event> getTodaysEvents(DynamoDBReader dynamoDBReader) {
+        ArrayList<Event> events = getAllEvents(dynamoDBReader);
         ZoneId zone = ZoneId.of("America/New_York");
         String todaysDate = Instant.now().atZone(zone).format(DateTimeFormatter.ofPattern("MM-dd-yyyy"));
 
@@ -43,9 +42,9 @@ public class GatherEvents {
         return events;
     }
 
-    private ArrayList<Event> getAllEvents() {
+    private ArrayList<Event> getAllEvents(DynamoDBReader dynamoDBReader) {
         ArrayList<Event> events = new ArrayList<>();
-        events.addAll(getTodaysEventsFromDatabase());
+        events.addAll(getTodaysEventsFromDatabase(dynamoDBReader));
         events.add(nationwideEventService.getNextEvent());
         events.add(lowerFieldEventService.getNextEvent());
         events.add(kembaLiveEventService.getNextEvent());
@@ -55,7 +54,7 @@ public class GatherEvents {
         return events;
     }
 
-    public ArrayList<Event> getTodaysEventsFromDatabase() {
+    public ArrayList<Event> getTodaysEventsFromDatabase(DynamoDBReader dynamoDBReader) {
         ArrayList<Event> events = new ArrayList<>();
         List<Map<String, AttributeValue>> items = dynamoDBReader.getTodaysEvents(DynamoDbClient.create());
 
