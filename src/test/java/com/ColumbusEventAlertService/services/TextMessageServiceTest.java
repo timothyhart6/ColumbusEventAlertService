@@ -3,6 +3,7 @@ package com.ColumbusEventAlertService.services;
 import com.ColumbusEventAlertService.GatherEvents;
 import com.ColumbusEventAlertService.models.Event;
 import com.ColumbusEventAlertService.services.smsProviders.TwilioService;
+import com.ColumbusEventAlertService.utils.DynamoDBReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,7 +43,7 @@ public class TextMessageServiceTest {
     @Test
     void testSendTodaysEvents_NoEventToday() {
         String expectedMessage = "No Events today!";
-        when(gatherEvents.getTodaysEvents()).thenReturn(events);
+        when(gatherEvents.getTodaysEvents(any(DynamoDBReader.class))).thenReturn(events);
 
         textMessageService.sendTodaysEvents();
         verify(twilioService).sendTextMessage(eq(expectedMessage));
