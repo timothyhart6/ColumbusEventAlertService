@@ -15,10 +15,11 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -55,6 +56,7 @@ public class GatherEventsTest {
         eventToday.setDate(todaysDate);
         eventInThePast.setDate("01-01-1930");
 
+        when(dynamoDBReader.getTodaysEvents(any())).thenReturn(Collections.emptyList());
         when(nationwideEventService.getNextEvent()).thenReturn(eventToday);
         when(kembaLiveEventService.getNextEvent()).thenReturn(eventToday);
         when(lowerFieldEventService.getNextEvent()).thenReturn(eventInThePast);
@@ -74,23 +76,36 @@ public class GatherEventsTest {
                 "_airbyte_data", AttributeValue.fromM(Map.of(
                         "date", AttributeValue.fromS(todaysDate),
                         "locationName", AttributeValue.fromS("Short North"),
-                        "eventName", AttributeValue.fromS("Doo Dah Parade")
+                        "eventName", AttributeValue.fromS("Doo Dah Parade"),
+                        "time", AttributeValue.fromS("12:00 PM"),
+                        "createsTraffic", AttributeValue.fromBool(true),
+                        "desiredEvent", AttributeValue.fromBool(false)
                 ))
         );
         events.add(event);
         when(dynamoDBReader.getTodaysEvents(any())).thenReturn(events);
 
-        ArrayList<Event> todaysEvents = gatherEvents.getTodaysEventsFromDatabase(dynamoDBReader);
+        ArrayList<Event> todaysEvents = gatherEvents.getTodaysEventsFromDatabase();
 
         assertEquals(1, todaysEvents.size());
+        Event retrievedEvent = todaysEvents.get(0);
+
+        // Additional assertions to validate the new fields
+        assertEquals("Short North", retrievedEvent.getLocationName());
+        assertEquals("Doo Dah Parade", retrievedEvent.getEventName());
+        assertEquals(todaysDate, retrievedEvent.getDate());
+        assertEquals("12:00 PM", retrievedEvent.getTime());
+        assertTrue(retrievedEvent.isBadTraffic());
+        assertFalse(retrievedEvent.isDesiredEvent());
     }
+
 
     @Test
     public void noEventsAddedWhenListIsEmpty() {
         List<Map<String, AttributeValue>> events = new ArrayList<>();
         when(dynamoDBReader.getTodaysEvents(any())).thenReturn(events);
 
-        ArrayList<Event> todaysEvents = gatherEvents.getTodaysEventsFromDatabase(dynamoDBReader);
+        ArrayList<Event> todaysEvents = gatherEvents.getTodaysEventsFromDatabase();
 
         assertEquals(0, todaysEvents.size());
     }

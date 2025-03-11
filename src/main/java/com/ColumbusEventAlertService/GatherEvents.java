@@ -3,6 +3,7 @@ package com.ColumbusEventAlertService;
 import com.ColumbusEventAlertService.models.Event;
 import com.ColumbusEventAlertService.services.events.*;
 import com.ColumbusEventAlertService.utils.DynamoDBReader;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+@RequiredArgsConstructor
 public class GatherEvents {
     @Autowired
     NationwideEventService nationwideEventService;
@@ -29,6 +31,7 @@ public class GatherEvents {
     ArBarEventService arBarEventService;
     @Autowired
     AceOfCupsEventService aceOfCupsEventService;
+   private DynamoDBReader dynamoDBReader;
 
     public ArrayList<Event> getTodaysEvents() {
         ArrayList<Event> events = getAllEvents();
@@ -42,7 +45,7 @@ public class GatherEvents {
 
     private ArrayList<Event> getAllEvents() {
         ArrayList<Event> events = new ArrayList<>();
-        events.addAll(getTodaysEventsFromDatabase(new DynamoDBReader()));
+        events.addAll(getTodaysEventsFromDatabase());
         events.add(nationwideEventService.getNextEvent());
         events.add(lowerFieldEventService.getNextEvent());
         events.add(kembaLiveEventService.getNextEvent());
@@ -52,7 +55,7 @@ public class GatherEvents {
         return events;
     }
 
-    public ArrayList<Event> getTodaysEventsFromDatabase(DynamoDBReader dynamoDBReader) {
+    public ArrayList<Event> getTodaysEventsFromDatabase() {
         ArrayList<Event> events = new ArrayList<>();
         List<Map<String, AttributeValue>> items = dynamoDBReader.getTodaysEvents(DynamoDbClient.create());
 
