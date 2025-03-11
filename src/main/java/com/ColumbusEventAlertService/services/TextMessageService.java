@@ -44,10 +44,8 @@ public class TextMessageService {
         String funEventsMessage = getFunEventsMessage(desiredEvents, "%s at %s. %s");
 
         String completeMessage = """
-        Avoid driving here!!
         %s
 
-        These could be fun!
         %s
         """.formatted(badTrafficMessage, funEventsMessage);
 
@@ -59,21 +57,24 @@ public class TextMessageService {
         if(desiredEvents.isEmpty()) {
             return "No reason to leave home today!";
         }
+        String titleText = "These could be fun!\n";
         String funEventsMessage = desiredEvents.stream()
                 .map(event -> String.format(format,
                         event.getEventName(), event.getLocationName(), event.getTime()))
                 .collect(Collectors.joining("\n"));
-        return funEventsMessage;
+        return titleText + funEventsMessage;
     }
 
     private static String getBadTrafficMessage(ArrayList<Event> badTrafficEvents, String format) {
         if(badTrafficEvents.isEmpty()) {
-            return "Smooth sailing today!";
+            return "Smooth sailing today! No events causing major traffic concerns.";
         }
+
+        String titleText = "Avoid driving here!!\n";
         String badTrafficMessage = badTrafficEvents.stream()
                 .map(event -> String.format(format,
                         event.getLocationName(), event.getTime()))
                 .collect(Collectors.joining("\n"));
-        return badTrafficMessage;
+        return titleText + badTrafficMessage;
     }
 }
