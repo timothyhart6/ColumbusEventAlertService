@@ -54,7 +54,7 @@ public class GatherEvents {
 
     public ArrayList<Event> getTodaysEventsFromDatabase(DynamoDBReader dynamoDBReader) {
         ArrayList<Event> events = new ArrayList<>();
-        List<Map<String, AttributeValue>> items = dynamoDBReader.getTodaysEvents(DynamoDbClient.create());
+        List<Map<String, AttributeValue>> items = dynamoDBReader.getTodaysEvents(DynamoDbClientFactory.createClient());
 
         if (items.isEmpty()) {
             return events;

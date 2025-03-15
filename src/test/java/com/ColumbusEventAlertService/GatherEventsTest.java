@@ -51,8 +51,8 @@ public class GatherEventsTest {
     }
     @Test
     public void testGetTodaysEvents() {
-        Event eventToday = new Event("Today!");
-        Event eventInThePast = new Event("In the past");
+        Event eventToday = new Event("Today!", true, false);
+        Event eventInThePast = new Event("In the past", true, false);
         eventToday.setDate(todaysDate);
         eventInThePast.setDate("01-01-1930");
 
