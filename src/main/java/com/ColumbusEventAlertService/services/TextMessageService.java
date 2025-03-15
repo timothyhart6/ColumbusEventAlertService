@@ -30,51 +30,49 @@ public class TextMessageService {
         ArrayList<Event> badTrafficEvents = new ArrayList<>();
         ArrayList<Event> desiredEvents = new ArrayList<>();
 
-        if (events.isEmpty()) {
-            return "No events today!";
+        for (Event event : events) {
+            if (event.isBadTraffic()) badTrafficEvents.add(event);
+            if (event.isDesiredEvent()) desiredEvents.add(event);
         }
 
-        for(Event event: events) {
-            if(event.isBadTraffic()) badTrafficEvents.add(event);
-            if(event.isDesiredEvent()) desiredEvents.add(event);
-        }
+        // Adjusted format string for bad traffic message to match two arguments.
+        String badTrafficMessage = getBadTrafficMessage(badTrafficEvents, "- %s: %s");
 
-        String badTrafficMessage = getBadTrafficMessage(badTrafficEvents, "%s at %s area around %s");
+        String funEventsMessage = getFunEventsMessage(desiredEvents, "- %s\n%s\n%s");
 
-        String funEventsMessage = getFunEventsMessage(desiredEvents, "%s at %s. %s");
-
+        // Combine both messages.
         String completeMessage = """
-        %s
+    %s
 
-        %s
-        """.formatted(badTrafficMessage, funEventsMessage);
+    %s
+    """.formatted(badTrafficMessage, funEventsMessage);
 
         log.info("Formatted Text Message being sent: " + completeMessage);
         return completeMessage;
     }
 
-    private static String getFunEventsMessage(ArrayList<Event> desiredEvents, String format) {
-        if(desiredEvents.isEmpty()) {
-            return "No reason to leave home today!";
-        }
-        String titleText = "These could be fun!\n";
-        String funEventsMessage = desiredEvents.stream()
-                .map(event -> String.format(format,
-                        event.getEventName(), event.getLocationName(), event.getTime()))
-                .collect(Collectors.joining("\n"));
-        return titleText + funEventsMessage;
-    }
-
     private static String getBadTrafficMessage(ArrayList<Event> badTrafficEvents, String format) {
-        if(badTrafficEvents.isEmpty()) {
+        if (badTrafficEvents.isEmpty()) {
             return "Smooth sailing today! No events causing major traffic concerns.";
         }
 
-        String titleText = "Avoid driving here!!\n";
+        String titleText = "AHHH TRAFFIC ALERT!!\n";
         String badTrafficMessage = badTrafficEvents.stream()
                 .map(event -> String.format(format,
                         event.getLocationName(), event.getTime()))
-                .collect(Collectors.joining("\n"));
+                .collect(Collectors.joining("\n\n")); // Adds an extra newline between each event
         return titleText + badTrafficMessage;
+    }
+
+    private static String getFunEventsMessage(ArrayList<Event> desiredEvents, String format) {
+        if (desiredEvents.isEmpty()) {
+            return "No reason to leave home today!";
+        }
+        String titleText = "THESE SHOWS MIGHT BE FUN!\n";
+        String funEventsMessage = desiredEvents.stream()
+                .map(event -> String.format(format,
+                        event.getEventName(), event.getLocationName(), event.getTime()))
+                .collect(Collectors.joining("\n\n"));
+        return titleText + funEventsMessage;
     }
 }

@@ -27,7 +27,7 @@ public abstract class EventService {
     }
 
     public Event getNextEvent() throws IllegalArgumentException {
-        Event event = new Event(venueName);
+        Event event = new Event(venueName, isBadTraffic, isDesiredEvent);
         try {
             Document jsoupDocument = jsoupService.getDocument(jsoupService.connect(venueUrl)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36"));
@@ -35,20 +35,20 @@ public abstract class EventService {
         } catch (IllegalArgumentException | IOException e) {
             throw new IllegalArgumentException("Invalid URL: " + venueUrl);
         }
-//        logEventAttributes(event);
+        logEventAttributes(event);
         return event;
     }
 
-//    private static void logEventAttributes(Event event) {
-//        log.info(
-//                event.getLocationName() + "\n" +
-//                event.getEventName() + "\n" +
-//                event.getDate() + "\n" +
-//                event.getTime() + "\n" +
-//                event.isBadTraffic() + "\n" +
-//                event.isDesiredEvent()
-//        );
-//    }
+    private static void logEventAttributes(Event event) {
+        log.info(
+                event.getLocationName() + "\n" +
+                event.getEventName() + "\n" +
+                event.getDate() + "\n" +
+                event.getTime() + "\n" +
+                event.isBadTraffic() + "\n" +
+                event.isDesiredEvent()
+        );
+    }
 
     public void setEventAttributes(Document doc, Event event) {
         String eventName;
@@ -103,8 +103,5 @@ public abstract class EventService {
     protected abstract String getDateMonth(Document doc);
 
     protected abstract String getDateDay(Document doc);
-//
-//    protected abstract boolean isBadTraffic();
-//
-//    protected abstract boolean isDesiredEvent();
+
 }
