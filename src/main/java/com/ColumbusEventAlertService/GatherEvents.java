@@ -5,7 +5,6 @@ import com.ColumbusEventAlertService.services.events.*;
 import com.ColumbusEventAlertService.utils.DynamoDBReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 import java.time.Instant;
@@ -60,12 +59,14 @@ public class GatherEvents {
             return events;
         } else {
             for (Map<String, AttributeValue> item : items) {
-                String locationName = nullCheck(item.get("_airbyte_data").m().get("locationName"));
-                String eventName = nullCheck(item.get("_airbyte_data").m().get("eventName"));
-                String date = nullCheck(item.get("_airbyte_data").m().get("date"));
-                String time = nullCheck(item.get("_airbyte_data").m().get("time"));
-                boolean createsTraffic = item.get("_airbyte_data").m().get("createsTraffic").bool();
-                boolean desiredEvent = item.get("_airbyte_data").m().get("desiredEvent").bool();
+                Map<String, AttributeValue> data = item.get("_airbyte_data").m();
+                String locationName = nullCheck(data.get("locationName"));
+                String eventName = nullCheck(data.get("eventName"));
+                String date = nullCheck(data.get("date"));
+                String time = nullCheck(data.get("time"));
+                boolean createsTraffic = nullCheckBool(data.get("createsTraffic"));
+                boolean desiredEvent = nullCheckBool(data.get("desiredEvent"));
+
 
                 Event event = new Event(locationName, eventName, date, time, createsTraffic, desiredEvent);
                 events.add(event);
@@ -77,4 +78,9 @@ public class GatherEvents {
     private static String nullCheck(AttributeValue attribute) {
         return (attribute != null && attribute.s() != null) ? attribute.s() : "";
     }
+
+    private static boolean nullCheckBool(AttributeValue attribute) {
+        return attribute != null && attribute.bool() != null ? attribute.bool() : true;
+    }
+
 }
