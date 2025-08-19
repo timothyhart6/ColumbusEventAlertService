@@ -59,14 +59,12 @@ public class GatherEvents {
             return events;
         } else {
             for (Map<String, AttributeValue> item : items) {
-                Map<String, AttributeValue> data = item.get("_airbyte_data").m();
-                String locationName = nullCheck(data.get("locationName"));
-                String eventName = nullCheck(data.get("eventName"));
-                String date = nullCheck(data.get("date"));
-                String time = nullCheck(data.get("time"));
-                boolean createsTraffic = nullCheckBool(data.get("createsTraffic"));
-                boolean desiredEvent = nullCheckBool(data.get("desiredEvent"));
-
+                String locationName = nullCheck(item.get("locationName"));
+                String eventName = nullCheck(item.get("eventName"));
+                String date = nullCheck(item.get("date"));
+                String time = nullCheck(item.get("time"));
+                boolean createsTraffic = nullCheckBool(item.get("isBadTraffic"));
+                boolean desiredEvent = nullCheckBool(item.get("isDesiredEvent"));
 
                 Event event = new Event(locationName, eventName, date, time, createsTraffic, desiredEvent);
                 events.add(event);
