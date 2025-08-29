@@ -58,7 +58,7 @@ public class GatherEventsTest {
 
         when(nationwideEventService.getNextEvent()).thenReturn(eventToday);
         when(kembaLiveEventService.getNextEvent()).thenReturn(eventToday);
-        when(lowerFieldEventService.getNextEvent()).thenReturn(eventInThePast);
+//        when(lowerFieldEventService.getNextEvent()).thenReturn(eventInThePast);
         when(arBarEventService.getNextEvent()).thenReturn(eventInThePast);
         when(newportEventService.getNextEvent()).thenReturn(eventInThePast);
         when(aceOfCupsEventService.getNextEvent()).thenReturn(eventToday);
