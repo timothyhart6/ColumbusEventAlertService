@@ -43,7 +43,7 @@ public class GatherEvents {
         ArrayList<Event> events = new ArrayList<>();
         events.addAll(getTodaysEventsFromDatabase(dynamoDBReader));
         events.add(nationwideEventService.getNextEvent());
-        events.add(lowerFieldEventService.getNextEvent());
+//        events.add(lowerFieldEventService.getNextEvent());
         events.add(kembaLiveEventService.getNextEvent());
         events.add(newportEventService.getNextEvent());
         events.add(arBarEventService.getNextEvent());
@@ -63,8 +63,8 @@ public class GatherEvents {
                 String eventName = nullCheck(item.get("eventName"));
                 String date = nullCheck(item.get("date"));
                 String time = nullCheck(item.get("time"));
-                boolean createsTraffic = nullCheckBool(item.get("isBadTraffic"));
-                boolean desiredEvent = nullCheckBool(item.get("isDesiredEvent"));
+                boolean createsTraffic = nullCheckBool(AttributeValue.fromBool(item.get("isBadTraffic").bool()));
+                boolean desiredEvent = nullCheckBool(AttributeValue.fromBool(item.get("isDesiredEvent").bool()));
 
                 Event event = new Event(locationName, eventName, date, time, createsTraffic, desiredEvent);
                 events.add(event);
