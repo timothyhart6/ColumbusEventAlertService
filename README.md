@@ -1,4 +1,4 @@
-Columbus Events is an Application that scraps the internet to find events around Columbus and sends me a daily text informing me of the events going on that day, who is performing, and where/when the event takes place.
+Columbus Events is an Application that scrapes the internet to find events around Columbus and sends me a daily text informing me of the events going on that day, who is performing, and where/when the event takes place.
 
 This Application is solely a pet project to help inform me of what is going on in my city, as well as an exercise to hone my Developer skills.
 
@@ -7,4 +7,4 @@ This Application mostly uses AWS infrastructure, as well as Twilio (to send the 
 Lambda Handler calls the method that kicks off the whole process:
 com.ColumbusEventAlertService.services.TextMessageService::sendTodaysEvents
 
-If trying to run locally, you will need to call the "sendTodaysEvents" method
+To run locally, set profile to "local". This will trigger the "LocalRunner" class and execute the "sendTodaysEvents" method.
