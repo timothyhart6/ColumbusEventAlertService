@@ -59,7 +59,7 @@ public class TextMessageService {
         String titleText = "AHHH TRAFFIC ALERT!!\n";
         String badTrafficMessage = badTrafficEvents.stream()
                 .map(event -> String.format(format,
-                        event.getLocationName(), event.getTime()))
+                        event.getLocationName(), event.getEventName(), event.getTime()))
                 .collect(Collectors.joining("\n\n")); // Adds an extra newline between each event
         return titleText + badTrafficMessage;
     }

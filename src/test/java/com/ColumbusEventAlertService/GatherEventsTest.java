@@ -58,7 +58,7 @@ public class GatherEventsTest {
 
         when(nationwideEventService.getNextEvent()).thenReturn(eventToday);
         when(kembaLiveEventService.getNextEvent()).thenReturn(eventToday);
-        when(lowerFieldEventService.getNextEvent()).thenReturn(eventInThePast);
+//        when(lowerFieldEventService.getNextEvent()).thenReturn(eventInThePast);
         when(arBarEventService.getNextEvent()).thenReturn(eventInThePast);
         when(newportEventService.getNextEvent()).thenReturn(eventInThePast);
         when(aceOfCupsEventService.getNextEvent()).thenReturn(eventToday);
@@ -73,14 +73,13 @@ public class GatherEventsTest {
     public void databaseEventsMapToArrayList() {
         List<Map<String, AttributeValue>> events = new ArrayList<>();
         Map<String, AttributeValue> event = Map.of(
-                "_airbyte_data", AttributeValue.fromM(Map.of(
-                        "date", AttributeValue.fromS(todaysDate),
-                        "locationName", AttributeValue.fromS("Short North"),
-                        "eventName", AttributeValue.fromS("Doo Dah Parade"),
-                        "time", AttributeValue.fromS("12:00 PM"),
-                        "createsTraffic", AttributeValue.fromBool(true),
-                        "desiredEvent", AttributeValue.fromBool(false)
-                ))
+                "id", AttributeValue.fromS("Doo Dah Parade|Short North|" + todaysDate),
+                "date", AttributeValue.fromS(todaysDate),
+                "locationName", AttributeValue.fromS("Short North"),
+                "eventName", AttributeValue.fromS("Doo Dah Parade"),
+                "time", AttributeValue.fromS("12:00 PM"),
+                "isBadTraffic", AttributeValue.fromBool(true),
+                "isDesiredEvent", AttributeValue.fromBool(false)
         );
         events.add(event);
         when(dynamoDBReader.getTodaysEvents(any())).thenReturn(events);
