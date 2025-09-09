@@ -33,7 +33,7 @@ public abstract class EventService {
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36"));
             setEventAttributes(jsoupDocument, event);
         } catch (IllegalArgumentException | IOException e) {
-            throw new IllegalArgumentException("Invalid URL: " + venueUrl);
+            log.info("Invalid URL: " + venueUrl);
         }
         logEventAttributes(event);
         return event;

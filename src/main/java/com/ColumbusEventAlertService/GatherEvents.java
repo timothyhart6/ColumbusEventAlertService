@@ -34,7 +34,7 @@ public class GatherEvents {
         ZoneId zone = ZoneId.of("America/New_York");
         String todaysDate = Instant.now().atZone(zone).format(DateTimeFormatter.ofPattern("MM-dd-yyyy"));
 
-        events.removeIf(event -> (!event.getDate().equals(todaysDate)));
+        events.removeIf(event -> (event.getDate() == null || !event.getDate().equals(todaysDate)));
 
         return events;
     }
@@ -65,14 +65,12 @@ public class GatherEvents {
             return events;
         } else {
             for (Map<String, AttributeValue> item : items) {
-                Map<String, AttributeValue> data = item.get("_airbyte_data").m();
-                String locationName = nullCheck(data.get("locationName"));
-                String eventName = nullCheck(data.get("eventName"));
-                String date = nullCheck(data.get("date"));
-                String time = nullCheck(data.get("time"));
-                boolean createsTraffic = nullCheckBool(data.get("createsTraffic"));
-                boolean desiredEvent = nullCheckBool(data.get("desiredEvent"));
-
+                String locationName = nullCheck(item.get("locationName"));
+                String eventName = nullCheck(item.get("eventName"));
+                String date = nullCheck(item.get("date"));
+                String time = nullCheck(item.get("time"));
+                boolean createsTraffic = nullCheckBool(AttributeValue.fromBool(item.get("isBadTraffic").bool()));
+                boolean desiredEvent = nullCheckBool(AttributeValue.fromBool(item.get("isDesiredEvent").bool()));
 
                 Event event = new Event(locationName, eventName, date, time, createsTraffic, desiredEvent);
                 events.add(event);
