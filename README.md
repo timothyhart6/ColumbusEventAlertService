@@ -7,4 +7,4 @@ This Application mostly uses AWS infrastructure, as well as Twilio (to send the 
 Lambda Handler calls the method that kicks off the whole process:
 com.ColumbusEventAlertService.services.TextMessageService::sendTodaysEvents
 
-To run locally, set profile to "local". This will trigger the "LocalRunner" class and execute the "sendTodaysEvents" method.
+Application is set up to run locally, using logic in the main method
