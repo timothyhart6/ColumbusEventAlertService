@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class GatherEvents {
+public class EventCollector {
     @Autowired
     NationwideEventService nationwideEventService;
     @Autowired

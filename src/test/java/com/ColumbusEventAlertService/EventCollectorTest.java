@@ -24,9 +24,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class GatherEventsTest {
+public class EventCollectorTest {
     @InjectMocks
-    private GatherEvents gatherEvents;
+    private EventCollector eventCollector;
     @Mock
     NationwideEventService nationwideEventService;
     @Mock
@@ -64,7 +64,7 @@ public class GatherEventsTest {
         when(aceOfCupsEventService.getNextEvent()).thenReturn(eventToday);
         when(dynamoDBReader.getTodaysEvents(any())).thenReturn(Collections.emptyList());
 
-        ArrayList<Event> todaysEvents = gatherEvents.getTodaysEvents(dynamoDBReader);
+        ArrayList<Event> todaysEvents = eventCollector.getTodaysEvents(dynamoDBReader);
 
         assertEquals(3, todaysEvents.size());
     }
@@ -84,7 +84,7 @@ public class GatherEventsTest {
         events.add(event);
         when(dynamoDBReader.getTodaysEvents(any())).thenReturn(events);
 
-        ArrayList<Event> todaysEvents = gatherEvents.getTodaysEventsFromDatabase(dynamoDBReader);
+        ArrayList<Event> todaysEvents = eventCollector.getTodaysEventsFromDatabase(dynamoDBReader);
 
         assertEquals(1, todaysEvents.size());
         Event retrievedEvent = todaysEvents.get(0);
@@ -104,7 +104,7 @@ public class GatherEventsTest {
         List<Map<String, AttributeValue>> events = new ArrayList<>();
         when(dynamoDBReader.getTodaysEvents(any())).thenReturn(events);
 
-        ArrayList<Event> todaysEvents = gatherEvents.getTodaysEventsFromDatabase(dynamoDBReader);
+        ArrayList<Event> todaysEvents = eventCollector.getTodaysEventsFromDatabase(dynamoDBReader);
 
         assertEquals(0, todaysEvents.size());
     }

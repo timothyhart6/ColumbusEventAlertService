@@ -1,6 +1,6 @@
 package com.ColumbusEventAlertService.services;
 
-import com.ColumbusEventAlertService.GatherEvents;
+import com.ColumbusEventAlertService.EventCollector;
 import com.ColumbusEventAlertService.models.Event;
 import com.ColumbusEventAlertService.services.smsProviders.TwilioService;
 import com.ColumbusEventAlertService.utils.DynamoDBReader;
@@ -16,12 +16,12 @@ public class TextMessageService {
     @Autowired
     private TwilioService twilioService;
     @Autowired
-    private GatherEvents gatherEvents;
+    private EventCollector eventCollector;
 
     //Method that sends the Text Message
     public void sendTodaysEvents() {
         log.info("Text Message is sending...");
-        ArrayList<Event> events = gatherEvents.getTodaysEvents(new DynamoDBReader());
+        ArrayList<Event> events = eventCollector.getTodaysEvents(new DynamoDBReader());
         String textMessage = events.isEmpty() ? "No Events today!" : formatTodaysTextMessage(events);
         twilioService.sendTextMessage(textMessage);
     }

@@ -1,6 +1,6 @@
 package com.ColumbusEventAlertService.services;
 
-import com.ColumbusEventAlertService.GatherEvents;
+import com.ColumbusEventAlertService.EventCollector;
 import com.ColumbusEventAlertService.models.Event;
 import com.ColumbusEventAlertService.services.smsProviders.TwilioService;
 import com.ColumbusEventAlertService.utils.DynamoDBReader;
@@ -22,7 +22,7 @@ public class TextMessageServiceTest {
     @Mock
     private TwilioService twilioService;
     @Mock
-    private GatherEvents gatherEvents;
+    private EventCollector eventCollector;
 
     ArrayList<Event> events;
 
@@ -43,7 +43,7 @@ public class TextMessageServiceTest {
     @Test
     void testSendTodaysEvents_NoEventToday() {
         String expectedMessage = "No Events today!";
-        when(gatherEvents.getTodaysEvents(any(DynamoDBReader.class))).thenReturn(events);
+        when(eventCollector.getTodaysEvents(any(DynamoDBReader.class))).thenReturn(events);
 
         textMessageService.sendTodaysEvents();
         verify(twilioService).sendTextMessage(eq(expectedMessage));
