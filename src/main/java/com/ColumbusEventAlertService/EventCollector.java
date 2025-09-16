@@ -15,11 +15,9 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class GatherEvents {
+public class EventCollector {
     @Autowired
     NationwideEventService nationwideEventService;
-    @Autowired
-    LowerFieldEventService lowerFieldEventService;
     @Autowired
     KembaLiveEventService kembaLiveEventService;
     @Autowired
@@ -43,7 +41,6 @@ public class GatherEvents {
         ArrayList<Event> events = new ArrayList<>();
         events.addAll(getTodaysEventsFromDatabase(dynamoDBReader));
         events.add(nationwideEventService.getNextEvent());
-//        events.add(lowerFieldEventService.getNextEvent());
         events.add(kembaLiveEventService.getNextEvent());
         events.add(newportEventService.getNextEvent());
         events.add(arBarEventService.getNextEvent());
