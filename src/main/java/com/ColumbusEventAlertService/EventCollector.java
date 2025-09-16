@@ -19,8 +19,6 @@ public class EventCollector {
     @Autowired
     NationwideEventService nationwideEventService;
     @Autowired
-    LowerFieldEventService lowerFieldEventService;
-    @Autowired
     KembaLiveEventService kembaLiveEventService;
     @Autowired
     NewportEventService newportEventService;
@@ -43,7 +41,6 @@ public class EventCollector {
         ArrayList<Event> events = new ArrayList<>();
         events.addAll(getTodaysEventsFromDatabase(dynamoDBReader));
         events.add(nationwideEventService.getNextEvent());
-//        events.add(lowerFieldEventService.getNextEvent());
         events.add(kembaLiveEventService.getNextEvent());
         events.add(newportEventService.getNextEvent());
         events.add(arBarEventService.getNextEvent());

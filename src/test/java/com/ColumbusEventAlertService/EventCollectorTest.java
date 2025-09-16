@@ -30,8 +30,6 @@ public class EventCollectorTest {
     @Mock
     NationwideEventService nationwideEventService;
     @Mock
-    LowerFieldEventService lowerFieldEventService;
-    @Mock
     KembaLiveEventService kembaLiveEventService;
     @Mock
     NewportEventService newportEventService;
@@ -58,7 +56,6 @@ public class EventCollectorTest {
 
         when(nationwideEventService.getNextEvent()).thenReturn(eventToday);
         when(kembaLiveEventService.getNextEvent()).thenReturn(eventToday);
-//        when(lowerFieldEventService.getNextEvent()).thenReturn(eventInThePast);
         when(arBarEventService.getNextEvent()).thenReturn(eventInThePast);
         when(newportEventService.getNextEvent()).thenReturn(eventInThePast);
         when(aceOfCupsEventService.getNextEvent()).thenReturn(eventToday);
