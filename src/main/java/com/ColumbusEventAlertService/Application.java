@@ -17,7 +17,7 @@ public class Application {
 
 		// Only run this block when you want to test locally
 		if (args.length > 0 && args[0].equals("localRun")) {
-			log.info("Running GatherEvents locally...");
+			log.info("Running EventCollector locally...");
 
 			TextMessageService textMessageService = context.getBean(TextMessageService.class);
 

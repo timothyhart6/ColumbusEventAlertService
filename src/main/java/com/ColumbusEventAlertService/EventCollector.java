@@ -15,11 +15,9 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class GatherEvents {
+public class EventCollector {
     @Autowired
     NationwideEventService nationwideEventService;
-    @Autowired
-    LowerFieldEventService lowerFieldEventService;
     @Autowired
     KembaLiveEventService kembaLiveEventService;
     @Autowired
@@ -43,7 +41,6 @@ public class GatherEvents {
         ArrayList<Event> events = new ArrayList<>();
         events.addAll(getTodaysEventsFromDatabase(dynamoDBReader));
         events.add(nationwideEventService.getNextEvent());
-        events.add(lowerFieldEventService.getNextEvent());
         events.add(kembaLiveEventService.getNextEvent());
         events.add(newportEventService.getNextEvent());
         events.add(arBarEventService.getNextEvent());
@@ -53,12 +50,12 @@ public class GatherEvents {
 
     public ArrayList<Event> getTodaysEventsFromDatabase(DynamoDBReader dynamoDBReader) {
         ArrayList<Event> events = new ArrayList<>();
-        
+
         // Skip DynamoDB calls when running locally
         if (isRunningLocally()) {
             return events;
         }
-        
+
         List<Map<String, AttributeValue>> items = dynamoDBReader.getTodaysEvents(DynamoDbClientFactory.createClient());
 
         if (items.isEmpty()) {
@@ -86,7 +83,7 @@ public class GatherEvents {
     private static boolean nullCheckBool(AttributeValue attribute) {
         return attribute != null && attribute.bool() != null ? attribute.bool() : true;
     }
-    
+
     private static boolean isRunningLocally() {
         return System.getenv("AWS_EXECUTION_ENV") == null;
     }
