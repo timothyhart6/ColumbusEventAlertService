@@ -36,11 +36,6 @@ public class AceOfCupsEventService extends EventService{
     }
 
     @Override
-    protected String getDateYear(Document doc) {
-        return Year.now().toString();
-    }
-
-    @Override
     protected String getDateMonth(Document doc) {
         String date = doc.getElementsByClass("event-date").get(0).childNode(0).toString().trim();
         String[] monthAndDay = date.split(" ");

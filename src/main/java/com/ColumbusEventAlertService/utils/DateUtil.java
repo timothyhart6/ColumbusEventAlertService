@@ -2,6 +2,8 @@ package com.ColumbusEventAlertService.utils;
 
 import org.springframework.stereotype.Component;
 
+import java.time.Year;
+
 @Component
 public class DateUtil {
     public String convertMonthNameToNumber(String monthName) {
@@ -24,5 +26,9 @@ public class DateUtil {
 
     public String formatDay(String day) {
         return (day.length() == 1) ? "0" + day : day;
+    }
+
+    public String getYear() {
+        return String.valueOf(Year.now());
     }
 }

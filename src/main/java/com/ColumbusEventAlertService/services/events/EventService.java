@@ -8,6 +8,7 @@ import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
+import java.time.Year;
 
 @Slf4j
 @Service
@@ -98,10 +99,11 @@ public abstract class EventService {
 
     protected abstract String getTime(Document doc);
 
-    protected abstract String getDateYear(Document doc);
-
     protected abstract String getDateMonth(Document doc);
 
     protected abstract String getDateDay(Document doc);
 
+    protected String getDateYear(Document doc) {
+        return dateUtil.getYear();
+    }
 }
