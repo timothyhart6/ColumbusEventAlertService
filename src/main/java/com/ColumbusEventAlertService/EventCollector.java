@@ -62,10 +62,10 @@ public class EventCollector {
             return events;
         } else {
             for (Map<String, AttributeValue> item : items) {
-                String locationName = nullCheck(item.get("locationName"));
-                String eventName = nullCheck(item.get("eventName"));
-                String date = nullCheck(item.get("date"));
-                String time = nullCheck(item.get("time"));
+                String locationName = nullCheckString(item.get("locationName"));
+                String eventName = nullCheckString(item.get("eventName"));
+                String date = nullCheckString(item.get("date"));
+                String time = nullCheckString(item.get("time"));
                 boolean createsTraffic = nullCheckBool(AttributeValue.fromBool(item.get("isBadTraffic").bool()));
                 boolean desiredEvent = nullCheckBool(AttributeValue.fromBool(item.get("isDesiredEvent").bool()));
 
@@ -76,15 +76,15 @@ public class EventCollector {
         return events;
     }
 
-    private static String nullCheck(AttributeValue attribute) {
+    static String nullCheckString(AttributeValue attribute) {
         return (attribute != null && attribute.s() != null) ? attribute.s() : "";
     }
 
-    private static boolean nullCheckBool(AttributeValue attribute) {
+    static boolean nullCheckBool(AttributeValue attribute) {
         return attribute != null && attribute.bool() != null ? attribute.bool() : true;
     }
 
-    private static boolean isRunningLocally() {
+    static boolean isRunningLocally() {
         return System.getenv("AWS_EXECUTION_ENV") == null;
     }
 

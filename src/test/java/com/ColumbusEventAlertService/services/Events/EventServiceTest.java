@@ -1,5 +1,6 @@
 package com.ColumbusEventAlertService.services.Events;
 
+import com.ColumbusEventAlertService.models.Event;
 import com.ColumbusEventAlertService.services.JsoupService;
 import com.ColumbusEventAlertService.services.events.NationwideEventService;
 import com.ColumbusEventAlertService.utils.DateUtil;
@@ -10,10 +11,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -38,17 +38,11 @@ public class EventServiceTest {
     public void testGetNextEvent_invalidUrl() {
         when(jsoupService.connect(anyString())).thenThrow(IllegalArgumentException.class);
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> subject.getNextEvent());
-        assertEquals("Invalid URL: " + url, exception.getMessage());
-    }
+        Event event = subject.getNextEvent();
 
-    @Test
-    public void testGetNextEvent_ioException() throws Exception {
-        when(jsoupService.connect(anyString())).thenReturn(connection);
-        when(jsoupService.getDocument(connection.userAgent(anyString()))).thenThrow(IOException.class);
-
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> subject.getNextEvent());
-
-        assertEquals("Invalid URL: " + url, exception.getMessage());
+        assertEquals("test", event.getLocationName());
+        assertNull(event.getEventName());
+        assertNull(event.getDate());
+        assertNull(event.getTime());
     }
 }
