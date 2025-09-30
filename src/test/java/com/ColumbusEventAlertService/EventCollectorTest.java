@@ -39,9 +39,12 @@ public class EventCollectorTest {
     @Mock
     AceOfCupsEventService aceOfCupsEventService;
     @Mock
-    DynamoDBReader dynamoDBReader;
+    ShortNorthStageService shortNorthStageService;
     @Mock
     DateUtil dateUtil;
+
+    @Mock
+    DynamoDBReader dynamoDBReader;
 
     private String todaysDate;
 
@@ -52,17 +55,18 @@ public class EventCollectorTest {
     }
     @Test
     public void testGetTodaysEvents() {
-        Event eventToday = new Event("Today!", true, false);
-        Event eventInThePast = new Event("In the past", true, false);
-        eventToday.setDate(todaysDate);
-        eventInThePast.setDate("01-01-1930");
+        Event currentEvent = new Event("Today!", true, false);
+        Event pastEvent = new Event("In the past", true, false);
+        currentEvent.setDate(todaysDate);
+        pastEvent.setDate("01-01-1930");
 
-        when(nationwideEventService.getNextEvent()).thenReturn(eventToday);
-        when(kembaLiveEventService.getNextEvent()).thenReturn(eventToday);
-        when(arBarEventService.getNextEvent()).thenReturn(eventInThePast);
-        when(newportEventService.getNextEvent()).thenReturn(eventInThePast);
-        when(aceOfCupsEventService.getNextEvent()).thenReturn(eventToday);
-        when(dateUtil.getCurrentDate()).thenReturn(todaysDate);
+        when(nationwideEventService.getNextEvent()).thenReturn(currentEvent);
+        when(kembaLiveEventService.getNextEvent()).thenReturn(currentEvent);
+        when(arBarEventService.getNextEvent()).thenReturn(pastEvent);
+        when(newportEventService.getNextEvent()).thenReturn(pastEvent);
+        when(aceOfCupsEventService.getNextEvent()).thenReturn(currentEvent);
+        when(shortNorthStageService.getNextEvent()).thenReturn(pastEvent);
+        when(dateUtil.getCurrentDateFormatted()).thenCallRealMethod();
 
         ArrayList<Event> todaysEvents = eventCollector.getTodaysEvents(dynamoDBReader);
 

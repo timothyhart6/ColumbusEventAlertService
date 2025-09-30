@@ -7,9 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.Year;
 import java.time.format.DateTimeFormatter;
 
 @Slf4j
@@ -109,7 +109,7 @@ public abstract class EventService {
         return dateUtil.getYear();
     }
 
-    protected String buildUrl(String template, LocalDate start, LocalDate end) {
+    String buildUrl(String template, LocalDate start, LocalDate end) {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
         return template
                 .replace("{start-date}", start.format(formatter))

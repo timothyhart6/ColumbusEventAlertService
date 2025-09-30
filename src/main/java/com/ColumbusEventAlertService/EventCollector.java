@@ -61,7 +61,7 @@ public class EventCollector {
         events.add(arBarEventService.getNextEvent());
         events.add(aceOfCupsEventService.getNextEvent());
         events.add(shortNorthStageService.getNextEvent());
-        events.removeIf(event -> (event.getDate() == null || !event.getDate().equals(dateUtil.getCurrentDate())));
+        events.removeIf(event -> (event.getDate() == null || !event.getDate().equals(dateUtil.getCurrentDateFormatted())));
 
         return events;
     }

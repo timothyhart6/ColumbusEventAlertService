@@ -39,11 +39,11 @@ public class ShortNorthStageService extends EventService {
 
     @Override
     protected String getDateMonth(Document doc) {
-        return String.valueOf(today.getMonth());
+        return dateUtil.getMonth();
     }
 
     @Override
     protected String getDateDay(Document doc) {
-        return String.valueOf(today.getDayOfMonth());
+        return dateUtil.getDay();
     }
 }
