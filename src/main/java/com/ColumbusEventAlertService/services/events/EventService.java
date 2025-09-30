@@ -7,7 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @Service
@@ -33,7 +36,7 @@ public abstract class EventService {
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36"));
             setEventAttributes(jsoupDocument, event);
         } catch (IllegalArgumentException | IOException e) {
-            throw new IllegalArgumentException("Invalid URL: " + venueUrl);
+            log.info("Invalid URL: " + venueUrl);
         }
         logEventAttributes(event);
         return event;
@@ -98,10 +101,18 @@ public abstract class EventService {
 
     protected abstract String getTime(Document doc);
 
-    protected abstract String getDateYear(Document doc);
-
     protected abstract String getDateMonth(Document doc);
 
     protected abstract String getDateDay(Document doc);
 
+    protected String getDateYear(Document doc) {
+        return dateUtil.getYear();
+    }
+
+    String buildUrl(String template, LocalDate start, LocalDate end) {
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+        return template
+                .replace("{start-date}", start.format(formatter))
+                .replace("{end-date}", end.format(formatter));
+    }
 }

@@ -2,12 +2,14 @@ package com.ColumbusEventAlertService;
 
 import com.ColumbusEventAlertService.models.Event;
 import com.ColumbusEventAlertService.services.events.*;
+import com.ColumbusEventAlertService.utils.DateUtil;
 import com.ColumbusEventAlertService.utils.DynamoDBReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
@@ -15,13 +17,12 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class EventCollectorTest {
@@ -38,6 +39,11 @@ public class EventCollectorTest {
     @Mock
     AceOfCupsEventService aceOfCupsEventService;
     @Mock
+    ShortNorthStageService shortNorthStageService;
+    @Mock
+    DateUtil dateUtil;
+
+    @Mock
     DynamoDBReader dynamoDBReader;
 
     private String todaysDate;
@@ -49,17 +55,18 @@ public class EventCollectorTest {
     }
     @Test
     public void testGetTodaysEvents() {
-        Event eventToday = new Event("Today!", true, false);
-        Event eventInThePast = new Event("In the past", true, false);
-        eventToday.setDate(todaysDate);
-        eventInThePast.setDate("01-01-1930");
+        Event currentEvent = new Event("Today!", true, false);
+        Event pastEvent = new Event("In the past", true, false);
+        currentEvent.setDate(todaysDate);
+        pastEvent.setDate("01-01-1930");
 
-        when(nationwideEventService.getNextEvent()).thenReturn(eventToday);
-        when(kembaLiveEventService.getNextEvent()).thenReturn(eventToday);
-        when(arBarEventService.getNextEvent()).thenReturn(eventInThePast);
-        when(newportEventService.getNextEvent()).thenReturn(eventInThePast);
-        when(aceOfCupsEventService.getNextEvent()).thenReturn(eventToday);
-        when(dynamoDBReader.getTodaysEvents(any())).thenReturn(Collections.emptyList());
+        when(nationwideEventService.getNextEvent()).thenReturn(currentEvent);
+        when(kembaLiveEventService.getNextEvent()).thenReturn(currentEvent);
+        when(arBarEventService.getNextEvent()).thenReturn(pastEvent);
+        when(newportEventService.getNextEvent()).thenReturn(pastEvent);
+        when(aceOfCupsEventService.getNextEvent()).thenReturn(currentEvent);
+        when(shortNorthStageService.getNextEvent()).thenReturn(pastEvent);
+        when(dateUtil.getCurrentDateFormatted()).thenCallRealMethod();
 
         ArrayList<Event> todaysEvents = eventCollector.getTodaysEvents(dynamoDBReader);
 
@@ -67,42 +74,100 @@ public class EventCollectorTest {
     }
 
     @Test
-    public void databaseEventsMapToArrayList() {
-        List<Map<String, AttributeValue>> events = new ArrayList<>();
-        Map<String, AttributeValue> event = Map.of(
-                "id", AttributeValue.fromS("Doo Dah Parade|Short North|" + todaysDate),
-                "date", AttributeValue.fromS(todaysDate),
-                "locationName", AttributeValue.fromS("Short North"),
-                "eventName", AttributeValue.fromS("Doo Dah Parade"),
-                "time", AttributeValue.fromS("12:00 PM"),
-                "isBadTraffic", AttributeValue.fromBool(true),
-                "isDesiredEvent", AttributeValue.fromBool(false)
-        );
-        events.add(event);
-        when(dynamoDBReader.getTodaysEvents(any())).thenReturn(events);
+    void databaseEventsMapToArrayList() {
+        try (MockedStatic<EventCollector> mockedStatic = mockStatic(EventCollector.class)) {
+            mockedStatic.when(EventCollector::isRunningLocally).thenReturn(false);
+            mockedStatic.when(() -> EventCollector.nullCheckString(any())).thenCallRealMethod();
+            mockedStatic.when(() -> EventCollector.nullCheckBool(any())).thenCallRealMethod();
 
-        ArrayList<Event> todaysEvents = eventCollector.getTodaysEventsFromDatabase(dynamoDBReader);
+            List<Map<String, AttributeValue>> events = new ArrayList<>();
+            Map<String, AttributeValue> event = Map.of(
+                    "id", AttributeValue.builder().s("Doo Dah Parade|Short North|" + todaysDate).build(),
+                    "date", AttributeValue.builder().s(todaysDate).build(),
+                    "locationName", AttributeValue.builder().s("Short North").build(),
+                    "eventName", AttributeValue.builder().s("Doo Dah Parade").build(),
+                    "time", AttributeValue.builder().s("12:00 PM").build(),
+                    "isBadTraffic", AttributeValue.builder().bool(true).build(),
+                    "isDesiredEvent", AttributeValue.builder().bool(false).build()
+            );
 
-        assertEquals(1, todaysEvents.size());
-        Event retrievedEvent = todaysEvents.get(0);
+            events.add(event);
 
-        // Additional assertions to validate the new fields
-        assertEquals("Short North", retrievedEvent.getLocationName());
-        assertEquals("Doo Dah Parade", retrievedEvent.getEventName());
-        assertEquals(todaysDate, retrievedEvent.getDate());
-        assertEquals("12:00 PM", retrievedEvent.getTime());
-        assertTrue(retrievedEvent.isBadTraffic());
-        assertFalse(retrievedEvent.isDesiredEvent());
+            when(dynamoDBReader.getTodaysEvents(any())).thenReturn(events);
+
+            ArrayList<Event> todaysEvents = eventCollector.getTodaysEventsFromDatabase(dynamoDBReader);
+
+            assertEquals(1, todaysEvents.size());
+            Event retrievedEvent = todaysEvents.get(0);
+            assertEquals("Short North", retrievedEvent.getLocationName());
+            assertEquals("Doo Dah Parade", retrievedEvent.getEventName());
+            assertEquals(todaysDate, retrievedEvent.getDate());
+            assertEquals("12:00 PM", retrievedEvent.getTime());
+            assertTrue(retrievedEvent.isBadTraffic());
+            assertFalse(retrievedEvent.isDesiredEvent());
+
+            verify(dynamoDBReader, times(1)).getTodaysEvents(any());
+        }
     }
-
 
     @Test
     public void noEventsAddedWhenListIsEmpty() {
         List<Map<String, AttributeValue>> events = new ArrayList<>();
-        when(dynamoDBReader.getTodaysEvents(any())).thenReturn(events);
 
         ArrayList<Event> todaysEvents = eventCollector.getTodaysEventsFromDatabase(dynamoDBReader);
 
         assertEquals(0, todaysEvents.size());
+    }
+
+    @Test
+    void combineEventLists_removesWebEventWithoutTimeWhenMatchingDbEventExists() {
+        EventCollector eventCollector = new EventCollector();
+        ArrayList<Event> webEvents = new ArrayList<>();
+        ArrayList<Event> dbEvents = new ArrayList<>();
+
+        Event webEvent = new Event("Venue1", "Event1", "01-01-2024", null, false, false);
+        Event dbEvent = new Event("Venue1", "Event1", "01-01-2024", "7:00 PM", false, false);
+
+        webEvents.add(webEvent);
+        dbEvents.add(dbEvent);
+
+        ArrayList<Event> result = eventCollector.combineEventLists(webEvents, dbEvents);
+
+        assertEquals(1, result.size());
+        assertEquals("7:00 PM", result.get(0).getTime());
+    }
+
+    @Test
+    void combineEventLists_keepsWebEventWithTimeEvenWhenMatchingDbEventExists() {
+        EventCollector eventCollector = new EventCollector();
+        ArrayList<Event> webEvents = new ArrayList<>();
+        ArrayList<Event> dbEvents = new ArrayList<>();
+
+        Event webEvent = new Event("Venue1", "Event1", "01-01-2024", "8:00 PM", false, false);
+        Event dbEvent = new Event("Venue1", "Event1", "01-01-2024", "7:00 PM", false, false);
+
+        webEvents.add(webEvent);
+        dbEvents.add(dbEvent);
+
+        ArrayList<Event> result = eventCollector.combineEventLists(webEvents, dbEvents);
+
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    void combineEventLists_keepsWebEventWithoutTimeWhenNoMatchingDbEvent() {
+        EventCollector eventCollector = new EventCollector();
+        ArrayList<Event> webEvents = new ArrayList<>();
+        ArrayList<Event> dbEvents = new ArrayList<>();
+
+        Event webEvent = new Event("Venue1", "Event1", "01-01-2024", null, false, false);
+        Event dbEvent = new Event("Venue2", "Event2", "01-01-2024", "7:00 PM", false, false);
+
+        webEvents.add(webEvent);
+        dbEvents.add(dbEvent);
+
+        ArrayList<Event> result = eventCollector.combineEventLists(webEvents, dbEvents);
+
+        assertEquals(2, result.size());
     }
 }

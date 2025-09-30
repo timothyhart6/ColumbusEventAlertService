@@ -20,7 +20,6 @@ public class Application {
 			log.info("Running EventCollector locally...");
 
 			TextMessageService textMessageService = context.getBean(TextMessageService.class);
-
 			textMessageService.sendTodaysEvents();
 		}
 	}

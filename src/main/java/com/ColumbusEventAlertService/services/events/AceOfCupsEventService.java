@@ -13,11 +13,11 @@ import java.time.Year;
 @Service
 public class AceOfCupsEventService extends EventService{
 
-    public AceOfCupsEventService(@Value("${venue-name.ace}") String venueName,
-                                 @Value("${url.ace}") String venueUrl,
-                                 JsoupService jsoupService,
-                                 DateUtil dateUtil)
-    {
+    public AceOfCupsEventService(
+            @Value("${venue-name.ace}") String venueName,
+            @Value("${url.ace}") String venueUrl,
+            JsoupService jsoupService,
+            DateUtil dateUtil) {
         super(jsoupService, dateUtil);
         super.venueName = venueName;
         super.venueUrl = venueUrl;
@@ -33,11 +33,6 @@ public class AceOfCupsEventService extends EventService{
     @Override
     protected String getTime(Document doc) {
         return doc.getElementsByClass("see-showtime ").get(0).childNode(0).toString().trim();
-    }
-
-    @Override
-    protected String getDateYear(Document doc) {
-        return Year.now().toString();
     }
 
     @Override

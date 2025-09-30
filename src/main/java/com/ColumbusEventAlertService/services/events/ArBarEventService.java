@@ -7,8 +7,6 @@ import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.time.Year;
-
 @Slf4j
 @Service
 public class ArBarEventService extends EventService {
@@ -27,11 +25,6 @@ public class ArBarEventService extends EventService {
     @Override
     protected String getEventName(Document doc) {
         return doc.getElementsByClass("info").get(0).select("h2").get(0).childNode(0).toString();
-    }
-
-    @Override
-    protected String getDateYear(Document doc) {
-        return Year.now().toString();
     }
 
     @Override

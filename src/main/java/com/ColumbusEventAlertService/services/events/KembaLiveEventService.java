@@ -31,11 +31,6 @@ public class KembaLiveEventService extends EventService {
     }
 
     @Override
-    protected String getDateYear(Document doc) {
-        return Year.now().toString();
-    }
-
-    @Override
     protected String getDateMonth(Document doc) {
        String date = doc.getElementsByClass("date").get(0).childNode(3).childNode(1).childNode(0).toString();
        String[] monthAndDay = date.split(" ");
