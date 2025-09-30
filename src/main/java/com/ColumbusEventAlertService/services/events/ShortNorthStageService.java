@@ -1,18 +1,30 @@
-/*
 package com.ColumbusEventAlertService.services.events;
 
 import com.ColumbusEventAlertService.services.JsoupService;
 import com.ColumbusEventAlertService.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.nodes.Document;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 @Slf4j
 @Service
 public class ShortNorthStageService extends EventService {
 
-    public ShortNorthStageService(JsoupService jsoupService, DateUtil dateUtil) {
+    LocalDate today;
+    public ShortNorthStageService(
+            @Value("${venue-name.sn-stage}") String venueName,
+            @Value("${url.sn-stage}") String venueUrlTemplate,
+            JsoupService jsoupService,
+            DateUtil dateUtil) {
         super(jsoupService, dateUtil);
+        super.venueName = venueName;
+        this.today = dateUtil.getCurrentDate();
+        super.venueUrl = buildUrl(venueUrlTemplate, today, today);
+        super.isBadTraffic = false;
+        super.isDesiredEvent = true;
     }
 
     @Override
@@ -27,12 +39,11 @@ public class ShortNorthStageService extends EventService {
 
     @Override
     protected String getDateMonth(Document doc) {
-        return "";
+        return String.valueOf(today.getMonth());
     }
 
     @Override
     protected String getDateDay(Document doc) {
-        return "";
+        return String.valueOf(today.getDayOfMonth());
     }
 }
-*/

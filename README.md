@@ -22,8 +22,8 @@
 ## Helpful info for running app
 Lambda Handler calls the method that kicks off the whole process:
 com.ColumbusEventAlertService.services.TextMessageService::sendTodaysEvents
-
-Application is set up to run locally, using logic in the main method
+### Run locally
+Application is set up to run locally, using logic in the main method. Add a program argument (in the application configuration) called "localRun".
 
 ## Events to be added manually, when dates are announced
 ### Sports 

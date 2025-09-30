@@ -26,6 +26,8 @@ public class EventCollector {
     ArBarEventService arBarEventService;
     @Autowired
     AceOfCupsEventService aceOfCupsEventService;
+    @Autowired
+    ShortNorthStageService shortNorthStageService;
 
     public ArrayList<Event> getTodaysEvents(DynamoDBReader dynamoDBReader) {
         ArrayList<Event> events = getAllEvents(dynamoDBReader);
@@ -45,6 +47,7 @@ public class EventCollector {
         events.add(newportEventService.getNextEvent());
         events.add(arBarEventService.getNextEvent());
         events.add(aceOfCupsEventService.getNextEvent());
+        events.add(shortNorthStageService.getNextEvent());
         return events;
     }
 
