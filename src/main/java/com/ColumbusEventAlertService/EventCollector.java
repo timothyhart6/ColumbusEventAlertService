@@ -25,21 +25,23 @@ public class EventCollector {
     @Autowired
     AceOfCupsEventService aceOfCupsEventService;
     @Autowired
+    ShortNorthStageService shortNorthStageService;
+    @Autowired
     private DateUtil dateUtil;
 
     public ArrayList<Event> getTodaysEvents(DynamoDBReader dynamoDBReader) {
 
         ArrayList<Event> todaysEventsFromDatabase = getTodaysEventsFromDatabase(dynamoDBReader);
         ArrayList<Event> todaysEventsFromWebScrape = getTodaysEventsFromWebScrape();
-        
+
         return combineEventLists(todaysEventsFromWebScrape, todaysEventsFromDatabase);
     }
 
     ArrayList<Event> combineEventLists(ArrayList<Event> todaysEventsFromWebScrape, ArrayList<Event> todaysEventsFromDatabase) {
         ArrayList<Event> events = new ArrayList<>();
-        todaysEventsFromWebScrape.removeIf(webEvent -> 
+        todaysEventsFromWebScrape.removeIf(webEvent ->
             (webEvent.getTime() == null || webEvent.getTime().isEmpty()) &&
-            todaysEventsFromDatabase.stream().anyMatch(dbEvent -> 
+            todaysEventsFromDatabase.stream().anyMatch(dbEvent ->
                 webEvent.getLocationName().equals(dbEvent.getLocationName()) &&
                 webEvent.getEventName().equals(dbEvent.getEventName()) &&
                 webEvent.getDate().equals(dbEvent.getDate())
@@ -47,7 +49,7 @@ public class EventCollector {
         );
         events.addAll(todaysEventsFromWebScrape);
         events.addAll(todaysEventsFromDatabase);
-        
+
         return events;
     }
 
@@ -58,6 +60,7 @@ public class EventCollector {
         events.add(newportEventService.getNextEvent());
         events.add(arBarEventService.getNextEvent());
         events.add(aceOfCupsEventService.getNextEvent());
+        events.add(shortNorthStageService.getNextEvent());
         events.removeIf(event -> (event.getDate() == null || !event.getDate().equals(dateUtil.getCurrentDate())));
 
         return events;

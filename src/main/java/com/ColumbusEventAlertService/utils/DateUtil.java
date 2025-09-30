@@ -2,6 +2,7 @@ package com.ColumbusEventAlertService.utils;
 
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.Year;
 
 @Component
@@ -32,7 +33,7 @@ public class DateUtil {
         return String.valueOf(Year.now());
     }
 
-    public String getCurrentDate() {
-        return java.time.LocalDate.now().toString();
+    public LocalDate getCurrentDate() {
+        return LocalDate.now();
     }
 }

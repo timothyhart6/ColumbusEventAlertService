@@ -16,11 +16,11 @@ public class Application {
 		ApplicationContext context = SpringApplication.run(Application.class, args);
 
 		// Only run this block when you want to test locally
-//		if (args.length > 0 && args[0].equals("localRun")) {
-//			log.info("Running EventCollector locally...");
-//
-//			TextMessageService textMessageService = context.getBean(TextMessageService.class);
-//
-//		}
+		if (args.length > 0 && args[0].equals("localRun")) {
+			log.info("Running EventCollector locally...");
+
+			TextMessageService textMessageService = context.getBean(TextMessageService.class);
+			textMessageService.sendTodaysEvents();
+		}
 	}
 }

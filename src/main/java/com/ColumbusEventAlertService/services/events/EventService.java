@@ -8,7 +8,9 @@ import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.Year;
+import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @Service
@@ -105,5 +107,12 @@ public abstract class EventService {
 
     protected String getDateYear(Document doc) {
         return dateUtil.getYear();
+    }
+
+    protected String buildUrl(String template, LocalDate start, LocalDate end) {
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+        return template
+                .replace("{start-date}", start.format(formatter))
+                .replace("{end-date}", end.format(formatter));
     }
 }

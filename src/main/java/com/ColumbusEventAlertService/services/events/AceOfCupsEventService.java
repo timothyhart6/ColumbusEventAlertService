@@ -13,11 +13,11 @@ import java.time.Year;
 @Service
 public class AceOfCupsEventService extends EventService{
 
-    public AceOfCupsEventService(@Value("${venue-name.ace}") String venueName,
-                                 @Value("${url.ace}") String venueUrl,
-                                 JsoupService jsoupService,
-                                 DateUtil dateUtil)
-    {
+    public AceOfCupsEventService(
+            @Value("${venue-name.ace}") String venueName,
+            @Value("${url.ace}") String venueUrl,
+            JsoupService jsoupService,
+            DateUtil dateUtil) {
         super(jsoupService, dateUtil);
         super.venueName = venueName;
         super.venueUrl = venueUrl;
