@@ -23,8 +23,8 @@ public class ShortNorthStageService extends EventService {
         super.venueName = venueName;
         this.today = dateUtil.getCurrentDate();
         super.venueUrl = buildUrl(venueUrlTemplate, today, today);
-        super.isBadTraffic = false;
-        super.isDesiredEvent = true;
+        super.isBadTraffic = true;
+        super.isDesiredEvent = false;
     }
 
     @Override
