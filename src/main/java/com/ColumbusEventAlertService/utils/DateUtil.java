@@ -31,4 +31,8 @@ public class DateUtil {
     public String getYear() {
         return String.valueOf(Year.now());
     }
+
+    public String getCurrentDate() {
+        return java.time.LocalDate.now().toString();
+    }
 }

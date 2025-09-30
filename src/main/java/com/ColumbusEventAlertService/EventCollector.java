@@ -2,14 +2,12 @@ package com.ColumbusEventAlertService;
 
 import com.ColumbusEventAlertService.models.Event;
 import com.ColumbusEventAlertService.services.events.*;
+import com.ColumbusEventAlertService.utils.DateUtil;
 import com.ColumbusEventAlertService.utils.DynamoDBReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
-import java.time.Instant;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -26,25 +24,42 @@ public class EventCollector {
     ArBarEventService arBarEventService;
     @Autowired
     AceOfCupsEventService aceOfCupsEventService;
+    @Autowired
+    private DateUtil dateUtil;
 
     public ArrayList<Event> getTodaysEvents(DynamoDBReader dynamoDBReader) {
-        ArrayList<Event> events = getAllEvents(dynamoDBReader);
-        ZoneId zone = ZoneId.of("America/New_York");
-        String todaysDate = Instant.now().atZone(zone).format(DateTimeFormatter.ofPattern("MM-dd-yyyy"));
 
-        events.removeIf(event -> (event.getDate() == null || !event.getDate().equals(todaysDate)));
+        ArrayList<Event> todaysEventsFromDatabase = getTodaysEventsFromDatabase(dynamoDBReader);
+        ArrayList<Event> todaysEventsFromWebScrape = getTodaysEventsFromWebScrape();
+        
+        return combineEventLists(todaysEventsFromWebScrape, todaysEventsFromDatabase);
+    }
 
+    ArrayList<Event> combineEventLists(ArrayList<Event> todaysEventsFromWebScrape, ArrayList<Event> todaysEventsFromDatabase) {
+        ArrayList<Event> events = new ArrayList<>();
+        todaysEventsFromWebScrape.removeIf(webEvent -> 
+            (webEvent.getTime() == null || webEvent.getTime().isEmpty()) &&
+            todaysEventsFromDatabase.stream().anyMatch(dbEvent -> 
+                webEvent.getLocationName().equals(dbEvent.getLocationName()) &&
+                webEvent.getEventName().equals(dbEvent.getEventName()) &&
+                webEvent.getDate().equals(dbEvent.getDate())
+            )
+        );
+        events.addAll(todaysEventsFromWebScrape);
+        events.addAll(todaysEventsFromDatabase);
+        
         return events;
     }
 
-    private ArrayList<Event> getAllEvents(DynamoDBReader dynamoDBReader) {
+    private ArrayList<Event> getTodaysEventsFromWebScrape() {
         ArrayList<Event> events = new ArrayList<>();
-        events.addAll(getTodaysEventsFromDatabase(dynamoDBReader));
         events.add(nationwideEventService.getNextEvent());
         events.add(kembaLiveEventService.getNextEvent());
         events.add(newportEventService.getNextEvent());
         events.add(arBarEventService.getNextEvent());
         events.add(aceOfCupsEventService.getNextEvent());
+        events.removeIf(event -> (event.getDate() == null || !event.getDate().equals(dateUtil.getCurrentDate())));
+
         return events;
     }
 

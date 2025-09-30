@@ -2,6 +2,7 @@ package com.ColumbusEventAlertService;
 
 import com.ColumbusEventAlertService.models.Event;
 import com.ColumbusEventAlertService.services.events.*;
+import com.ColumbusEventAlertService.utils.DateUtil;
 import com.ColumbusEventAlertService.utils.DynamoDBReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,8 @@ public class EventCollectorTest {
     AceOfCupsEventService aceOfCupsEventService;
     @Mock
     DynamoDBReader dynamoDBReader;
+    @Mock
+    DateUtil dateUtil;
 
     private String todaysDate;
 
@@ -59,6 +62,7 @@ public class EventCollectorTest {
         when(arBarEventService.getNextEvent()).thenReturn(eventInThePast);
         when(newportEventService.getNextEvent()).thenReturn(eventInThePast);
         when(aceOfCupsEventService.getNextEvent()).thenReturn(eventToday);
+        when(dateUtil.getCurrentDate()).thenReturn(todaysDate);
 
         ArrayList<Event> todaysEvents = eventCollector.getTodaysEvents(dynamoDBReader);
 
@@ -102,8 +106,6 @@ public class EventCollectorTest {
         }
     }
 
-
-
     @Test
     public void noEventsAddedWhenListIsEmpty() {
         List<Map<String, AttributeValue>> events = new ArrayList<>();
@@ -111,5 +113,57 @@ public class EventCollectorTest {
         ArrayList<Event> todaysEvents = eventCollector.getTodaysEventsFromDatabase(dynamoDBReader);
 
         assertEquals(0, todaysEvents.size());
+    }
+
+    @Test
+    void combineEventLists_removesWebEventWithoutTimeWhenMatchingDbEventExists() {
+        EventCollector eventCollector = new EventCollector();
+        ArrayList<Event> webEvents = new ArrayList<>();
+        ArrayList<Event> dbEvents = new ArrayList<>();
+
+        Event webEvent = new Event("Venue1", "Event1", "01-01-2024", null, false, false);
+        Event dbEvent = new Event("Venue1", "Event1", "01-01-2024", "7:00 PM", false, false);
+
+        webEvents.add(webEvent);
+        dbEvents.add(dbEvent);
+
+        ArrayList<Event> result = eventCollector.combineEventLists(webEvents, dbEvents);
+
+        assertEquals(1, result.size());
+        assertEquals("7:00 PM", result.get(0).getTime());
+    }
+
+    @Test
+    void combineEventLists_keepsWebEventWithTimeEvenWhenMatchingDbEventExists() {
+        EventCollector eventCollector = new EventCollector();
+        ArrayList<Event> webEvents = new ArrayList<>();
+        ArrayList<Event> dbEvents = new ArrayList<>();
+
+        Event webEvent = new Event("Venue1", "Event1", "01-01-2024", "8:00 PM", false, false);
+        Event dbEvent = new Event("Venue1", "Event1", "01-01-2024", "7:00 PM", false, false);
+
+        webEvents.add(webEvent);
+        dbEvents.add(dbEvent);
+
+        ArrayList<Event> result = eventCollector.combineEventLists(webEvents, dbEvents);
+
+        assertEquals(2, result.size());
+    }
+
+    @Test
+    void combineEventLists_keepsWebEventWithoutTimeWhenNoMatchingDbEvent() {
+        EventCollector eventCollector = new EventCollector();
+        ArrayList<Event> webEvents = new ArrayList<>();
+        ArrayList<Event> dbEvents = new ArrayList<>();
+
+        Event webEvent = new Event("Venue1", "Event1", "01-01-2024", null, false, false);
+        Event dbEvent = new Event("Venue2", "Event2", "01-01-2024", "7:00 PM", false, false);
+
+        webEvents.add(webEvent);
+        dbEvents.add(dbEvent);
+
+        ArrayList<Event> result = eventCollector.combineEventLists(webEvents, dbEvents);
+
+        assertEquals(2, result.size());
     }
 }
