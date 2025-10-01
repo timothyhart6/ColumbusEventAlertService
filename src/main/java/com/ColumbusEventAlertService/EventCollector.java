@@ -61,9 +61,16 @@ public class EventCollector {
         events.add(arBarEventService.getNextEvent());
         events.add(aceOfCupsEventService.getNextEvent());
         events.add(shortNorthStageService.getNextEvent());
-        events.removeIf(event -> (event.getDate() == null || !event.getDate().equals(dateUtil.getCurrentDateFormatted())));
+        events.removeIf(event -> (!shouldSendEventToday(event)));
 
         return events;
+    }
+
+    private boolean shouldSendEventToday(Event event) {
+        boolean validEventName = !event.getEventName().isEmpty() && event.getEventName() != null;
+        boolean validLocationName = !event.getLocationName().isEmpty() && event.getLocationName() != null;
+        boolean currentDate = event.getDate() != null && !event.getDate().isEmpty() && event.getDate().equals(dateUtil.getCurrentDateFormatted());
+        return validEventName && validLocationName && currentDate;
     }
 
     public ArrayList<Event> getTodaysEventsFromDatabase(DynamoDBReader dynamoDBReader) {
