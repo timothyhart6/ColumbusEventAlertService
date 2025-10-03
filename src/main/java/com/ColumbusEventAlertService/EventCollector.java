@@ -67,8 +67,8 @@ public class EventCollector {
     }
 
     private boolean shouldSendEventToday(Event event) {
-        boolean validEventName = !event.getEventName().isEmpty() && event.getEventName() != null;
-        boolean validLocationName = !event.getLocationName().isEmpty() && event.getLocationName() != null;
+        boolean validEventName = event.getEventName() != null && !event.getEventName().isEmpty();
+        boolean validLocationName = event.getLocationName() != null && !event.getLocationName().isEmpty();
         boolean currentDate = event.getDate() != null && !event.getDate().isEmpty() && event.getDate().equals(dateUtil.getCurrentDateFormatted());
         return validEventName && validLocationName && currentDate;
     }
