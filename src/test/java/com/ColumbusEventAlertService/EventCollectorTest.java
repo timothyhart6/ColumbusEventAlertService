@@ -59,6 +59,8 @@ public class EventCollectorTest {
         Event pastEvent = new Event("In the past", true, false);
         currentEvent.setDate(todaysDate);
         pastEvent.setDate("01-01-1930");
+        currentEvent.setEventName("Current!");
+        pastEvent.setEventName("Past!");
 
         when(nationwideEventService.getNextEvent()).thenReturn(currentEvent);
         when(kembaLiveEventService.getNextEvent()).thenReturn(currentEvent);
@@ -112,8 +114,6 @@ public class EventCollectorTest {
 
     @Test
     public void noEventsAddedWhenListIsEmpty() {
-        List<Map<String, AttributeValue>> events = new ArrayList<>();
-
         ArrayList<Event> todaysEvents = eventCollector.getTodaysEventsFromDatabase(dynamoDBReader);
 
         assertEquals(0, todaysEvents.size());
