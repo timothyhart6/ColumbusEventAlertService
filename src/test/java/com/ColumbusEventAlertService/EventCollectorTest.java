@@ -41,6 +41,8 @@ public class EventCollectorTest {
     @Mock
     ShortNorthStageService shortNorthStageService;
     @Mock
+    BalletMetService balletMetService;
+    @Mock
     DateUtil dateUtil;
 
     @Mock
@@ -68,6 +70,7 @@ public class EventCollectorTest {
         when(newportEventService.getNextEvent()).thenReturn(pastEvent);
         when(aceOfCupsEventService.getNextEvent()).thenReturn(currentEvent);
         when(shortNorthStageService.getNextEvent()).thenReturn(pastEvent);
+        when(balletMetService.getNextEvent()).thenReturn(pastEvent);
         when(dateUtil.getCurrentDateFormatted()).thenCallRealMethod();
 
         ArrayList<Event> todaysEvents = eventCollector.getTodaysEvents(dynamoDBReader);

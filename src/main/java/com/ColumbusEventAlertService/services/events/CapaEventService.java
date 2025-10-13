@@ -15,7 +15,7 @@ public class CapaEventService extends EventService {
 
     @Override
     protected String getEventName(Document doc) {
-        return doc.getElementsByClass("text-xl font-bold mt-0 mb-0").text();
+        return doc.getElementsByClass("text-xl font-bold mt-0 mb-0").get(0).text();
     }
 
     @Override

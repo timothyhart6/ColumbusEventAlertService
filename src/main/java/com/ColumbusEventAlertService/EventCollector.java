@@ -27,6 +27,8 @@ public class EventCollector {
     @Autowired
     ShortNorthStageService shortNorthStageService;
     @Autowired
+    BalletMetService balletMetService;
+    @Autowired
     private DateUtil dateUtil;
 
     public ArrayList<Event> getTodaysEvents(DynamoDBReader dynamoDBReader) {
@@ -61,6 +63,7 @@ public class EventCollector {
         events.add(arBarEventService.getNextEvent());
         events.add(aceOfCupsEventService.getNextEvent());
         events.add(shortNorthStageService.getNextEvent());
+        events.add(balletMetService.getNextEvent());
         events.removeIf(event -> (!shouldSendEventToday(event)));
 
         return events;
